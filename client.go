@@ -91,31 +91,62 @@ func New(opts ...Option) (*Client, error) {
 // Path may be relative (joined to the configured base URL) or absolute
 // (passed through unchanged). Body may be nil for GET/DELETE.
 //
+// Raw does not set Content-Type — if you're sending a JSON body, build
+// the request via Do instead so you can set the header yourself.
+//
 // The returned *http.Response is the caller's responsibility to close.
 func (c *Client) Raw(ctx context.Context, method, path string, body io.Reader) (*http.Response, error) {
 	if c == nil || c.rawClient == nil {
 		return nil, fmt.Errorf("freelo: Raw: client is nil")
 	}
 
-	target := path
-	if !strings.HasPrefix(path, "http://") && !strings.HasPrefix(path, "https://") {
-		base := strings.TrimRight(c.cfg.baseURL, "/")
-		if !strings.HasPrefix(path, "/") {
-			path = "/" + path
-		}
-		target = base + path
-	}
-
-	req, err := http.NewRequestWithContext(ctx, method, target, body)
+	req, err := http.NewRequestWithContext(ctx, method, c.resolvePath(path), body)
 	if err != nil {
 		return nil, fmt.Errorf("freelo: Raw: build request: %w", err)
 	}
+	return c.Do(req)
+}
 
+// Do sends a pre-built *http.Request through the SDK's transport pipeline.
+// Use this when you need control over headers (e.g. Content-Type for a
+// JSON body, custom Accept negotiation) — set them on req before calling Do.
+//
+// The auth + User-Agent editors run after the caller's headers are
+// already set, so they can read them but Authorization / User-Agent that
+// the caller pre-sets will be overwritten by SDK editors. That's
+// intentional: nobody should be hand-rolling Authorization on a Freelo
+// SDK call.
+func (c *Client) Do(req *http.Request) (*http.Response, error) {
+	if c == nil || c.rawClient == nil {
+		return nil, fmt.Errorf("freelo: Do: client is nil")
+	}
 	for _, ed := range c.rawClient.RequestEditors {
-		if err := ed(ctx, req); err != nil {
-			return nil, fmt.Errorf("freelo: Raw: editor failed: %w", err)
+		if err := ed(req.Context(), req); err != nil {
+			return nil, fmt.Errorf("freelo: Do: editor failed: %w", err)
 		}
 	}
-
 	return c.rawClient.Client.Do(req)
+}
+
+// resolvePath joins a relative path to the configured base URL, or
+// passes an absolute URL through unchanged.
+func (c *Client) resolvePath(path string) string {
+	if strings.HasPrefix(path, "http://") || strings.HasPrefix(path, "https://") {
+		return path
+	}
+	base := strings.TrimRight(c.cfg.baseURL, "/")
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+	return base + path
+}
+
+// BaseURL returns the resolved API base URL (with HTTPS enforcement and
+// trailing-slash trim already applied). Useful for callers that build
+// requests through Do and need to know the configured root.
+func (c *Client) BaseURL() string {
+	if c == nil || c.cfg == nil {
+		return ""
+	}
+	return c.cfg.baseURL
 }

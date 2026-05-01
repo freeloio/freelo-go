@@ -147,4 +147,3 @@ func TestWithRequestEditor_RejectsNil(t *testing.T) {
 		t.Error("WithRequestEditor(nil) returned nil error")
 	}
 }
-

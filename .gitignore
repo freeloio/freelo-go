@@ -22,3 +22,13 @@ coverage.txt
 
 # Spec preprocessor backup files (sed -i.bak)
 *.bak
+
+# Example binaries built by `make examples` — pattern: dir-named, no extension
+examples/*/0?_quickstart
+examples/*/0?_basic_auth
+examples/*/0?_list_projects
+examples/*/0?_create_task
+examples/*/0?_comment_with_files
+examples/*/0?_credentials_func
+examples/*/0?_custom_http_client
+examples/*/0?_raw_passthrough

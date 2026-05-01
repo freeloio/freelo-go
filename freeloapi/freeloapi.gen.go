@@ -8,11 +8,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	freelotime "github.com/freeloio/freelo-go/freelotime"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
-	freelotime "github.com/freeloio/freelo-go/freelotime"
 
 	"github.com/oapi-codegen/runtime"
 	openapi_types "github.com/oapi-codegen/runtime/types"
@@ -880,16 +880,16 @@ type BusinessClient struct {
 
 // Comment defines model for Comment.
 type Comment struct {
-	Content *string      `json:"content,omitempty"`
-	DateAdd *freelotime.Time   `json:"date_add,omitempty"`
-	Files   *[]FileBasic `json:"files,omitempty"`
-	Id      *int         `json:"id,omitempty"`
+	Content *string          `json:"content,omitempty"`
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+	Files   *[]FileBasic     `json:"files,omitempty"`
+	Id      *int             `json:"id,omitempty"`
 }
 
 // CommentFull defines model for CommentFull.
 type CommentFull struct {
-	Author       *UserBasic `json:"author,omitempty"`
-	Content      *string    `json:"content,omitempty"`
+	Author       *UserBasic       `json:"author,omitempty"`
+	Content      *string          `json:"content,omitempty"`
 	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
 	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
 	Document     *struct {
@@ -916,13 +916,13 @@ type CommentFull struct {
 
 // CommentWithFiles defines model for CommentWithFiles.
 type CommentWithFiles struct {
-	Author            *UserBasic   `json:"author,omitempty"`
-	CommentsReactions *[]UserBasic `json:"comments_reactions,omitempty"`
-	Content           *string      `json:"content,omitempty"`
-	DateAdd           *freelotime.Time   `json:"date_add,omitempty"`
-	Files             *[]FileFull  `json:"files,omitempty"`
-	Id                *int         `json:"id,omitempty"`
-	IsDescription     *bool        `json:"is_description,omitempty"`
+	Author            *UserBasic       `json:"author,omitempty"`
+	CommentsReactions *[]UserBasic     `json:"comments_reactions,omitempty"`
+	Content           *string          `json:"content,omitempty"`
+	DateAdd           *freelotime.Time `json:"date_add,omitempty"`
+	Files             *[]FileFull      `json:"files,omitempty"`
+	Id                *int             `json:"id,omitempty"`
+	IsDescription     *bool            `json:"is_description,omitempty"`
 }
 
 // Currency defines model for Currency.
@@ -939,7 +939,7 @@ type CurrencyCurrency string
 type CustomField struct {
 	AuthorId              *int                `json:"author_id,omitempty"`
 	CustomFieldsTypesUuid *openapi_types.UUID `json:"custom_fields_types_uuid,omitempty"`
-	DateAdd               *freelotime.Time          `json:"date_add,omitempty"`
+	DateAdd               *freelotime.Time    `json:"date_add,omitempty"`
 	Name                  *string             `json:"name,omitempty"`
 	Priority              *int                `json:"priority,omitempty"`
 	ProjectId             *int                `json:"project_id,omitempty"`
@@ -958,8 +958,8 @@ type CustomFieldEnumOption struct {
 type CustomFieldEnumValue struct {
 	AuthorId        *int                `json:"author_id,omitempty"`
 	CustomFieldUuid *openapi_types.UUID `json:"custom_field_uuid,omitempty"`
-	DateAdd         *freelotime.Time          `json:"date_add,omitempty"`
-	DateEditedAt    *freelotime.Time          `json:"date_edited_at,omitempty"`
+	DateAdd         *freelotime.Time    `json:"date_add,omitempty"`
+	DateEditedAt    *freelotime.Time    `json:"date_edited_at,omitempty"`
 	TaskId          *int                `json:"task_id,omitempty"`
 	Uuid            *openapi_types.UUID `json:"uuid,omitempty"`
 	Value           *string             `json:"value,omitempty"`
@@ -969,8 +969,8 @@ type CustomFieldEnumValue struct {
 type CustomFieldValue struct {
 	AuthorId        *int                `json:"author_id,omitempty"`
 	CustomFieldUuid *openapi_types.UUID `json:"custom_field_uuid,omitempty"`
-	DateAdd         *freelotime.Time          `json:"date_add,omitempty"`
-	DateEditedAt    *freelotime.Time          `json:"date_edited_at,omitempty"`
+	DateAdd         *freelotime.Time    `json:"date_add,omitempty"`
+	DateEditedAt    *freelotime.Time    `json:"date_edited_at,omitempty"`
 	TaskId          *int                `json:"task_id,omitempty"`
 	Uuid            *openapi_types.UUID `json:"uuid,omitempty"`
 	Value           *string             `json:"value,omitempty"`
@@ -979,15 +979,15 @@ type CustomFieldValue struct {
 // CustomFieldWithValue defines model for CustomFieldWithValue.
 type CustomFieldWithValue struct {
 	CustomFieldsTypesUuid *openapi_types.UUID `json:"custom_fields_types_uuid,omitempty"`
-	FieldDateAdd          *freelotime.Time          `json:"field_date_add,omitempty"`
+	FieldDateAdd          *freelotime.Time    `json:"field_date_add,omitempty"`
 	FieldUuid             *openapi_types.UUID `json:"field_uuid,omitempty"`
 	Name                  *string             `json:"name,omitempty"`
 	Priority              *int                `json:"priority,omitempty"`
 	ProjectId             *int                `json:"project_id,omitempty"`
 	Value                 *string             `json:"value,omitempty"`
 	ValueAuthorId         *int                `json:"value_author_id,omitempty"`
-	ValueDateAdd          *freelotime.Time          `json:"value_date_add,omitempty"`
-	ValueDateEditedAt     *freelotime.Time          `json:"value_date_edited_at,omitempty"`
+	ValueDateAdd          *freelotime.Time    `json:"value_date_add,omitempty"`
+	ValueDateEditedAt     *freelotime.Time    `json:"value_date_edited_at,omitempty"`
 	ValueUuid             *openapi_types.UUID `json:"value_uuid,omitempty"`
 }
 
@@ -1041,8 +1041,8 @@ type FileBasic struct {
 // FileFull defines model for FileFull.
 type FileFull struct {
 	Caption      *string             `json:"caption,omitempty"`
-	DateAdd      *freelotime.Time          `json:"date_add,omitempty"`
-	DateEditedAt *freelotime.Time          `json:"date_edited_at,omitempty"`
+	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
+	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
 	Description  *string             `json:"description,omitempty"`
 	Filename     *string             `json:"filename,omitempty"`
 	Id           *int                `json:"id,omitempty"`
@@ -1056,7 +1056,7 @@ type FileItem struct {
 	Author        *UserBasic          `json:"author,omitempty"`
 	Caption       *string             `json:"caption,omitempty"`
 	Color         *string             `json:"color,omitempty"`
-	DateAdd       *freelotime.Time          `json:"date_add,omitempty"`
+	DateAdd       *freelotime.Time    `json:"date_add,omitempty"`
 	DirectoryUuid *openapi_types.UUID `json:"directory_uuid,omitempty"`
 	Extension     *string             `json:"extension,omitempty"`
 	Filename      *string             `json:"filename,omitempty"`
@@ -1085,7 +1085,7 @@ type FileUpload struct {
 // IssuedInvoice defines model for IssuedInvoice.
 type IssuedInvoice struct {
 	Currency *IssuedInvoiceCurrency `json:"currency,omitempty"`
-	DateAdd  *freelotime.Time             `json:"date_add,omitempty"`
+	DateAdd  *freelotime.Time       `json:"date_add,omitempty"`
 	Id       *int                   `json:"id,omitempty"`
 	InvItems *[]struct {
 		Id      *int      `json:"id,omitempty"`
@@ -1108,7 +1108,7 @@ type IssuedInvoiceCurrency string
 // IssuedInvoiceDetail defines model for IssuedInvoiceDetail.
 type IssuedInvoiceDetail struct {
 	Currency *IssuedInvoiceDetailCurrency `json:"currency,omitempty"`
-	DateAdd  *freelotime.Time                   `json:"date_add,omitempty"`
+	DateAdd  *freelotime.Time             `json:"date_add,omitempty"`
 	Id       *int                         `json:"id,omitempty"`
 	InvItems *[]struct {
 		Id      *int      `json:"id,omitempty"`
@@ -1142,8 +1142,8 @@ type Note struct {
 	Author       *UserBasic          `json:"author,omitempty"`
 	Comments     *[]CommentWithFiles `json:"comments,omitempty"`
 	Content      *string             `json:"content,omitempty"`
-	DateAdd      *freelotime.Time          `json:"date_add,omitempty"`
-	DateEditedAt *freelotime.Time          `json:"date_edited_at,omitempty"`
+	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
+	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
 	Files        *[]FileFull         `json:"files,omitempty"`
 	Id           *int                `json:"id,omitempty"`
 	Name         *string             `json:"name,omitempty"`
@@ -1205,26 +1205,26 @@ type ProjectBasic struct {
 
 // ProjectDetail defines model for ProjectDetail.
 type ProjectDetail struct {
-	Budget           *Currency  `json:"budget,omitempty"`
+	Budget           *Currency        `json:"budget,omitempty"`
 	DateAdd          *freelotime.Time `json:"date_add,omitempty"`
 	DateEditedAt     *freelotime.Time `json:"date_edited_at,omitempty"`
-	Id               *int       `json:"id,omitempty"`
-	MinutesBudget    *int       `json:"minutes_budget,omitempty"`
-	Name             *string    `json:"name,omitempty"`
-	Owner            *UserBasic `json:"owner,omitempty"`
-	RealCost         *Currency  `json:"real_cost,omitempty"`
-	RealMinutesSpent *int       `json:"real_minutes_spent,omitempty"`
-	State            *State     `json:"state,omitempty"`
+	Id               *int             `json:"id,omitempty"`
+	MinutesBudget    *int             `json:"minutes_budget,omitempty"`
+	Name             *string          `json:"name,omitempty"`
+	Owner            *UserBasic       `json:"owner,omitempty"`
+	RealCost         *Currency        `json:"real_cost,omitempty"`
+	RealMinutesSpent *int             `json:"real_minutes_spent,omitempty"`
+	State            *State           `json:"state,omitempty"`
 	Tasklists        *[]struct {
 		Id    *int    `json:"id,omitempty"`
 		Name  *string `json:"name,omitempty"`
 		Tasks *[]struct {
 			DueDate      *freelotime.Time `json:"due_date,omitempty"`
 			DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
-			Id           *int       `json:"id,omitempty"`
-			Name         *string    `json:"name,omitempty"`
-			ParentTaskId *int       `json:"parent_task_id,omitempty"`
-			Worker       *UserBasic `json:"worker,omitempty"`
+			Id           *int             `json:"id,omitempty"`
+			Name         *string          `json:"name,omitempty"`
+			ParentTaskId *int             `json:"parent_task_id,omitempty"`
+			Worker       *UserBasic       `json:"worker,omitempty"`
 		} `json:"tasks,omitempty"`
 	} `json:"tasklists,omitempty"`
 	Workers *[]struct {
@@ -1240,16 +1240,16 @@ type ProjectDetail struct {
 
 // ProjectFull defines model for ProjectFull.
 type ProjectFull struct {
-	Budget           *Currency  `json:"budget,omitempty"`
+	Budget           *Currency        `json:"budget,omitempty"`
 	DateAdd          *freelotime.Time `json:"date_add,omitempty"`
 	DateEditedAt     *freelotime.Time `json:"date_edited_at,omitempty"`
-	Id               *int       `json:"id,omitempty"`
-	MinutesBudget    *int       `json:"minutes_budget,omitempty"`
-	Name             *string    `json:"name,omitempty"`
-	Owner            *UserBasic `json:"owner,omitempty"`
-	RealCost         *Currency  `json:"real_cost,omitempty"`
-	RealMinutesSpent *int       `json:"real_minutes_spent,omitempty"`
-	State            *State     `json:"state,omitempty"`
+	Id               *int             `json:"id,omitempty"`
+	MinutesBudget    *int             `json:"minutes_budget,omitempty"`
+	Name             *string          `json:"name,omitempty"`
+	Owner            *UserBasic       `json:"owner,omitempty"`
+	RealCost         *Currency        `json:"real_cost,omitempty"`
+	RealMinutesSpent *int             `json:"real_minutes_spent,omitempty"`
+	State            *State           `json:"state,omitempty"`
 }
 
 // ProjectLabel defines model for ProjectLabel.
@@ -1267,8 +1267,8 @@ type ProjectLabel struct {
 // ProjectWithTasklists defines model for ProjectWithTasklists.
 type ProjectWithTasklists struct {
 	Client       *BusinessClient  `json:"client,omitempty"`
-	DateAdd      *freelotime.Time       `json:"date_add,omitempty"`
-	DateEditedAt *freelotime.Time       `json:"date_edited_at,omitempty"`
+	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
 	Id           *int             `json:"id,omitempty"`
 	Name         *string          `json:"name,omitempty"`
 	Tasklists    *[]TasklistBasic `json:"tasklists,omitempty"`
@@ -1304,15 +1304,15 @@ type StateState string
 
 // Subtask defines model for Subtask.
 type Subtask struct {
-	Author        *UserBasic   `json:"author,omitempty"`
-	CountComments *int         `json:"count_comments,omitempty"`
-	CountSubtasks *int         `json:"count_subtasks,omitempty"`
-	DateAdd       *freelotime.Time   `json:"date_add,omitempty"`
-	DueDate       *freelotime.Time   `json:"due_date,omitempty"`
-	DueDateEnd    *freelotime.Time   `json:"due_date_end,omitempty"`
-	Id            *int         `json:"id,omitempty"`
-	Labels        *[]TaskLabel `json:"labels,omitempty"`
-	Name          *string      `json:"name,omitempty"`
+	Author        *UserBasic       `json:"author,omitempty"`
+	CountComments *int             `json:"count_comments,omitempty"`
+	CountSubtasks *int             `json:"count_subtasks,omitempty"`
+	DateAdd       *freelotime.Time `json:"date_add,omitempty"`
+	DueDate       *freelotime.Time `json:"due_date,omitempty"`
+	DueDateEnd    *freelotime.Time `json:"due_date_end,omitempty"`
+	Id            *int             `json:"id,omitempty"`
+	Labels        *[]TaskLabel     `json:"labels,omitempty"`
+	Name          *string          `json:"name,omitempty"`
 	Project       *struct {
 		Id    *int    `json:"id,omitempty"`
 		Name  *string `json:"name,omitempty"`
@@ -1333,8 +1333,8 @@ type SubtaskCreate struct {
 	Comment *struct {
 		Content *string `json:"content,omitempty"`
 	} `json:"comment,omitempty"`
-	DueDate          *freelotime.Time                 `json:"due_date,omitempty"`
-	DueDateEnd       *freelotime.Time                 `json:"due_date_end,omitempty"`
+	DueDate          *freelotime.Time           `json:"due_date,omitempty"`
+	DueDateEnd       *freelotime.Time           `json:"due_date_end,omitempty"`
 	Labels           *[]TaskLabelAddInput       `json:"labels,omitempty"`
 	Name             string                     `json:"name"`
 	PriorityEnum     *SubtaskCreatePriorityEnum `json:"priority_enum,omitempty"`
@@ -1355,8 +1355,8 @@ type TaskCreate struct {
 	Comment *struct {
 		Content *string `json:"content,omitempty"`
 	} `json:"comment,omitempty"`
-	DueDate                *freelotime.Time              `json:"due_date,omitempty"`
-	DueDateEnd             *freelotime.Time              `json:"due_date_end,omitempty"`
+	DueDate                *freelotime.Time        `json:"due_date,omitempty"`
+	DueDateEnd             *freelotime.Time        `json:"due_date_end,omitempty"`
 	Labels                 *[]TaskLabelAddInput    `json:"labels,omitempty"`
 	Name                   string                  `json:"name"`
 	PriorityEnum           *TaskCreatePriorityEnum `json:"priority_enum,omitempty"`
@@ -1371,13 +1371,13 @@ type TaskCreatePriorityEnum string
 
 // TaskCreated defines model for TaskCreated.
 type TaskCreated struct {
-	DateAdd      *freelotime.Time   `json:"date_add,omitempty"`
-	DueDate      *freelotime.Time   `json:"due_date,omitempty"`
-	DueDateEnd   *freelotime.Time   `json:"due_date_end,omitempty"`
-	Id           *int         `json:"id,omitempty"`
-	Labels       *[]TaskLabel `json:"labels,omitempty"`
-	Name         *string      `json:"name,omitempty"`
-	PriorityEnum *string      `json:"priority_enum,omitempty"`
+	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
+	DueDate      *freelotime.Time `json:"due_date,omitempty"`
+	DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Labels       *[]TaskLabel     `json:"labels,omitempty"`
+	Name         *string          `json:"name,omitempty"`
+	PriorityEnum *string          `json:"priority_enum,omitempty"`
 	Subtasks     *[]struct {
 		Id     *int    `json:"id,omitempty"`
 		Name   *string `json:"name,omitempty"`
@@ -1394,11 +1394,11 @@ type TaskDetail struct {
 	Cost               *Currency               `json:"cost,omitempty"`
 	CountSubtasks      *int                    `json:"count_subtasks,omitempty"`
 	CustomFields       *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
-	DateAdd            *freelotime.Time              `json:"date_add,omitempty"`
-	DateEditedAt       *freelotime.Time              `json:"date_edited_at,omitempty"`
-	DateFinished       *freelotime.Time              `json:"date_finished,omitempty"`
-	DueDate            *freelotime.Time              `json:"due_date,omitempty"`
-	DueDateEnd         *freelotime.Time              `json:"due_date_end,omitempty"`
+	DateAdd            *freelotime.Time        `json:"date_add,omitempty"`
+	DateEditedAt       *freelotime.Time        `json:"date_edited_at,omitempty"`
+	DateFinished       *freelotime.Time        `json:"date_finished,omitempty"`
+	DueDate            *freelotime.Time        `json:"due_date,omitempty"`
+	DueDateEnd         *freelotime.Time        `json:"due_date_end,omitempty"`
 	Id                 *int                    `json:"id,omitempty"`
 	Labels             *[]TaskLabel            `json:"labels,omitempty"`
 	Minutes            *int                    `json:"minutes,omitempty"`
@@ -1419,11 +1419,11 @@ type TaskFinished struct {
 	Author             *UserBasic          `json:"author,omitempty"`
 	CountComments      *int                `json:"count_comments,omitempty"`
 	CountSubtasks      *int                `json:"count_subtasks,omitempty"`
-	DateAdd            *freelotime.Time          `json:"date_add,omitempty"`
-	DateEditedAt       *freelotime.Time          `json:"date_edited_at,omitempty"`
-	DateFinished       *freelotime.Time          `json:"date_finished,omitempty"`
-	DueDate            *freelotime.Time          `json:"due_date,omitempty"`
-	DueDateEnd         *freelotime.Time          `json:"due_date_end,omitempty"`
+	DateAdd            *freelotime.Time    `json:"date_add,omitempty"`
+	DateEditedAt       *freelotime.Time    `json:"date_edited_at,omitempty"`
+	DateFinished       *freelotime.Time    `json:"date_finished,omitempty"`
+	DueDate            *freelotime.Time    `json:"due_date,omitempty"`
+	DueDateEnd         *freelotime.Time    `json:"due_date_end,omitempty"`
 	FinishedBy         *UserBasic          `json:"finished_by,omitempty"`
 	Id                 *int                `json:"id,omitempty"`
 	Labels             *[]TaskLabel        `json:"labels,omitempty"`
@@ -1440,10 +1440,10 @@ type TaskFull struct {
 	CountComments *int                    `json:"count_comments,omitempty"`
 	CountSubtasks *int                    `json:"count_subtasks,omitempty"`
 	CustomFields  *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
-	DateAdd       *freelotime.Time              `json:"date_add,omitempty"`
-	DateEditedAt  *freelotime.Time              `json:"date_edited_at,omitempty"`
-	DueDate       *freelotime.Time              `json:"due_date,omitempty"`
-	DueDateEnd    *freelotime.Time              `json:"due_date_end,omitempty"`
+	DateAdd       *freelotime.Time        `json:"date_add,omitempty"`
+	DateEditedAt  *freelotime.Time        `json:"date_edited_at,omitempty"`
+	DueDate       *freelotime.Time        `json:"due_date,omitempty"`
+	DueDateEnd    *freelotime.Time        `json:"due_date_end,omitempty"`
 	Id            *int                    `json:"id,omitempty"`
 	Labels        *[]TaskLabel            `json:"labels,omitempty"`
 	Name          *string                 `json:"name,omitempty"`
@@ -1527,10 +1527,10 @@ type TaskSummary struct {
 	Author             *UserBasic          `json:"author,omitempty"`
 	CountComments      *int                `json:"count_comments,omitempty"`
 	CountSubtasks      *int                `json:"count_subtasks,omitempty"`
-	DateAdd            *freelotime.Time          `json:"date_add,omitempty"`
-	DateEditedAt       *freelotime.Time          `json:"date_edited_at,omitempty"`
-	DueDate            *freelotime.Time          `json:"due_date,omitempty"`
-	DueDateEnd         *freelotime.Time          `json:"due_date_end,omitempty"`
+	DateAdd            *freelotime.Time    `json:"date_add,omitempty"`
+	DateEditedAt       *freelotime.Time    `json:"date_edited_at,omitempty"`
+	DueDate            *freelotime.Time    `json:"due_date,omitempty"`
+	DueDateEnd         *freelotime.Time    `json:"due_date_end,omitempty"`
 	Id                 *int                `json:"id,omitempty"`
 	Labels             *[]TaskLabel        `json:"labels,omitempty"`
 	Name               *string             `json:"name,omitempty"`
@@ -1550,26 +1550,26 @@ type TasklistBasic struct {
 type TasklistDetail struct {
 	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
 	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
-	Id           *int       `json:"id,omitempty"`
-	Name         *string    `json:"name,omitempty"`
-	ProjectId    *int       `json:"project_id,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Name         *string          `json:"name,omitempty"`
+	ProjectId    *int             `json:"project_id,omitempty"`
 	Tasks        *[]struct {
 		DueDate      *freelotime.Time `json:"due_date,omitempty"`
 		DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
-		Id           *int       `json:"id,omitempty"`
-		Name         *string    `json:"name,omitempty"`
-		ParentTaskId *int       `json:"parent_task_id,omitempty"`
-		Worker       *UserBasic `json:"worker,omitempty"`
+		Id           *int             `json:"id,omitempty"`
+		Name         *string          `json:"name,omitempty"`
+		ParentTaskId *int             `json:"parent_task_id,omitempty"`
+		Worker       *UserBasic       `json:"worker,omitempty"`
 	} `json:"tasks,omitempty"`
 }
 
 // TasklistFull defines model for TasklistFull.
 type TasklistFull struct {
-	Budget       *Currency  `json:"budget,omitempty"`
+	Budget       *Currency        `json:"budget,omitempty"`
 	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
 	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
-	Id           *int       `json:"id,omitempty"`
-	Name         *string    `json:"name,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Name         *string          `json:"name,omitempty"`
 	Project      *struct {
 		Id    *int    `json:"id,omitempty"`
 		Name  *string `json:"name,omitempty"`
@@ -1608,7 +1608,7 @@ type UserTimeEstimate struct {
 type WorkReport struct {
 	Author       *UserBasic          `json:"author,omitempty"`
 	Cost         *Currency           `json:"cost,omitempty"`
-	DateAdd      *freelotime.Time          `json:"date_add,omitempty"`
+	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
 	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
 	Id           *int                `json:"id,omitempty"`
 	Minutes      *int                `json:"minutes,omitempty"`
@@ -1624,7 +1624,7 @@ type WorkReport struct {
 type WorkReportExtended struct {
 	Author       *UserBasic          `json:"author,omitempty"`
 	Cost         *Currency           `json:"cost,omitempty"`
-	DateAdd      *freelotime.Time          `json:"date_add,omitempty"`
+	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
 	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
 	Id           *int                `json:"id,omitempty"`
 	Minutes      *int                `json:"minutes,omitempty"`
@@ -1643,8 +1643,8 @@ type WorkReportExtended struct {
 type WorkReportFull struct {
 	Author       *UserBasic          `json:"author,omitempty"`
 	Cost         *Currency           `json:"cost,omitempty"`
-	DateAdd      *freelotime.Time          `json:"date_add,omitempty"`
-	DateEditedAt *freelotime.Time          `json:"date_edited_at,omitempty"`
+	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
+	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
 	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
 	Id           *int                `json:"id,omitempty"`
 	Minutes      *int                `json:"minutes,omitempty"`
@@ -2129,10 +2129,10 @@ type CreateTaskFromTemplateJSONBody struct {
 // EditTaskJSONBody defines parameters for EditTask.
 type EditTaskJSONBody struct {
 	// AddTrackingUsersIds Add tracking users by user ID (merged with existing).
-	AddTrackingUsersIds *[]int     `json:"add_tracking_users_ids,omitempty"`
+	AddTrackingUsersIds *[]int           `json:"add_tracking_users_ids,omitempty"`
 	DueDate             *freelotime.Time `json:"due_date,omitempty"`
 	DueDateEnd          *freelotime.Time `json:"due_date_end,omitempty"`
-	Name                *string    `json:"name,omitempty"`
+	Name                *string          `json:"name,omitempty"`
 
 	// PriorityEnum Allowed options are l, m, h. Set to null to remove priority.
 	PriorityEnum *EditTaskJSONBodyPriorityEnum `json:"priority_enum,omitempty"`
@@ -13250,8 +13250,8 @@ type GetTimeTrackingStatusResponse struct {
 
 		// DateReported Timestamp when the session was started (ISO 8601 / ATOM format)
 		DateReported *freelotime.Time `json:"date_reported,omitempty"`
-		IsBillable   *bool      `json:"is_billable,omitempty"`
-		IsCostFixed  *bool      `json:"is_cost_fixed,omitempty"`
+		IsBillable   *bool            `json:"is_billable,omitempty"`
+		IsCostFixed  *bool            `json:"is_cost_fixed,omitempty"`
 		Labels       *[]struct {
 			Name *string `json:"name,omitempty"`
 		} `json:"labels,omitempty"`
@@ -17598,8 +17598,8 @@ func ParseGetTimeTrackingStatusResponse(rsp *http.Response) (*GetTimeTrackingSta
 
 			// DateReported Timestamp when the session was started (ISO 8601 / ATOM format)
 			DateReported *freelotime.Time `json:"date_reported,omitempty"`
-			IsBillable   *bool      `json:"is_billable,omitempty"`
-			IsCostFixed  *bool      `json:"is_cost_fixed,omitempty"`
+			IsBillable   *bool            `json:"is_billable,omitempty"`
+			IsCostFixed  *bool            `json:"is_cost_fixed,omitempty"`
 			Labels       *[]struct {
 				Name *string `json:"name,omitempty"`
 			} `json:"labels,omitempty"`

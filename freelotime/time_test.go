@@ -94,7 +94,7 @@ func TestTime_MarshalJSON(t *testing.T) {
 		{
 			name: "value in non-UTC zone is normalized to UTC",
 			// 11:12:38 Prague summer = 09:12:38 UTC.
-			in: Time{time.Date(2026, 7, 15, 11, 12, 38, 0, pragueLocation)},
+			in:   Time{time.Date(2026, 7, 15, 11, 12, 38, 0, pragueLocation)},
 			want: `"2026-07-15T09:12:38Z"`,
 		},
 	}
