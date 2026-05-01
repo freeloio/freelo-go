@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Go
+vendor/
+*.test
+*.out
+coverage.html
+coverage.txt
+
+# Credentials (never commit!)
+.env
+.env.*
+!.env.example
+
+# Spec preprocessor backup files (sed -i.bak)
+*.bak

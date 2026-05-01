@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/oapi-codegen/oapi-codegen/v2.6.0/configuration-schema.json
+package: freeloapi
+output: freeloapi.gen.go
+generate:
+  models: true
+  client: true
+output-options:
+  # Wire freelo.Time into every date-time field. The spec preprocessor in
+  # the Makefile injects x-go-type / x-go-type-import on date-time schemas
+  # before generation, but this import-mapping is the fallback for any
+  # references the preprocessor doesn't catch.
+  user-templates: {}
