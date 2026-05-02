@@ -1,0 +1,56 @@
+# Changelog
+
+All notable changes to the Freelo Go SDK are documented here.
+
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.1.0] — 2026-05-01
+
+Initial release. The SDK was extracted from
+[`freelo-cli`](https://github.com/freeloio/freelo-cli) so other Go
+projects can consume the Freelo API client without pulling in CLI
+plumbing.
+
+### Added
+
+- **Typed OpenAPI client** generated from the public Freelo spec via
+  [`oapi-codegen`](https://github.com/oapi-codegen/oapi-codegen),
+  exposed as `client.API` (`*freeloapi.ClientWithResponses`). Every
+  endpoint has a `*WithResponse` method with decoded 2xx/4xx/5xx
+  bodies.
+- **`client.Raw`** escape hatch — sends an arbitrary request through
+  the same auth + UA + rate-limit + retry pipeline and returns the
+  raw `*http.Response`. Use it for endpoints not yet covered by the
+  spec or when you'd rather decode bodies yourself.
+- **Production-grade transport** built on stdlib `net/http`:
+  - 25 req/min rate limiting (configurable via `WithRateLimit`,
+    `0` disables for externally managed limiting).
+  - Exponential-backoff retry on 429 / 5xx with full jitter
+    (configurable via `WithRetry`); `Retry-After` honored.
+- **Pluggable authentication** via the `auth.Provider` interface:
+  - `auth.BasicAuth` — in-memory email + API key.
+  - `auth.CredentialsFunc` — per-request credential lookup, useful
+    for env-vs-keyring CLI patterns and multi-tenant servers.
+  - `auth.Refresher` companion interface ready for future OAuth.
+- **`freelotime.Time`** — a timezone-correct timestamp type that
+  parses Freelo's no-zone wire format
+  (`"2026-04-24T11:12:38"`) as `Europe/Prague` and normalizes to UTC.
+  The generated client uses it for every `format: date-time` field,
+  so typed `*WithResponse` decoders work out of the box.
+- **Functional options** on `freelo.New`: `WithAuth`,
+  `WithUserAgent` (both required), `WithBaseURL`, `WithHTTPClient`,
+  `WithRateLimit`, `WithRetry`, `WithRequestEditor`.
+- **Eight runnable examples** in `examples/` covering quickstart,
+  explicit error handling, pagination, typed POST bodies, file
+  upload + comment, env-then-keyring credential lookup, custom
+  `*http.Client` injection, and the `Raw` passthrough.
+- **Make targets** for development: `test` (unit tests with `-race`),
+  `lint` (`gofmt` + `go vet`), `examples` (build every example to
+  catch API drift), `gen` (download spec, regenerate client, patch
+  `time.Time → freelotime.Time`), `gen-check` (CI guard).
+
+[Unreleased]: https://github.com/freeloio/freelo-go/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/freeloio/freelo-go/releases/tag/v0.1.0
