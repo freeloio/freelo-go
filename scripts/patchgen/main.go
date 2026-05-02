@@ -69,10 +69,10 @@ func run() error {
 		out = strings.Replace(out, timeImport, freelotimeImport, 1)
 	}
 
-	// 4. Sanity check: no time.Time references should remain. (time.X for
-	//    other X — there are none in the generated file today — would slip
-	//    past, which is fine; we only care about time.Time here.)
-	if strings.Contains(out, "time.Time") {
+	// 4. Sanity check: no time.Time references should remain. Use a
+	//    word-boundary regex so we don't false-positive on the freelotime.Time
+	//    substitutions we just made (which contain "time.Time" as a substring).
+	if regexp.MustCompile(`\btime\.Time\b`).MatchString(out) {
 		return fmt.Errorf("internal: time.Time still present after patch (left-over occurrence?)")
 	}
 
