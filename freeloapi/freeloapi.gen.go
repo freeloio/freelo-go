@@ -337,6 +337,24 @@ func (e GetAllNotificationsParamsOrder) Valid() bool {
 	}
 }
 
+// Defines values for GetAllNotificationsParamsOnlyUnread.
+const (
+	GetAllNotificationsParamsOnlyUnreadN0 GetAllNotificationsParamsOnlyUnread = 0
+	GetAllNotificationsParamsOnlyUnreadN1 GetAllNotificationsParamsOnlyUnread = 1
+)
+
+// Valid indicates whether the value is a known member of the GetAllNotificationsParamsOnlyUnread enum.
+func (e GetAllNotificationsParamsOnlyUnread) Valid() bool {
+	switch e {
+	case GetAllNotificationsParamsOnlyUnreadN0:
+		return true
+	case GetAllNotificationsParamsOnlyUnreadN1:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetAllProjectsParamsOrderBy.
 const (
 	GetAllProjectsParamsOrderByDateAdd      GetAllProjectsParamsOrderBy = "date_add"
@@ -472,6 +490,42 @@ func (e GetAllTasksParamsOrder) Valid() bool {
 	case GetAllTasksParamsOrderAsc:
 		return true
 	case GetAllTasksParamsOrderDesc:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAllTasksParamsNoDueDate.
+const (
+	GetAllTasksParamsNoDueDateN0 GetAllTasksParamsNoDueDate = 0
+	GetAllTasksParamsNoDueDateN1 GetAllTasksParamsNoDueDate = 1
+)
+
+// Valid indicates whether the value is a known member of the GetAllTasksParamsNoDueDate enum.
+func (e GetAllTasksParamsNoDueDate) Valid() bool {
+	switch e {
+	case GetAllTasksParamsNoDueDateN0:
+		return true
+	case GetAllTasksParamsNoDueDateN1:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAllTasksParamsFinishedOverdue.
+const (
+	GetAllTasksParamsFinishedOverdueN0 GetAllTasksParamsFinishedOverdue = 0
+	GetAllTasksParamsFinishedOverdueN1 GetAllTasksParamsFinishedOverdue = 1
+)
+
+// Valid indicates whether the value is a known member of the GetAllTasksParamsFinishedOverdue enum.
+func (e GetAllTasksParamsFinishedOverdue) Valid() bool {
+	switch e {
+	case GetAllTasksParamsFinishedOverdueN0:
+		return true
+	case GetAllTasksParamsFinishedOverdueN1:
 		return true
 	default:
 		return false
@@ -859,6 +913,24 @@ func (e GetUserProjectsParamsOrder) Valid() bool {
 	case GetUserProjectsParamsOrderAsc:
 		return true
 	case GetUserProjectsParamsOrderDesc:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetWorkReportsParamsWithOwnTaskless.
+const (
+	GetWorkReportsParamsWithOwnTasklessN0 GetWorkReportsParamsWithOwnTaskless = 0
+	GetWorkReportsParamsWithOwnTasklessN1 GetWorkReportsParamsWithOwnTaskless = 1
+)
+
+// Valid indicates whether the value is a known member of the GetWorkReportsParamsWithOwnTaskless enum.
+func (e GetWorkReportsParamsWithOwnTaskless) Valid() bool {
+	switch e {
+	case GetWorkReportsParamsWithOwnTasklessN0:
+		return true
+	case GetWorkReportsParamsWithOwnTasklessN1:
 		return true
 	default:
 		return false
@@ -1720,8 +1792,12 @@ type TimeEstimate struct {
 
 // UserBasic defines model for UserBasic.
 type UserBasic struct {
-	Fullname *string `json:"fullname,omitempty"`
-	Id       *int    `json:"id,omitempty"`
+	Fullname string `json:"fullname"`
+	Id       int    `json:"id"`
+
+	// MentionKey Normalized form of `fullname` (whitespace stripped, diacritics removed) used as the visible text after `@` inside a mention span. Build a mention with:
+	// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+	MentionKey string `json:"mention_key"`
 }
 
 // UserTimeEstimate defines model for UserTimeEstimate.
@@ -1730,17 +1806,30 @@ type UserTimeEstimate struct {
 	User    *UserBasic `json:"user,omitempty"`
 }
 
+// UserWithEmail defines model for UserWithEmail.
+type UserWithEmail struct {
+	Email    openapi_types.Email `json:"email"`
+	Fullname string              `json:"fullname"`
+	Id       int                 `json:"id"`
+
+	// MentionKey Normalized form of `fullname` (whitespace stripped, diacritics removed) used as the visible text after `@` inside a mention span. Build a mention with:
+	// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+	MentionKey string `json:"mention_key"`
+}
+
 // WorkReport defines model for WorkReport.
 type WorkReport struct {
 	Author *UserBasic `json:"author,omitempty"`
 	Cost   *Currency  `json:"cost,omitempty"`
 
-	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Id           *int                `json:"id,omitempty"`
-	Minutes      *int                `json:"minutes,omitempty"`
-	Note         *string             `json:"note,omitempty"`
+	// DateAdd Insertion timestamp of the work report (when the row was created in the DB). Naive ISO8601 in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateReported Start timestamp of the work session. Naive ISO8601 in Europe/Prague timezone (no offset). End time is derived as `date_reported + minutes`. See "Timestamp Format" in API description.
+	DateReported *freelotime.Time `json:"date_reported,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Minutes      *int             `json:"minutes,omitempty"`
+	Note         *string          `json:"note,omitempty"`
 	Task         *struct {
 		Id   *int    `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
@@ -1753,13 +1842,15 @@ type WorkReportExtended struct {
 	Author *UserBasic `json:"author,omitempty"`
 	Cost   *Currency  `json:"cost,omitempty"`
 
-	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Id           *int                `json:"id,omitempty"`
-	Minutes      *int                `json:"minutes,omitempty"`
-	Note         *string             `json:"note,omitempty"`
-	Project      *ProjectBasic       `json:"project,omitempty"`
+	// DateAdd Insertion timestamp of the work report (when the row was created in the DB). Naive ISO8601 in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateReported Start timestamp of the work session. Naive ISO8601 in Europe/Prague timezone (no offset). End time is derived as `date_reported + minutes`. See "Timestamp Format" in API description.
+	DateReported *freelotime.Time `json:"date_reported,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Minutes      *int             `json:"minutes,omitempty"`
+	Note         *string          `json:"note,omitempty"`
+	Project      *ProjectBasic    `json:"project,omitempty"`
 	Task         *struct {
 		Id   *int    `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
@@ -1774,15 +1865,17 @@ type WorkReportFull struct {
 	Author *UserBasic `json:"author,omitempty"`
 	Cost   *Currency  `json:"cost,omitempty"`
 
-	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	// DateAdd Insertion timestamp of the work report (when the row was created in the DB). Naive ISO8601 in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
 
 	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Id           *int                `json:"id,omitempty"`
-	Minutes      *int                `json:"minutes,omitempty"`
-	Note         *string             `json:"note,omitempty"`
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+	// DateReported Start timestamp of the work session. Naive ISO8601 in Europe/Prague timezone (no offset). End time is derived as `date_reported + minutes`. See "Timestamp Format" in API description.
+	DateReported *freelotime.Time `json:"date_reported,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Minutes      *int             `json:"minutes,omitempty"`
+	Note         *string          `json:"note,omitempty"`
 	Project      *struct {
 		Id     *int      `json:"id,omitempty"`
 		Labels *[]string `json:"labels,omitempty"`
@@ -1860,7 +1953,9 @@ type GetAllNotificationsParams struct {
 	TeamsUuids        *[]openapi_types.UUID           `form:"teams_uuids[],omitempty" json:"teams_uuids[],omitempty"`
 	Order             *GetAllNotificationsParamsOrder `form:"order,omitempty" json:"order,omitempty"`
 	NotificationTypes *[]string                       `form:"notification_types[],omitempty" json:"notification_types[],omitempty"`
-	OnlyUnread        *bool                           `form:"only_unread,omitempty" json:"only_unread,omitempty"`
+
+	// OnlyUnread Only return unread notifications. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
+	OnlyUnread *GetAllNotificationsParamsOnlyUnread `form:"only_unread,omitempty" json:"only_unread,omitempty"`
 
 	// P Page number (starting from 0)
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
@@ -1868,6 +1963,9 @@ type GetAllNotificationsParams struct {
 
 // GetAllNotificationsParamsOrder defines parameters for GetAllNotifications.
 type GetAllNotificationsParamsOrder string
+
+// GetAllNotificationsParamsOnlyUnread defines parameters for GetAllNotifications.
+type GetAllNotificationsParamsOnlyUnread int
 
 // GetAllProjectsParams defines parameters for GetAllProjects.
 type GetAllProjectsParams struct {
@@ -1939,8 +2037,8 @@ type GetAllTasksParams struct {
 	// WithoutLabel Exclude tasks that have the specified label (case insensitive)
 	WithoutLabel *string `form:"without_label,omitempty" json:"without_label,omitempty"`
 
-	// NoDueDate Only tasks with no due date
-	NoDueDate *bool `form:"no_due_date,omitempty" json:"no_due_date,omitempty"`
+	// NoDueDate Only tasks with no due date. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
+	NoDueDate *GetAllTasksParamsNoDueDate `form:"no_due_date,omitempty" json:"no_due_date,omitempty"`
 
 	// DueDateRangeDateFrom Filter tasks with due date on or after this date
 	DueDateRangeDateFrom *openapi_types.Date `form:"due_date_range[date_from],omitempty" json:"due_date_range[date_from],omitempty"`
@@ -1948,8 +2046,8 @@ type GetAllTasksParams struct {
 	// DueDateRangeDateTo Filter tasks with due date on or before this date
 	DueDateRangeDateTo *openapi_types.Date `form:"due_date_range[date_to],omitempty" json:"due_date_range[date_to],omitempty"`
 
-	// FinishedOverdue Only tasks finished after due date
-	FinishedOverdue *bool `form:"finished_overdue,omitempty" json:"finished_overdue,omitempty"`
+	// FinishedOverdue Only tasks finished after due date. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
+	FinishedOverdue *GetAllTasksParamsFinishedOverdue `form:"finished_overdue,omitempty" json:"finished_overdue,omitempty"`
 
 	// FinishedDateRangeDateFrom Filter tasks finished on or after this date
 	FinishedDateRangeDateFrom *openapi_types.Date `form:"finished_date_range[date_from],omitempty" json:"finished_date_range[date_from],omitempty"`
@@ -1969,6 +2067,12 @@ type GetAllTasksParamsOrderBy string
 
 // GetAllTasksParamsOrder defines parameters for GetAllTasks.
 type GetAllTasksParamsOrder string
+
+// GetAllTasksParamsNoDueDate defines parameters for GetAllTasks.
+type GetAllTasksParamsNoDueDate int
+
+// GetAllTasksParamsFinishedOverdue defines parameters for GetAllTasks.
+type GetAllTasksParamsFinishedOverdue int
 
 // GetArchivedProjectsParams defines parameters for GetArchivedProjects.
 type GetArchivedProjectsParams struct {
@@ -2350,11 +2454,15 @@ type SetUserTimeEstimateJSONBody struct {
 // CreateWorkReportJSONBody defines parameters for CreateWorkReport.
 type CreateWorkReportJSONBody struct {
 	// Cost Currency amount (2 decimal places × 100)
-	Cost         *string             `json:"cost,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Minutes      int                 `json:"minutes"`
-	Note         *string             `json:"note,omitempty"`
-	WorkerId     *int                `json:"worker_id,omitempty"`
+	Cost *string `json:"cost,omitempty"`
+
+	// DateReported Start timestamp of the work session. Accepts either a full ISO 8601 datetime
+	// (`2026-05-08T08:00:00+02:00`) or a date-only string (`2026-05-08`).
+	// Datetime form records the exact start moment; date-only defaults to start of day.
+	DateReported *string `json:"date_reported,omitempty"`
+	Minutes      int     `json:"minutes"`
+	Note         *string `json:"note,omitempty"`
+	WorkerId     *int    `json:"worker_id,omitempty"`
 }
 
 // CreateTasklistFromTemplateJSONBody defines parameters for CreateTasklistFromTemplate.
@@ -2403,6 +2511,9 @@ type GetTemplateProjectsParamsOrder string
 
 // EditTimeTrackingJSONBody defines parameters for EditTimeTracking.
 type EditTimeTrackingJSONBody struct {
+	// DateReported New start timestamp for the running session (ISO 8601, e.g. `2026-05-07T09:00:00+02:00`). Used to correct or backdate the timer's start time. The work report produced by `/timetracking/stop` will compute its duration from this value.
+	DateReported *freelotime.Time `json:"date_reported,omitempty"`
+
 	// Note Updated note for the time tracking session.
 	Note *string `json:"note,omitempty"`
 
@@ -2477,20 +2588,31 @@ type GetWorkReportsParams struct {
 	DateAddRangeDateTo        *openapi_types.Date   `form:"date_add_range[date_to],omitempty" json:"date_add_range[date_to],omitempty"`
 	DateEditedFrom            *openapi_types.Date   `form:"date_edited_from,omitempty" json:"date_edited_from,omitempty"`
 
-	// WithOwnTaskless Include the authenticated user's work reports without an associated task. Automatically filters by the authenticated user.
-	WithOwnTaskless *bool `form:"with_own_taskless,omitempty" json:"with_own_taskless,omitempty"`
+	// WithOwnTaskless Include the authenticated user's work reports without an associated task. Automatically filters by the authenticated user. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default. Mutually exclusive with `users_ids[]`.
+	WithOwnTaskless *GetWorkReportsParamsWithOwnTaskless `form:"with_own_taskless,omitempty" json:"with_own_taskless,omitempty"`
 
 	// P Page number (starting from 0)
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
 }
 
+// GetWorkReportsParamsWithOwnTaskless defines parameters for GetWorkReports.
+type GetWorkReportsParamsWithOwnTaskless int
+
 // EditWorkReportJSONBody defines parameters for EditWorkReport.
 type EditWorkReportJSONBody struct {
-	Cost         *string             `json:"cost,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Minutes      *int                `json:"minutes,omitempty"`
-	Note         *string             `json:"note,omitempty"`
-	TaskId       *int                `json:"task_id,omitempty"`
+	Cost *string `json:"cost,omitempty"`
+
+	// DateReported Start timestamp of the work session. Accepts either a full ISO 8601 datetime
+	// (`2026-05-08T08:00:00+02:00`) or a date-only string (`2026-05-08`).
+	// Datetime form records the exact start moment; date-only defaults to start of day.
+	DateReported *string `json:"date_reported,omitempty"`
+	Minutes      *int    `json:"minutes,omitempty"`
+
+	// Note Note for the work report. Pass `null` to clear an existing note. Empty string is rejected.
+	Note *string `json:"note,omitempty"`
+
+	// TaskId ID of the task this work report belongs to. Pass `null` to detach the report from its current task.
+	TaskId *int `json:"task_id,omitempty"`
 }
 
 // EditCommentJSONRequestBody defines body for EditComment for application/json ContentType.
@@ -5324,7 +5446,7 @@ func NewGetAllNotificationsRequest(server string, params *GetAllNotificationsPar
 
 		if params.OnlyUnread != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "only_unread", *params.OnlyUnread, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "only_unread", *params.OnlyUnread, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -5726,7 +5848,7 @@ func NewGetAllTasksRequest(server string, params *GetAllTasksParams) (*http.Requ
 
 		if params.NoDueDate != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "no_due_date", *params.NoDueDate, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "no_due_date", *params.NoDueDate, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -5762,7 +5884,7 @@ func NewGetAllTasksRequest(server string, params *GetAllTasksParams) (*http.Requ
 
 		if params.FinishedOverdue != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "finished_overdue", *params.FinishedOverdue, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "finished_overdue", *params.FinishedOverdue, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -10342,7 +10464,7 @@ func NewGetWorkReportsRequest(server string, params *GetWorkReportsParams) (*htt
 
 		if params.WithOwnTaskless != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "with_own_taskless", *params.WithOwnTaskless, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "with_own_taskless", *params.WithOwnTaskless, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -12591,7 +12713,7 @@ func (r RemoveProjectWorkersByIdsResponse) ContentType() string {
 type GetAssignableWorkersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]UserBasic
+	JSON200      *[]UserWithEmail
 }
 
 // Status returns HTTPResponse.Status
@@ -12714,7 +12836,7 @@ type GetProjectWorkersResponse struct {
 	JSON200      *struct {
 		Count *int `json:"count,omitempty"`
 		Data  *struct {
-			Workers *[]UserBasic `json:"workers,omitempty"`
+			Workers *[]UserWithEmail `json:"workers,omitempty"`
 		} `json:"data,omitempty"`
 		Page    *int `json:"page,omitempty"`
 		PerPage *int `json:"per_page,omitempty"`
@@ -14199,7 +14321,7 @@ type GetAllUsersResponse struct {
 	JSON200      *struct {
 		Count *int `json:"count,omitempty"`
 		Data  *struct {
-			Users *[]UserBasic `json:"users,omitempty"`
+			Users *[]UserWithEmail `json:"users,omitempty"`
 		} `json:"data,omitempty"`
 		Page    *int `json:"page,omitempty"`
 		PerPage *int `json:"per_page,omitempty"`
@@ -14279,8 +14401,15 @@ type GetUsersMeResponse struct {
 	JSON200      *struct {
 		Result string `json:"result"`
 		User   struct {
+			// Email Email address of the authenticated user
+			Email openapi_types.Email `json:"email"`
+
 			// Id ID of the authenticated user
 			Id int `json:"id"`
+
+			// MentionKey Normalized form of the authenticated user's `fullname` (whitespace stripped, diacritics removed) used in comments as the visible text after `@` inside a mention span. Build a mention with:
+			// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+			MentionKey string `json:"mention_key"`
 		} `json:"user"`
 	}
 	JSON401 *struct {
@@ -17216,7 +17345,7 @@ func ParseGetAssignableWorkersResponse(rsp *http.Response) (*GetAssignableWorker
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []UserBasic
+		var dest []UserWithEmail
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -17323,7 +17452,7 @@ func ParseGetProjectWorkersResponse(rsp *http.Response) (*GetProjectWorkersRespo
 		var dest struct {
 			Count *int `json:"count,omitempty"`
 			Data  *struct {
-				Workers *[]UserBasic `json:"workers,omitempty"`
+				Workers *[]UserWithEmail `json:"workers,omitempty"`
 			} `json:"data,omitempty"`
 			Page    *int `json:"page,omitempty"`
 			PerPage *int `json:"per_page,omitempty"`
@@ -18637,7 +18766,7 @@ func ParseGetAllUsersResponse(rsp *http.Response) (*GetAllUsersResponse, error) 
 		var dest struct {
 			Count *int `json:"count,omitempty"`
 			Data  *struct {
-				Users *[]UserBasic `json:"users,omitempty"`
+				Users *[]UserWithEmail `json:"users,omitempty"`
 			} `json:"data,omitempty"`
 			Page    *int `json:"page,omitempty"`
 			PerPage *int `json:"per_page,omitempty"`
@@ -18709,8 +18838,15 @@ func ParseGetUsersMeResponse(rsp *http.Response) (*GetUsersMeResponse, error) {
 		var dest struct {
 			Result string `json:"result"`
 			User   struct {
+				// Email Email address of the authenticated user
+				Email openapi_types.Email `json:"email"`
+
 				// Id ID of the authenticated user
 				Id int `json:"id"`
+
+				// MentionKey Normalized form of the authenticated user's `fullname` (whitespace stripped, diacritics removed) used in comments as the visible text after `@` inside a mention span. Build a mention with:
+				// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+				MentionKey string `json:"mention_key"`
 			} `json:"user"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
