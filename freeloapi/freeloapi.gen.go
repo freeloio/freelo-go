@@ -111,28 +111,49 @@ func (e IssuedInvoiceDetailCurrency) Valid() bool {
 
 // Defines values for SearchResultType.
 const (
-	SearchResultTypeComment  SearchResultType = "comment"
-	SearchResultTypeFile     SearchResultType = "file"
-	SearchResultTypeProject  SearchResultType = "project"
-	SearchResultTypeSubtask  SearchResultType = "subtask"
-	SearchResultTypeTask     SearchResultType = "task"
-	SearchResultTypeTasklist SearchResultType = "tasklist"
+	SearchResultTypeDirectory   SearchResultType = "directory"
+	SearchResultTypeFile        SearchResultType = "file"
+	SearchResultTypeFileComment SearchResultType = "file_comment"
+	SearchResultTypeLink        SearchResultType = "link"
+	SearchResultTypeLinkComment SearchResultType = "link_comment"
+	SearchResultTypeNote        SearchResultType = "note"
+	SearchResultTypeNoteComment SearchResultType = "note_comment"
+	SearchResultTypeProject     SearchResultType = "project"
+	SearchResultTypeTask        SearchResultType = "task"
+	SearchResultTypeTaskComment SearchResultType = "task_comment"
+	SearchResultTypeTaskcheck   SearchResultType = "taskcheck"
+	SearchResultTypeTasklist    SearchResultType = "tasklist"
+	SearchResultTypeUser        SearchResultType = "user"
 )
 
 // Valid indicates whether the value is a known member of the SearchResultType enum.
 func (e SearchResultType) Valid() bool {
 	switch e {
-	case SearchResultTypeComment:
+	case SearchResultTypeDirectory:
 		return true
 	case SearchResultTypeFile:
 		return true
-	case SearchResultTypeProject:
+	case SearchResultTypeFileComment:
 		return true
-	case SearchResultTypeSubtask:
+	case SearchResultTypeLink:
+		return true
+	case SearchResultTypeLinkComment:
+		return true
+	case SearchResultTypeNote:
+		return true
+	case SearchResultTypeNoteComment:
+		return true
+	case SearchResultTypeProject:
 		return true
 	case SearchResultTypeTask:
 		return true
+	case SearchResultTypeTaskComment:
+		return true
+	case SearchResultTypeTaskcheck:
+		return true
 	case SearchResultTypeTasklist:
+		return true
+	case SearchResultTypeUser:
 		return true
 	default:
 		return false
@@ -160,6 +181,24 @@ func (e StateState) Valid() bool {
 	case StateStateFinished:
 		return true
 	case StateStateTemplate:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SubtaskType.
+const (
+	SubtaskTypeSubtask   SubtaskType = "subtask"
+	SubtaskTypeTaskcheck SubtaskType = "taskcheck"
+)
+
+// Valid indicates whether the value is a known member of the SubtaskType enum.
+func (e SubtaskType) Valid() bool {
+	switch e {
+	case SubtaskTypeSubtask:
+		return true
+	case SubtaskTypeTaskcheck:
 		return true
 	default:
 		return false
@@ -202,6 +241,45 @@ func (e TaskCreatePriorityEnum) Valid() bool {
 	case TaskCreatePriorityEnumL:
 		return true
 	case TaskCreatePriorityEnumM:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TaskFullPriorityEnum.
+const (
+	TaskFullPriorityEnumH TaskFullPriorityEnum = "h"
+	TaskFullPriorityEnumL TaskFullPriorityEnum = "l"
+	TaskFullPriorityEnumM TaskFullPriorityEnum = "m"
+)
+
+// Valid indicates whether the value is a known member of the TaskFullPriorityEnum enum.
+func (e TaskFullPriorityEnum) Valid() bool {
+	switch e {
+	case TaskFullPriorityEnumH:
+		return true
+	case TaskFullPriorityEnumL:
+		return true
+	case TaskFullPriorityEnumM:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TaskFullType.
+const (
+	TaskFullTypeSubtask TaskFullType = "subtask"
+	TaskFullTypeTask    TaskFullType = "task"
+)
+
+// Valid indicates whether the value is a known member of the TaskFullType enum.
+func (e TaskFullType) Valid() bool {
+	switch e {
+	case TaskFullTypeSubtask:
+		return true
+	case TaskFullTypeTask:
 		return true
 	default:
 		return false
@@ -331,6 +409,24 @@ func (e GetAllNotificationsParamsOrder) Valid() bool {
 	case GetAllNotificationsParamsOrderAsc:
 		return true
 	case GetAllNotificationsParamsOrderDesc:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAllNotificationsParamsOnlyUnread.
+const (
+	GetAllNotificationsParamsOnlyUnreadN0 GetAllNotificationsParamsOnlyUnread = 0
+	GetAllNotificationsParamsOnlyUnreadN1 GetAllNotificationsParamsOnlyUnread = 1
+)
+
+// Valid indicates whether the value is a known member of the GetAllNotificationsParamsOnlyUnread enum.
+func (e GetAllNotificationsParamsOnlyUnread) Valid() bool {
+	switch e {
+	case GetAllNotificationsParamsOnlyUnreadN0:
+		return true
+	case GetAllNotificationsParamsOnlyUnreadN1:
 		return true
 	default:
 		return false
@@ -472,6 +568,60 @@ func (e GetAllTasksParamsOrder) Valid() bool {
 	case GetAllTasksParamsOrderAsc:
 		return true
 	case GetAllTasksParamsOrderDesc:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAllTasksParamsNoDueDate.
+const (
+	GetAllTasksParamsNoDueDateN0 GetAllTasksParamsNoDueDate = 0
+	GetAllTasksParamsNoDueDateN1 GetAllTasksParamsNoDueDate = 1
+)
+
+// Valid indicates whether the value is a known member of the GetAllTasksParamsNoDueDate enum.
+func (e GetAllTasksParamsNoDueDate) Valid() bool {
+	switch e {
+	case GetAllTasksParamsNoDueDateN0:
+		return true
+	case GetAllTasksParamsNoDueDateN1:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAllTasksParamsFinishedOverdue.
+const (
+	GetAllTasksParamsFinishedOverdueN0 GetAllTasksParamsFinishedOverdue = 0
+	GetAllTasksParamsFinishedOverdueN1 GetAllTasksParamsFinishedOverdue = 1
+)
+
+// Valid indicates whether the value is a known member of the GetAllTasksParamsFinishedOverdue enum.
+func (e GetAllTasksParamsFinishedOverdue) Valid() bool {
+	switch e {
+	case GetAllTasksParamsFinishedOverdueN0:
+		return true
+	case GetAllTasksParamsFinishedOverdueN1:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAllTasksParamsMyPriorities.
+const (
+	GetAllTasksParamsMyPrioritiesN0 GetAllTasksParamsMyPriorities = 0
+	GetAllTasksParamsMyPrioritiesN1 GetAllTasksParamsMyPriorities = 1
+)
+
+// Valid indicates whether the value is a known member of the GetAllTasksParamsMyPriorities enum.
+func (e GetAllTasksParamsMyPriorities) Valid() bool {
+	switch e {
+	case GetAllTasksParamsMyPrioritiesN0:
+		return true
+	case GetAllTasksParamsMyPrioritiesN1:
 		return true
 	default:
 		return false
@@ -639,12 +789,13 @@ func (e CreateProjectJSONBodyCurrencyIso) Valid() bool {
 
 // Defines values for SearchJSONBodyEntityType.
 const (
-	SearchJSONBodyEntityTypeComment  SearchJSONBodyEntityType = "comment"
-	SearchJSONBodyEntityTypeFile     SearchJSONBodyEntityType = "file"
-	SearchJSONBodyEntityTypeProject  SearchJSONBodyEntityType = "project"
-	SearchJSONBodyEntityTypeSubtask  SearchJSONBodyEntityType = "subtask"
-	SearchJSONBodyEntityTypeTask     SearchJSONBodyEntityType = "task"
-	SearchJSONBodyEntityTypeTasklist SearchJSONBodyEntityType = "tasklist"
+	SearchJSONBodyEntityTypeComment   SearchJSONBodyEntityType = "comment"
+	SearchJSONBodyEntityTypeFile      SearchJSONBodyEntityType = "file"
+	SearchJSONBodyEntityTypeProject   SearchJSONBodyEntityType = "project"
+	SearchJSONBodyEntityTypeSubtask   SearchJSONBodyEntityType = "subtask"
+	SearchJSONBodyEntityTypeTask      SearchJSONBodyEntityType = "task"
+	SearchJSONBodyEntityTypeTaskcheck SearchJSONBodyEntityType = "taskcheck"
+	SearchJSONBodyEntityTypeTasklist  SearchJSONBodyEntityType = "tasklist"
 )
 
 // Valid indicates whether the value is a known member of the SearchJSONBodyEntityType enum.
@@ -660,7 +811,93 @@ func (e SearchJSONBodyEntityType) Valid() bool {
 		return true
 	case SearchJSONBodyEntityTypeTask:
 		return true
+	case SearchJSONBodyEntityTypeTaskcheck:
+		return true
 	case SearchJSONBodyEntityTypeTasklist:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchJSONBodyExcludeEntityTypes.
+const (
+	SearchJSONBodyExcludeEntityTypesComment   SearchJSONBodyExcludeEntityTypes = "comment"
+	SearchJSONBodyExcludeEntityTypesFile      SearchJSONBodyExcludeEntityTypes = "file"
+	SearchJSONBodyExcludeEntityTypesProject   SearchJSONBodyExcludeEntityTypes = "project"
+	SearchJSONBodyExcludeEntityTypesSubtask   SearchJSONBodyExcludeEntityTypes = "subtask"
+	SearchJSONBodyExcludeEntityTypesTask      SearchJSONBodyExcludeEntityTypes = "task"
+	SearchJSONBodyExcludeEntityTypesTaskcheck SearchJSONBodyExcludeEntityTypes = "taskcheck"
+	SearchJSONBodyExcludeEntityTypesTasklist  SearchJSONBodyExcludeEntityTypes = "tasklist"
+)
+
+// Valid indicates whether the value is a known member of the SearchJSONBodyExcludeEntityTypes enum.
+func (e SearchJSONBodyExcludeEntityTypes) Valid() bool {
+	switch e {
+	case SearchJSONBodyExcludeEntityTypesComment:
+		return true
+	case SearchJSONBodyExcludeEntityTypesFile:
+		return true
+	case SearchJSONBodyExcludeEntityTypesProject:
+		return true
+	case SearchJSONBodyExcludeEntityTypesSubtask:
+		return true
+	case SearchJSONBodyExcludeEntityTypesTask:
+		return true
+	case SearchJSONBodyExcludeEntityTypesTaskcheck:
+		return true
+	case SearchJSONBodyExcludeEntityTypesTasklist:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchJSONBodyLang.
+const (
+	CsCz SearchJSONBodyLang = "cs_cz"
+	EnUs SearchJSONBodyLang = "en_us"
+)
+
+// Valid indicates whether the value is a known member of the SearchJSONBodyLang enum.
+func (e SearchJSONBodyLang) Valid() bool {
+	switch e {
+	case CsCz:
+		return true
+	case EnUs:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchJSONBodySortOrder.
+const (
+	ASC  SearchJSONBodySortOrder = "ASC"
+	DESC SearchJSONBodySortOrder = "DESC"
+)
+
+// Valid indicates whether the value is a known member of the SearchJSONBodySortOrder enum.
+func (e SearchJSONBodySortOrder) Valid() bool {
+	switch e {
+	case ASC:
+		return true
+	case DESC:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchJSONBodySortOrderBy.
+const (
+	LastUpdated SearchJSONBodySortOrderBy = "last_updated"
+)
+
+// Valid indicates whether the value is a known member of the SearchJSONBodySortOrderBy enum.
+func (e SearchJSONBodySortOrderBy) Valid() bool {
+	switch e {
+	case LastUpdated:
 		return true
 	default:
 		return false
@@ -702,19 +939,19 @@ func (e SearchJSONBodyStateIds) Valid() bool {
 
 // Defines values for EditTaskJSONBodyPriorityEnum.
 const (
-	H EditTaskJSONBodyPriorityEnum = "h"
-	L EditTaskJSONBodyPriorityEnum = "l"
-	M EditTaskJSONBodyPriorityEnum = "m"
+	EditTaskJSONBodyPriorityEnumH EditTaskJSONBodyPriorityEnum = "h"
+	EditTaskJSONBodyPriorityEnumL EditTaskJSONBodyPriorityEnum = "l"
+	EditTaskJSONBodyPriorityEnumM EditTaskJSONBodyPriorityEnum = "m"
 )
 
 // Valid indicates whether the value is a known member of the EditTaskJSONBodyPriorityEnum enum.
 func (e EditTaskJSONBodyPriorityEnum) Valid() bool {
 	switch e {
-	case H:
+	case EditTaskJSONBodyPriorityEnumH:
 		return true
-	case L:
+	case EditTaskJSONBodyPriorityEnumL:
 		return true
-	case M:
+	case EditTaskJSONBodyPriorityEnumM:
 		return true
 	default:
 		return false
@@ -865,6 +1102,24 @@ func (e GetUserProjectsParamsOrder) Valid() bool {
 	}
 }
 
+// Defines values for GetWorkReportsParamsWithOwnTaskless.
+const (
+	N0 GetWorkReportsParamsWithOwnTaskless = 0
+	N1 GetWorkReportsParamsWithOwnTaskless = 1
+)
+
+// Valid indicates whether the value is a known member of the GetWorkReportsParamsWithOwnTaskless enum.
+func (e GetWorkReportsParamsWithOwnTaskless) Valid() bool {
+	switch e {
+	case N0:
+		return true
+	case N1:
+		return true
+	default:
+		return false
+	}
+}
+
 // BusinessClient defines model for BusinessClient.
 type BusinessClient struct {
 	Company      *string `json:"company,omitempty"`
@@ -880,7 +1135,9 @@ type BusinessClient struct {
 
 // Comment defines model for Comment.
 type Comment struct {
-	Content *string          `json:"content,omitempty"`
+	Content *string `json:"content,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
 	Files   *[]FileBasic     `json:"files,omitempty"`
 	Id      *int             `json:"id,omitempty"`
@@ -888,9 +1145,13 @@ type Comment struct {
 
 // CommentFull defines model for CommentFull.
 type CommentFull struct {
-	Author       *UserBasic       `json:"author,omitempty"`
-	Content      *string          `json:"content,omitempty"`
-	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
+	Author  *UserBasic `json:"author,omitempty"`
+	Content *string    `json:"content,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
 	Document     *struct {
 		Name *string             `json:"name,omitempty"`
@@ -916,13 +1177,15 @@ type CommentFull struct {
 
 // CommentWithFiles defines model for CommentWithFiles.
 type CommentWithFiles struct {
-	Author            *UserBasic       `json:"author,omitempty"`
-	CommentsReactions *[]UserBasic     `json:"comments_reactions,omitempty"`
-	Content           *string          `json:"content,omitempty"`
-	DateAdd           *freelotime.Time `json:"date_add,omitempty"`
-	Files             *[]FileFull      `json:"files,omitempty"`
-	Id                *int             `json:"id,omitempty"`
-	IsDescription     *bool            `json:"is_description,omitempty"`
+	Author            *UserBasic   `json:"author,omitempty"`
+	CommentsReactions *[]UserBasic `json:"comments_reactions,omitempty"`
+	Content           *string      `json:"content,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd       *freelotime.Time `json:"date_add,omitempty"`
+	Files         *[]FileFull      `json:"files,omitempty"`
+	Id            *int             `json:"id,omitempty"`
+	IsDescription *bool            `json:"is_description,omitempty"`
 }
 
 // Currency defines model for Currency.
@@ -939,11 +1202,13 @@ type CurrencyCurrency string
 type CustomField struct {
 	AuthorId              *int                `json:"author_id,omitempty"`
 	CustomFieldsTypesUuid *openapi_types.UUID `json:"custom_fields_types_uuid,omitempty"`
-	DateAdd               *freelotime.Time    `json:"date_add,omitempty"`
-	Name                  *string             `json:"name,omitempty"`
-	Priority              *int                `json:"priority,omitempty"`
-	ProjectId             *int                `json:"project_id,omitempty"`
-	Uuid                  *openapi_types.UUID `json:"uuid,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd   *freelotime.Time    `json:"date_add,omitempty"`
+	Name      *string             `json:"name,omitempty"`
+	Priority  *int                `json:"priority,omitempty"`
+	ProjectId *int                `json:"project_id,omitempty"`
+	Uuid      *openapi_types.UUID `json:"uuid,omitempty"`
 }
 
 // CustomFieldEnumOption defines model for CustomFieldEnumOption.
@@ -958,37 +1223,51 @@ type CustomFieldEnumOption struct {
 type CustomFieldEnumValue struct {
 	AuthorId        *int                `json:"author_id,omitempty"`
 	CustomFieldUuid *openapi_types.UUID `json:"custom_field_uuid,omitempty"`
-	DateAdd         *freelotime.Time    `json:"date_add,omitempty"`
-	DateEditedAt    *freelotime.Time    `json:"date_edited_at,omitempty"`
-	TaskId          *int                `json:"task_id,omitempty"`
-	Uuid            *openapi_types.UUID `json:"uuid,omitempty"`
-	Value           *string             `json:"value,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
+	TaskId       *int                `json:"task_id,omitempty"`
+	Uuid         *openapi_types.UUID `json:"uuid,omitempty"`
+	Value        *string             `json:"value,omitempty"`
 }
 
 // CustomFieldValue defines model for CustomFieldValue.
 type CustomFieldValue struct {
 	AuthorId        *int                `json:"author_id,omitempty"`
 	CustomFieldUuid *openapi_types.UUID `json:"custom_field_uuid,omitempty"`
-	DateAdd         *freelotime.Time    `json:"date_add,omitempty"`
-	DateEditedAt    *freelotime.Time    `json:"date_edited_at,omitempty"`
-	TaskId          *int                `json:"task_id,omitempty"`
-	Uuid            *openapi_types.UUID `json:"uuid,omitempty"`
-	Value           *string             `json:"value,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
+	TaskId       *int                `json:"task_id,omitempty"`
+	Uuid         *openapi_types.UUID `json:"uuid,omitempty"`
+	Value        *string             `json:"value,omitempty"`
 }
 
 // CustomFieldWithValue defines model for CustomFieldWithValue.
 type CustomFieldWithValue struct {
 	CustomFieldsTypesUuid *openapi_types.UUID `json:"custom_fields_types_uuid,omitempty"`
-	FieldDateAdd          *freelotime.Time    `json:"field_date_add,omitempty"`
-	FieldUuid             *openapi_types.UUID `json:"field_uuid,omitempty"`
-	Name                  *string             `json:"name,omitempty"`
-	Priority              *int                `json:"priority,omitempty"`
-	ProjectId             *int                `json:"project_id,omitempty"`
-	Value                 *string             `json:"value,omitempty"`
-	ValueAuthorId         *int                `json:"value_author_id,omitempty"`
-	ValueDateAdd          *freelotime.Time    `json:"value_date_add,omitempty"`
-	ValueDateEditedAt     *freelotime.Time    `json:"value_date_edited_at,omitempty"`
-	ValueUuid             *openapi_types.UUID `json:"value_uuid,omitempty"`
+
+	// FieldDateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	FieldDateAdd  *freelotime.Time    `json:"field_date_add,omitempty"`
+	FieldUuid     *openapi_types.UUID `json:"field_uuid,omitempty"`
+	Name          *string             `json:"name,omitempty"`
+	Priority      *int                `json:"priority,omitempty"`
+	ProjectId     *int                `json:"project_id,omitempty"`
+	Value         *string             `json:"value,omitempty"`
+	ValueAuthorId *int                `json:"value_author_id,omitempty"`
+
+	// ValueDateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	ValueDateAdd *freelotime.Time `json:"value_date_add,omitempty"`
+
+	// ValueDateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	ValueDateEditedAt *freelotime.Time    `json:"value_date_edited_at,omitempty"`
+	ValueUuid         *openapi_types.UUID `json:"value_uuid,omitempty"`
 }
 
 // ErrorResponse defines model for ErrorResponse.
@@ -1002,12 +1281,18 @@ type Event struct {
 	Comment *struct {
 		Id *int `json:"id,omitempty"`
 	} `json:"comment,omitempty"`
+
+	// DateAction Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAction *freelotime.Time `json:"date_action,omitempty"`
 	Document   *struct {
 		Id   *int    `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
 	} `json:"document,omitempty"`
-	DueDate    *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DueDateEnd *freelotime.Time `json:"due_date_end,omitempty"`
 	File       *struct {
 		Caption  *string             `json:"caption,omitempty"`
@@ -1040,8 +1325,12 @@ type FileBasic struct {
 
 // FileFull defines model for FileFull.
 type FileFull struct {
-	Caption      *string             `json:"caption,omitempty"`
-	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
+	Caption *string `json:"caption,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
 	Description  *string             `json:"description,omitempty"`
 	Filename     *string             `json:"filename,omitempty"`
@@ -1053,9 +1342,11 @@ type FileFull struct {
 
 // FileItem defines model for FileItem.
 type FileItem struct {
-	Author        *UserBasic          `json:"author,omitempty"`
-	Caption       *string             `json:"caption,omitempty"`
-	Color         *string             `json:"color,omitempty"`
+	Author  *UserBasic `json:"author,omitempty"`
+	Caption *string    `json:"caption,omitempty"`
+	Color   *string    `json:"color,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAdd       *freelotime.Time    `json:"date_add,omitempty"`
 	DirectoryUuid *openapi_types.UUID `json:"directory_uuid,omitempty"`
 	Extension     *string             `json:"extension,omitempty"`
@@ -1085,8 +1376,10 @@ type FileUpload struct {
 // IssuedInvoice defines model for IssuedInvoice.
 type IssuedInvoice struct {
 	Currency *IssuedInvoiceCurrency `json:"currency,omitempty"`
-	DateAdd  *freelotime.Time       `json:"date_add,omitempty"`
-	Id       *int                   `json:"id,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd  *freelotime.Time `json:"date_add,omitempty"`
+	Id       *int             `json:"id,omitempty"`
 	InvItems *[]struct {
 		Id      *int      `json:"id,omitempty"`
 		Minutes *int      `json:"minutes,omitempty"`
@@ -1108,8 +1401,10 @@ type IssuedInvoiceCurrency string
 // IssuedInvoiceDetail defines model for IssuedInvoiceDetail.
 type IssuedInvoiceDetail struct {
 	Currency *IssuedInvoiceDetailCurrency `json:"currency,omitempty"`
-	DateAdd  *freelotime.Time             `json:"date_add,omitempty"`
-	Id       *int                         `json:"id,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd  *freelotime.Time `json:"date_add,omitempty"`
+	Id       *int             `json:"id,omitempty"`
 	InvItems *[]struct {
 		Id      *int      `json:"id,omitempty"`
 		Minutes *int      `json:"minutes,omitempty"`
@@ -1139,16 +1434,20 @@ type IssuedInvoiceDetailCurrency string
 
 // Note defines model for Note.
 type Note struct {
-	Author       *UserBasic          `json:"author,omitempty"`
-	Comments     *[]CommentWithFiles `json:"comments,omitempty"`
-	Content      *string             `json:"content,omitempty"`
-	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
-	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
-	Files        *[]FileFull         `json:"files,omitempty"`
-	Id           *int                `json:"id,omitempty"`
-	Name         *string             `json:"name,omitempty"`
-	Project      *ProjectBasic       `json:"project,omitempty"`
-	State        *State              `json:"state,omitempty"`
+	Author   *UserBasic          `json:"author,omitempty"`
+	Comments *[]CommentWithFiles `json:"comments,omitempty"`
+	Content  *string             `json:"content,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+	Files        *[]FileFull      `json:"files,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Name         *string          `json:"name,omitempty"`
+	Project      *ProjectBasic    `json:"project,omitempty"`
+	State        *State           `json:"state,omitempty"`
 }
 
 // Notification defines model for Notification.
@@ -1157,6 +1456,8 @@ type Notification struct {
 	Comment *struct {
 		Id *int `json:"id,omitempty"`
 	} `json:"comment,omitempty"`
+
+	// DateAction Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAction *freelotime.Time `json:"date_action,omitempty"`
 	Document   *struct {
 		Id   *int    `json:"id,omitempty"`
@@ -1205,8 +1506,12 @@ type ProjectBasic struct {
 
 // ProjectDetail defines model for ProjectDetail.
 type ProjectDetail struct {
-	Budget           *Currency        `json:"budget,omitempty"`
-	DateAdd          *freelotime.Time `json:"date_add,omitempty"`
+	Budget *Currency `json:"budget,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateEditedAt     *freelotime.Time `json:"date_edited_at,omitempty"`
 	Id               *int             `json:"id,omitempty"`
 	MinutesBudget    *int             `json:"minutes_budget,omitempty"`
@@ -1219,7 +1524,10 @@ type ProjectDetail struct {
 		Id    *int    `json:"id,omitempty"`
 		Name  *string `json:"name,omitempty"`
 		Tasks *[]struct {
-			DueDate      *freelotime.Time `json:"due_date,omitempty"`
+			// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+			DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+			// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 			DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
 			Id           *int             `json:"id,omitempty"`
 			Name         *string          `json:"name,omitempty"`
@@ -1240,8 +1548,12 @@ type ProjectDetail struct {
 
 // ProjectFull defines model for ProjectFull.
 type ProjectFull struct {
-	Budget           *Currency        `json:"budget,omitempty"`
-	DateAdd          *freelotime.Time `json:"date_add,omitempty"`
+	Budget *Currency `json:"budget,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateEditedAt     *freelotime.Time `json:"date_edited_at,omitempty"`
 	Id               *int             `json:"id,omitempty"`
 	MinutesBudget    *int             `json:"minutes_budget,omitempty"`
@@ -1266,31 +1578,89 @@ type ProjectLabel struct {
 
 // ProjectWithTasklists defines model for ProjectWithTasklists.
 type ProjectWithTasklists struct {
-	Client       *BusinessClient  `json:"client,omitempty"`
-	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
+	Client *BusinessClient `json:"client,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
 	Id           *int             `json:"id,omitempty"`
 	Name         *string          `json:"name,omitempty"`
 	Tasklists    *[]TasklistBasic `json:"tasklists,omitempty"`
 }
 
-// SearchResult defines model for SearchResult.
+// SearchResult Single search hit. Fields marked **conditional** below appear only for specific `type` values:
+//
+// | Conditional field | Appears when `type` is |
+// | --- | --- |
+// | `is_smart` | `task` |
+// | `task` | `task` (only if it's a smart subtask), `taskcheck`, `task_comment` |
+// | `smart_task` | `taskcheck`, `task_comment` (the smart-task ancestor, if any) |
+// | `note` | `note_comment` |
+// | `file` | `file_comment` |
+// | `link` | `link_comment` |
 type SearchResult struct {
-	AuthorId         *int                `json:"author_id,omitempty"`
-	HighlightContent *[]string           `json:"highlight_content,omitempty"`
-	HighlightName    *[]string           `json:"highlight_name,omitempty"`
-	Id               *int                `json:"id,omitempty"`
-	IsSmart          *bool               `json:"is_smart,omitempty"`
-	Name             *string             `json:"name,omitempty"`
-	Project          *ProjectBasic       `json:"project,omitempty"`
-	Score            *float32            `json:"score,omitempty"`
-	State            *int                `json:"state,omitempty"`
-	Tasklist         *TasklistBasic      `json:"tasklist,omitempty"`
-	Type             *SearchResultType   `json:"type,omitempty"`
-	Uuid             *openapi_types.UUID `json:"uuid,omitempty"`
+	// AuthorId ID of the root entity's owner.
+	AuthorId *int `json:"author_id,omitempty"`
+
+	// File **Conditional** — present only for `type=file_comment`.
+	File *struct {
+		Name *string `json:"name,omitempty"`
+		Uuid *string `json:"uuid,omitempty"`
+	} `json:"file,omitempty"`
+
+	// HighlightContent Highlighted snippets from the entity content (HTML, with `<em>` markers).
+	HighlightContent *[]string `json:"highlight_content,omitempty"`
+
+	// HighlightName Highlighted snippets from the entity name (HTML, with `<em>` markers).
+	HighlightName *[]string `json:"highlight_name,omitempty"`
+
+	// Id Entity ID. For `task` hits whose entity is a child of a multi-project parent, this is rewritten to the **multi-project parent's task ID** (the original child ID is not exposed here).
+	Id *int `json:"id,omitempty"`
+
+	// IsSmart **Conditional** — present only for `type=task`. `true` when the task is a smart subtask, `false` for a regular top-level task.
+	IsSmart *bool `json:"is_smart,omitempty"`
+
+	// Link **Conditional** — present only for `type=link_comment`.
+	Link *struct {
+		Name *string `json:"name,omitempty"`
+		Uuid *string `json:"uuid,omitempty"`
+	} `json:"link,omitempty"`
+	Name *string `json:"name,omitempty"`
+
+	// Note **Conditional** — present only for `type=note_comment`.
+	Note *struct {
+		Id   *int    `json:"id,omitempty"`
+		Name *string `json:"name,omitempty"`
+	} `json:"note,omitempty"`
+	Project *ProjectBasic `json:"project,omitempty"`
+
+	// Score Elasticsearch relevance score (`null` if missing from the hit).
+	Score *float32 `json:"score,omitempty"`
+
+	// SmartTask **Conditional** — smart-task ancestor (if any) for `type` of `taskcheck` or `task_comment`. `null` when the hit is not under a smart task.
+	SmartTask *struct {
+		Id   *int    `json:"id,omitempty"`
+		Name *string `json:"name,omitempty"`
+	} `json:"smart_task,omitempty"`
+
+	// State Numeric state ID of the root entity (active / archived / finished / template).
+	State *int `json:"state,omitempty"`
+
+	// Task **Conditional** — parent task of the hit. Present for `type` of `taskcheck`, `task_comment`, and for `task` hits that are smart subtasks (in which case it carries the parent task).
+	Task *struct {
+		Id   *int    `json:"id,omitempty"`
+		Name *string `json:"name,omitempty"`
+	} `json:"task,omitempty"`
+	Tasklist *TasklistBasic `json:"tasklist,omitempty"`
+
+	// Type Underlying Elasticsearch entity type for this hit (underscore form of `ElasticsearchEntityTypeEnum`). Broader than the `entity_type` request filter.
+	Type *SearchResultType   `json:"type,omitempty"`
+	Uuid *openapi_types.UUID `json:"uuid,omitempty"`
 }
 
-// SearchResultType defines model for SearchResult.Type.
+// SearchResultType Underlying Elasticsearch entity type for this hit (underscore form of `ElasticsearchEntityTypeEnum`). Broader than the `entity_type` request filter.
 type SearchResultType string
 
 // State defines model for State.
@@ -1304,16 +1674,22 @@ type StateState string
 
 // Subtask defines model for Subtask.
 type Subtask struct {
-	Author        *UserBasic       `json:"author,omitempty"`
-	CountComments *int             `json:"count_comments,omitempty"`
-	CountSubtasks *int             `json:"count_subtasks,omitempty"`
-	DateAdd       *freelotime.Time `json:"date_add,omitempty"`
-	DueDate       *freelotime.Time `json:"due_date,omitempty"`
-	DueDateEnd    *freelotime.Time `json:"due_date_end,omitempty"`
-	Id            *int             `json:"id,omitempty"`
-	Labels        *[]TaskLabel     `json:"labels,omitempty"`
-	Name          *string          `json:"name,omitempty"`
-	Project       *struct {
+	Author        *UserBasic `json:"author,omitempty"`
+	CountComments *int       `json:"count_comments,omitempty"`
+	CountSubtasks *int       `json:"count_subtasks,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDateEnd *freelotime.Time `json:"due_date_end,omitempty"`
+	Id         *int             `json:"id,omitempty"`
+	Labels     *[]TaskLabel     `json:"labels,omitempty"`
+	Name       *string          `json:"name,omitempty"`
+	Project    *struct {
 		Id    *int    `json:"id,omitempty"`
 		Name  *string `json:"name,omitempty"`
 		State *State  `json:"state,omitempty"`
@@ -1325,15 +1701,25 @@ type Subtask struct {
 		Name  *string `json:"name,omitempty"`
 		State *State  `json:"state,omitempty"`
 	} `json:"tasklist,omitempty"`
-	Worker *UserBasic `json:"worker,omitempty"`
+
+	// Type Subtask kind discriminator: `subtask` = smart subtask (has its own `task_id`), `taskcheck` = simple checklist item (`task_id` is null). On the public API a `taskcheck` supports read, create, edit (name/worker only), finish, activate and delete via the `/api/v1/taskcheck/{taskcheck_id}/*` endpoints.
+	Type   *SubtaskType `json:"type,omitempty"`
+	Worker *UserBasic   `json:"worker,omitempty"`
 }
+
+// SubtaskType Subtask kind discriminator: `subtask` = smart subtask (has its own `task_id`), `taskcheck` = simple checklist item (`task_id` is null). On the public API a `taskcheck` supports read, create, edit (name/worker only), finish, activate and delete via the `/api/v1/taskcheck/{taskcheck_id}/*` endpoints.
+type SubtaskType string
 
 // SubtaskCreate defines model for SubtaskCreate.
 type SubtaskCreate struct {
 	Comment *struct {
 		Content *string `json:"content,omitempty"`
 	} `json:"comment,omitempty"`
-	DueDate          *freelotime.Time           `json:"due_date,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DueDateEnd       *freelotime.Time           `json:"due_date_end,omitempty"`
 	Labels           *[]TaskLabelAddInput       `json:"labels,omitempty"`
 	Name             string                     `json:"name"`
@@ -1355,7 +1741,11 @@ type TaskCreate struct {
 	Comment *struct {
 		Content *string `json:"content,omitempty"`
 	} `json:"comment,omitempty"`
-	DueDate                *freelotime.Time        `json:"due_date,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DueDateEnd             *freelotime.Time        `json:"due_date_end,omitempty"`
 	Labels                 *[]TaskLabelAddInput    `json:"labels,omitempty"`
 	Name                   string                  `json:"name"`
@@ -1371,8 +1761,13 @@ type TaskCreatePriorityEnum string
 
 // TaskCreated defines model for TaskCreated.
 type TaskCreated struct {
-	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
-	DueDate      *freelotime.Time `json:"due_date,omitempty"`
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
 	Id           *int             `json:"id,omitempty"`
 	Labels       *[]TaskLabel     `json:"labels,omitempty"`
@@ -1389,40 +1784,60 @@ type TaskCreated struct {
 
 // TaskDetail defines model for TaskDetail.
 type TaskDetail struct {
-	Author             *UserBasic              `json:"author,omitempty"`
-	Comments           *[]CommentWithFiles     `json:"comments,omitempty"`
-	Cost               *Currency               `json:"cost,omitempty"`
-	CountSubtasks      *int                    `json:"count_subtasks,omitempty"`
-	CustomFields       *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
-	DateAdd            *freelotime.Time        `json:"date_add,omitempty"`
-	DateEditedAt       *freelotime.Time        `json:"date_edited_at,omitempty"`
-	DateFinished       *freelotime.Time        `json:"date_finished,omitempty"`
-	DueDate            *freelotime.Time        `json:"due_date,omitempty"`
-	DueDateEnd         *freelotime.Time        `json:"due_date_end,omitempty"`
-	Id                 *int                    `json:"id,omitempty"`
-	Labels             *[]TaskLabel            `json:"labels,omitempty"`
-	Minutes            *int                    `json:"minutes,omitempty"`
-	Name               *string                 `json:"name,omitempty"`
-	ParentTaskId       *int                    `json:"parent_task_id,omitempty"`
-	PriorityEnum       *string                 `json:"priority_enum,omitempty"`
-	Project            *ProjectBasic           `json:"project,omitempty"`
-	State              *State                  `json:"state,omitempty"`
-	Tasklist           *TasklistBasic          `json:"tasklist,omitempty"`
-	TotalTimeEstimate  *TimeEstimate           `json:"total_time_estimate,omitempty"`
-	TrackingUsers      *[]UserBasic            `json:"tracking_users,omitempty"`
-	UsersTimeEstimates *[]UserTimeEstimate     `json:"users_time_estimates,omitempty"`
-	Worker             *UserBasic              `json:"worker,omitempty"`
+	Author        *UserBasic              `json:"author,omitempty"`
+	Comments      *[]CommentWithFiles     `json:"comments,omitempty"`
+	Cost          *Currency               `json:"cost,omitempty"`
+	CountSubtasks *int                    `json:"count_subtasks,omitempty"`
+	CustomFields  *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+	// DateFinished Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateFinished *freelotime.Time `json:"date_finished,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDateEnd         *freelotime.Time    `json:"due_date_end,omitempty"`
+	Id                 *int                `json:"id,omitempty"`
+	Labels             *[]TaskLabel        `json:"labels,omitempty"`
+	Minutes            *int                `json:"minutes,omitempty"`
+	Name               *string             `json:"name,omitempty"`
+	ParentTaskId       *int                `json:"parent_task_id,omitempty"`
+	PriorityEnum       *string             `json:"priority_enum,omitempty"`
+	Project            *ProjectBasic       `json:"project,omitempty"`
+	State              *State              `json:"state,omitempty"`
+	Tasklist           *TasklistBasic      `json:"tasklist,omitempty"`
+	TotalTimeEstimate  *TimeEstimate       `json:"total_time_estimate,omitempty"`
+	TrackingUsers      *[]UserBasic        `json:"tracking_users,omitempty"`
+	UsersTimeEstimates *[]UserTimeEstimate `json:"users_time_estimates,omitempty"`
+	Worker             *UserBasic          `json:"worker,omitempty"`
 }
 
 // TaskFinished defines model for TaskFinished.
 type TaskFinished struct {
-	Author             *UserBasic          `json:"author,omitempty"`
-	CountComments      *int                `json:"count_comments,omitempty"`
-	CountSubtasks      *int                `json:"count_subtasks,omitempty"`
-	DateAdd            *freelotime.Time    `json:"date_add,omitempty"`
-	DateEditedAt       *freelotime.Time    `json:"date_edited_at,omitempty"`
-	DateFinished       *freelotime.Time    `json:"date_finished,omitempty"`
-	DueDate            *freelotime.Time    `json:"due_date,omitempty"`
+	Author        *UserBasic `json:"author,omitempty"`
+	CountComments *int       `json:"count_comments,omitempty"`
+	CountSubtasks *int       `json:"count_subtasks,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+	// DateFinished Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateFinished *freelotime.Time `json:"date_finished,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DueDateEnd         *freelotime.Time    `json:"due_date_end,omitempty"`
 	FinishedBy         *UserBasic          `json:"finished_by,omitempty"`
 	Id                 *int                `json:"id,omitempty"`
@@ -1440,15 +1855,26 @@ type TaskFull struct {
 	CountComments *int                    `json:"count_comments,omitempty"`
 	CountSubtasks *int                    `json:"count_subtasks,omitempty"`
 	CustomFields  *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
-	DateAdd       *freelotime.Time        `json:"date_add,omitempty"`
-	DateEditedAt  *freelotime.Time        `json:"date_edited_at,omitempty"`
-	DueDate       *freelotime.Time        `json:"due_date,omitempty"`
-	DueDateEnd    *freelotime.Time        `json:"due_date_end,omitempty"`
-	Id            *int                    `json:"id,omitempty"`
-	Labels        *[]TaskLabel            `json:"labels,omitempty"`
-	Name          *string                 `json:"name,omitempty"`
-	ParentTaskId  *int                    `json:"parent_task_id,omitempty"`
-	Project       *struct {
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Labels       *[]TaskLabel     `json:"labels,omitempty"`
+	Name         *string          `json:"name,omitempty"`
+	ParentTaskId *int             `json:"parent_task_id,omitempty"`
+
+	// PriorityEnum Task priority level: 'h' = high, 'm' = medium, 'l' = low.
+	PriorityEnum *TaskFullPriorityEnum `json:"priority_enum,omitempty"`
+	Project      *struct {
 		Id    *int    `json:"id,omitempty"`
 		Name  *string `json:"name,omitempty"`
 		State *State  `json:"state,omitempty"`
@@ -1459,10 +1885,19 @@ type TaskFull struct {
 		Name  *string `json:"name,omitempty"`
 		State *State  `json:"state,omitempty"`
 	} `json:"tasklist,omitempty"`
-	TotalTimeEstimate  *TimeEstimate       `json:"total_time_estimate,omitempty"`
+	TotalTimeEstimate *TimeEstimate `json:"total_time_estimate,omitempty"`
+
+	// Type Task kind discriminator: `task` = top-level task, `subtask` = smart subtask (has its own task id).
+	Type               *TaskFullType       `json:"type,omitempty"`
 	UsersTimeEstimates *[]UserTimeEstimate `json:"users_time_estimates,omitempty"`
 	Worker             *UserBasic          `json:"worker,omitempty"`
 }
+
+// TaskFullPriorityEnum Task priority level: 'h' = high, 'm' = medium, 'l' = low.
+type TaskFullPriorityEnum string
+
+// TaskFullType Task kind discriminator: `task` = top-level task, `subtask` = smart subtask (has its own task id).
+type TaskFullType string
 
 // TaskLabel defines model for TaskLabel.
 type TaskLabel struct {
@@ -1524,12 +1959,20 @@ type TaskRelationType string
 
 // TaskSummary defines model for TaskSummary.
 type TaskSummary struct {
-	Author             *UserBasic          `json:"author,omitempty"`
-	CountComments      *int                `json:"count_comments,omitempty"`
-	CountSubtasks      *int                `json:"count_subtasks,omitempty"`
-	DateAdd            *freelotime.Time    `json:"date_add,omitempty"`
-	DateEditedAt       *freelotime.Time    `json:"date_edited_at,omitempty"`
-	DueDate            *freelotime.Time    `json:"due_date,omitempty"`
+	Author        *UserBasic `json:"author,omitempty"`
+	CountComments *int       `json:"count_comments,omitempty"`
+	CountSubtasks *int       `json:"count_subtasks,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DueDateEnd         *freelotime.Time    `json:"due_date_end,omitempty"`
 	Id                 *int                `json:"id,omitempty"`
 	Labels             *[]TaskLabel        `json:"labels,omitempty"`
@@ -1548,13 +1991,19 @@ type TasklistBasic struct {
 
 // TasklistDetail defines model for TasklistDetail.
 type TasklistDetail struct {
-	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
 	Id           *int             `json:"id,omitempty"`
 	Name         *string          `json:"name,omitempty"`
 	ProjectId    *int             `json:"project_id,omitempty"`
 	Tasks        *[]struct {
-		DueDate      *freelotime.Time `json:"due_date,omitempty"`
+		// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+		DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+		// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 		DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
 		Id           *int             `json:"id,omitempty"`
 		Name         *string          `json:"name,omitempty"`
@@ -1565,8 +2014,12 @@ type TasklistDetail struct {
 
 // TasklistFull defines model for TasklistFull.
 type TasklistFull struct {
-	Budget       *Currency        `json:"budget,omitempty"`
-	DateAdd      *freelotime.Time `json:"date_add,omitempty"`
+	Budget *Currency `json:"budget,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
 	Id           *int             `json:"id,omitempty"`
 	Name         *string          `json:"name,omitempty"`
@@ -1594,8 +2047,12 @@ type TimeEstimate struct {
 
 // UserBasic defines model for UserBasic.
 type UserBasic struct {
-	Fullname *string `json:"fullname,omitempty"`
-	Id       *int    `json:"id,omitempty"`
+	Fullname string `json:"fullname"`
+	Id       int    `json:"id"`
+
+	// MentionKey Normalized form of `fullname` (whitespace stripped, diacritics removed) used as the visible text after `@` inside a mention span. Build a mention with:
+	// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+	MentionKey string `json:"mention_key"`
 }
 
 // UserTimeEstimate defines model for UserTimeEstimate.
@@ -1604,15 +2061,30 @@ type UserTimeEstimate struct {
 	User    *UserBasic `json:"user,omitempty"`
 }
 
+// UserWithEmail defines model for UserWithEmail.
+type UserWithEmail struct {
+	Email    openapi_types.Email `json:"email"`
+	Fullname string              `json:"fullname"`
+	Id       int                 `json:"id"`
+
+	// MentionKey Normalized form of `fullname` (whitespace stripped, diacritics removed) used as the visible text after `@` inside a mention span. Build a mention with:
+	// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+	MentionKey string `json:"mention_key"`
+}
+
 // WorkReport defines model for WorkReport.
 type WorkReport struct {
-	Author       *UserBasic          `json:"author,omitempty"`
-	Cost         *Currency           `json:"cost,omitempty"`
-	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Id           *int                `json:"id,omitempty"`
-	Minutes      *int                `json:"minutes,omitempty"`
-	Note         *string             `json:"note,omitempty"`
+	Author *UserBasic `json:"author,omitempty"`
+	Cost   *Currency  `json:"cost,omitempty"`
+
+	// DateAdd Insertion timestamp of the work report (when the row was created in the DB). Naive ISO8601 in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateReported Start timestamp of the work session. Naive ISO8601 in Europe/Prague timezone (no offset). End time is derived as `date_reported + minutes`. See "Timestamp Format" in API description.
+	DateReported *freelotime.Time `json:"date_reported,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Minutes      *int             `json:"minutes,omitempty"`
+	Note         *string          `json:"note,omitempty"`
 	Task         *struct {
 		Id   *int    `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
@@ -1622,14 +2094,18 @@ type WorkReport struct {
 
 // WorkReportExtended defines model for WorkReportExtended.
 type WorkReportExtended struct {
-	Author       *UserBasic          `json:"author,omitempty"`
-	Cost         *Currency           `json:"cost,omitempty"`
-	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Id           *int                `json:"id,omitempty"`
-	Minutes      *int                `json:"minutes,omitempty"`
-	Note         *string             `json:"note,omitempty"`
-	Project      *ProjectBasic       `json:"project,omitempty"`
+	Author *UserBasic `json:"author,omitempty"`
+	Cost   *Currency  `json:"cost,omitempty"`
+
+	// DateAdd Insertion timestamp of the work report (when the row was created in the DB). Naive ISO8601 in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateReported Start timestamp of the work session. Naive ISO8601 in Europe/Prague timezone (no offset). End time is derived as `date_reported + minutes`. See "Timestamp Format" in API description.
+	DateReported *freelotime.Time `json:"date_reported,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Minutes      *int             `json:"minutes,omitempty"`
+	Note         *string          `json:"note,omitempty"`
+	Project      *ProjectBasic    `json:"project,omitempty"`
 	Task         *struct {
 		Id   *int    `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
@@ -1641,14 +2117,20 @@ type WorkReportExtended struct {
 
 // WorkReportFull defines model for WorkReportFull.
 type WorkReportFull struct {
-	Author       *UserBasic          `json:"author,omitempty"`
-	Cost         *Currency           `json:"cost,omitempty"`
-	DateAdd      *freelotime.Time    `json:"date_add,omitempty"`
-	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Id           *int                `json:"id,omitempty"`
-	Minutes      *int                `json:"minutes,omitempty"`
-	Note         *string             `json:"note,omitempty"`
+	Author *UserBasic `json:"author,omitempty"`
+	Cost   *Currency  `json:"cost,omitempty"`
+
+	// DateAdd Insertion timestamp of the work report (when the row was created in the DB). Naive ISO8601 in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+	// DateReported Start timestamp of the work session. Naive ISO8601 in Europe/Prague timezone (no offset). End time is derived as `date_reported + minutes`. See "Timestamp Format" in API description.
+	DateReported *freelotime.Time `json:"date_reported,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Minutes      *int             `json:"minutes,omitempty"`
+	Note         *string          `json:"note,omitempty"`
 	Project      *struct {
 		Id     *int      `json:"id,omitempty"`
 		Labels *[]string `json:"labels,omitempty"`
@@ -1668,6 +2150,9 @@ type WorkReportFull struct {
 	Worker   *UserBasic     `json:"worker,omitempty"`
 }
 
+// PageAliasParam defines model for PageAliasParam.
+type PageAliasParam = int
+
 // PageParam defines model for PageParam.
 type PageParam = int
 
@@ -1676,6 +2161,9 @@ type ProjectIdParam = int
 
 // TaskIdParam defines model for TaskIdParam.
 type TaskIdParam = int
+
+// TaskcheckIdParam defines model for TaskcheckIdParam.
+type TaskcheckIdParam = int
 
 // TasklistIdParam defines model for TasklistIdParam.
 type TasklistIdParam = int
@@ -1692,8 +2180,11 @@ type GetAllCommentsParams struct {
 	OrderBy *GetAllCommentsParamsOrderBy `form:"order_by,omitempty" json:"order_by,omitempty"`
 	Order   *GetAllCommentsParamsOrder   `form:"order,omitempty" json:"order,omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetAllCommentsParamsType defines parameters for GetAllComments.
@@ -1710,8 +2201,11 @@ type GetAllDocsAndFilesParams struct {
 	ProjectsIds *[]int                        `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
 	Type        *GetAllDocsAndFilesParamsType `form:"type,omitempty" json:"type,omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetAllDocsAndFilesParamsType defines parameters for GetAllDocsAndFiles.
@@ -1726,14 +2220,22 @@ type GetAllNotificationsParams struct {
 	TeamsUuids        *[]openapi_types.UUID           `form:"teams_uuids[],omitempty" json:"teams_uuids[],omitempty"`
 	Order             *GetAllNotificationsParamsOrder `form:"order,omitempty" json:"order,omitempty"`
 	NotificationTypes *[]string                       `form:"notification_types[],omitempty" json:"notification_types[],omitempty"`
-	OnlyUnread        *bool                           `form:"only_unread,omitempty" json:"only_unread,omitempty"`
 
-	// P Page number (starting from 0)
+	// OnlyUnread Only return unread notifications. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
+	OnlyUnread *GetAllNotificationsParamsOnlyUnread `form:"only_unread,omitempty" json:"only_unread,omitempty"`
+
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetAllNotificationsParamsOrder defines parameters for GetAllNotifications.
 type GetAllNotificationsParamsOrder string
+
+// GetAllNotificationsParamsOnlyUnread defines parameters for GetAllNotifications.
+type GetAllNotificationsParamsOnlyUnread int
 
 // GetAllProjectsParams defines parameters for GetAllProjects.
 type GetAllProjectsParams struct {
@@ -1751,8 +2253,11 @@ type GetAllProjectsParams struct {
 	CreatedInRangeDateFrom *openapi_types.Date `form:"created_in_range[date_from],omitempty" json:"created_in_range[date_from],omitempty"`
 	CreatedInRangeDateTo   *openapi_types.Date `form:"created_in_range[date_to],omitempty" json:"created_in_range[date_to],omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetAllProjectsParamsOrderBy defines parameters for GetAllProjects.
@@ -1770,8 +2275,11 @@ type GetAllTasklistsParams struct {
 	OrderBy     *GetAllTasklistsParamsOrderBy `form:"order_by,omitempty" json:"order_by,omitempty"`
 	Order       *GetAllTasklistsParamsOrder   `form:"order,omitempty" json:"order,omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetAllTasklistsParamsOrderBy defines parameters for GetAllTasklists.
@@ -1805,8 +2313,8 @@ type GetAllTasksParams struct {
 	// WithoutLabel Exclude tasks that have the specified label (case insensitive)
 	WithoutLabel *string `form:"without_label,omitempty" json:"without_label,omitempty"`
 
-	// NoDueDate Only tasks with no due date
-	NoDueDate *bool `form:"no_due_date,omitempty" json:"no_due_date,omitempty"`
+	// NoDueDate Only tasks with no due date. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
+	NoDueDate *GetAllTasksParamsNoDueDate `form:"no_due_date,omitempty" json:"no_due_date,omitempty"`
 
 	// DueDateRangeDateFrom Filter tasks with due date on or after this date
 	DueDateRangeDateFrom *openapi_types.Date `form:"due_date_range[date_from],omitempty" json:"due_date_range[date_from],omitempty"`
@@ -1814,8 +2322,8 @@ type GetAllTasksParams struct {
 	// DueDateRangeDateTo Filter tasks with due date on or before this date
 	DueDateRangeDateTo *openapi_types.Date `form:"due_date_range[date_to],omitempty" json:"due_date_range[date_to],omitempty"`
 
-	// FinishedOverdue Only tasks finished after due date
-	FinishedOverdue *bool `form:"finished_overdue,omitempty" json:"finished_overdue,omitempty"`
+	// FinishedOverdue Only tasks finished after due date. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
+	FinishedOverdue *GetAllTasksParamsFinishedOverdue `form:"finished_overdue,omitempty" json:"finished_overdue,omitempty"`
 
 	// FinishedDateRangeDateFrom Filter tasks finished on or after this date
 	FinishedDateRangeDateFrom *openapi_types.Date `form:"finished_date_range[date_from],omitempty" json:"finished_date_range[date_from],omitempty"`
@@ -1826,8 +2334,14 @@ type GetAllTasksParams struct {
 	// WorkerId Filter by worker ID
 	WorkerId *int `form:"worker_id,omitempty" json:"worker_id,omitempty"`
 
-	// P Page number (starting from 0)
+	// MyPriorities Only tasks in the authenticated user's priorities ("my priorities"). Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
+	MyPriorities *GetAllTasksParamsMyPriorities `form:"my_priorities,omitempty" json:"my_priorities,omitempty"`
+
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetAllTasksParamsOrderBy defines parameters for GetAllTasks.
@@ -1836,10 +2350,22 @@ type GetAllTasksParamsOrderBy string
 // GetAllTasksParamsOrder defines parameters for GetAllTasks.
 type GetAllTasksParamsOrder string
 
+// GetAllTasksParamsNoDueDate defines parameters for GetAllTasks.
+type GetAllTasksParamsNoDueDate int
+
+// GetAllTasksParamsFinishedOverdue defines parameters for GetAllTasks.
+type GetAllTasksParamsFinishedOverdue int
+
+// GetAllTasksParamsMyPriorities defines parameters for GetAllTasks.
+type GetAllTasksParamsMyPriorities int
+
 // GetArchivedProjectsParams defines parameters for GetArchivedProjects.
 type GetArchivedProjectsParams struct {
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // EditCommentJSONBody defines parameters for EditComment.
@@ -1902,8 +2428,11 @@ type GetAllEventsParams struct {
 	DateRangeDateTo   *openapi_types.Date      `form:"date_range[date_to],omitempty" json:"date_range[date_to],omitempty"`
 	TasksIds          *[]int                   `form:"tasks_ids[],omitempty" json:"tasks_ids[],omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetAllEventsParamsOrder defines parameters for GetAllEvents.
@@ -1916,8 +2445,11 @@ type UploadFileMultipartBody struct {
 
 // GetInvitedProjectsParams defines parameters for GetInvitedProjects.
 type GetInvitedProjectsParams struct {
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // MarkAsInvoicedJSONBody defines parameters for MarkAsInvoiced.
@@ -1932,8 +2464,11 @@ type GetIssuedInvoicesParams struct {
 	DateRangeDateTo   *openapi_types.Date `form:"date_range[date_to],omitempty" json:"date_range[date_to],omitempty"`
 	ProjectsIds       *[]int              `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // EditNoteJSONBody defines parameters for EditNote.
@@ -2038,12 +2573,20 @@ type CreateTasklistJSONBody struct {
 	// Budget Currency amount (2 decimal places, no separator)
 	Budget *string `json:"budget,omitempty"`
 	Name   string  `json:"name"`
+
+	// Priority Position (order) of the tasklist within the project, 1 = first. Tasklists currently at this position or below shift down by 1 to make room. Values past the end of the list are clamped to `last + 1`. Omit to append at the end.
+	//
+	// Note: despite the name, this is positional ordering — not to be confused with task `priority_enum` (low/medium/high importance).
+	Priority *int `json:"priority,omitempty"`
 }
 
 // GetProjectWorkersParams defines parameters for GetProjectWorkers.
 type GetProjectWorkersParams struct {
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetProjectsParams defines parameters for GetProjects.
@@ -2077,25 +2620,73 @@ type CreateProjectJSONBodyCurrencyIso string
 
 // SearchJSONBody defines parameters for Search.
 type SearchJSONBody struct {
+	// AuthorsIds Filter by author (entity owner) user IDs.
 	AuthorsIds *[]int `json:"authors_ids,omitempty"`
-	DueDate    *struct {
+
+	// DueDate Due-date range. At least one of `date_from` / `date_to` must be set when this object is present.
+	DueDate *struct {
 		DateFrom *openapi_types.Date `json:"date_from,omitempty"`
 		DateTo   *openapi_types.Date `json:"date_to,omitempty"`
 	} `json:"due_date,omitempty"`
-	EntityType   *SearchJSONBodyEntityType `json:"entity_type,omitempty"`
-	Lang         *string                   `json:"lang,omitempty"`
-	Limit        *int                      `json:"limit,omitempty"`
-	Page         *int                      `json:"page,omitempty"`
-	ProjectsIds  *[]int                    `json:"projects_ids,omitempty"`
-	SearchQuery  string                    `json:"search_query"`
-	StateIds     *[]SearchJSONBodyStateIds `json:"state_ids,omitempty"`
-	TasklistsIds *[]int                    `json:"tasklists_ids,omitempty"`
-	TasksIds     *[]int                    `json:"tasks_ids,omitempty"`
-	WorkersIds   *[]int                    `json:"workers_ids,omitempty"`
+
+	// EntityType Narrow to a single category. See the **Entity types** table in the endpoint description for the underlying ES document types each value maps to. Omit for mixed results.
+	EntityType *SearchJSONBodyEntityType `json:"entity_type,omitempty"`
+
+	// ExcludeEntityTypes Exclude one or more categories (same vocabulary as `entity_type`).
+	ExcludeEntityTypes *[]SearchJSONBodyExcludeEntityTypes `json:"exclude_entity_types,omitempty"`
+
+	// IsSubtask When `true`, restrict to smart-subtask documents (subtasks, checklist items and their comments).
+	IsSubtask *bool `json:"is_subtask,omitempty"`
+
+	// Lang Language used by the Elasticsearch analyzer / stemmer.
+	Lang *SearchJSONBodyLang `json:"lang,omitempty"`
+
+	// Limit Page size.
+	Limit *int `json:"limit,omitempty"`
+
+	// Page Zero-based page index.
+	Page *int `json:"page,omitempty"`
+
+	// ProjectsIds Restrict to these projects (or to documents attached to them).
+	ProjectsIds *[]int `json:"projects_ids,omitempty"`
+
+	// SearchQuery Fulltext query (2–200 chars after trimming). Double-quoted fragments are matched as ordered exact phrases; the rest as loose terms.
+	SearchQuery string `json:"search_query"`
+
+	// Sort Optional sort. Omit for relevance-score ordering.
+	Sort *struct {
+		// Order Direction — note the uppercase values (`OrderEnum::ASC` / `OrderEnum::DESC`).
+		Order   *SearchJSONBodySortOrder   `json:"order,omitempty"`
+		OrderBy *SearchJSONBodySortOrderBy `json:"order_by,omitempty"`
+	} `json:"sort,omitempty"`
+
+	// StateIds Lifecycle states to include. Defaults to `["active"]` if omitted or empty.
+	StateIds *[]SearchJSONBodyStateIds `json:"state_ids,omitempty"`
+
+	// TasklistsIds Restrict to these tasklists (or to documents attached to them).
+	TasklistsIds *[]int `json:"tasklists_ids,omitempty"`
+
+	// TasksIds Restrict to these tasks (or to documents attached to them — e.g. comments / files of the listed tasks).
+	TasksIds *[]int `json:"tasks_ids,omitempty"`
+
+	// WorkersIds Filter by assignee user IDs. Meaningful for tasks / subtasks.
+	WorkersIds *[]int `json:"workers_ids,omitempty"`
 }
 
 // SearchJSONBodyEntityType defines parameters for Search.
 type SearchJSONBodyEntityType string
+
+// SearchJSONBodyExcludeEntityTypes defines parameters for Search.
+type SearchJSONBodyExcludeEntityTypes string
+
+// SearchJSONBodyLang defines parameters for Search.
+type SearchJSONBodyLang string
+
+// SearchJSONBodySortOrder defines parameters for Search.
+type SearchJSONBodySortOrder string
+
+// SearchJSONBodySortOrderBy defines parameters for Search.
+type SearchJSONBodySortOrderBy string
 
 // SearchJSONBodyStateIds defines parameters for Search.
 type SearchJSONBodyStateIds string
@@ -2132,10 +2723,20 @@ type CreateTaskFromTemplateJSONBody struct {
 // EditTaskJSONBody defines parameters for EditTask.
 type EditTaskJSONBody struct {
 	// AddTrackingUsersIds Add tracking users by user ID (merged with existing).
-	AddTrackingUsersIds *[]int           `json:"add_tracking_users_ids,omitempty"`
-	DueDate             *freelotime.Time `json:"due_date,omitempty"`
-	DueDateEnd          *freelotime.Time `json:"due_date_end,omitempty"`
-	Name                *string          `json:"name,omitempty"`
+	AddTrackingUsersIds *[]int `json:"add_tracking_users_ids,omitempty"`
+
+	// Description Task description as an object, identical to the POST /task/{task_id}/description request body. Files are downloaded from download_url, attached to the description, and the description file set is reconciled (files no longer present are archived).
+	Description *struct {
+		Content string        `json:"content"`
+		Files   *[]FileUpload `json:"files,omitempty"`
+	} `json:"description,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDateEnd *freelotime.Time `json:"due_date_end,omitempty"`
+	Name       *string          `json:"name,omitempty"`
 
 	// PriorityEnum Allowed options are l, m, h. Set to null to remove priority.
 	PriorityEnum *EditTaskJSONBodyPriorityEnum `json:"priority_enum,omitempty"`
@@ -2189,13 +2790,17 @@ type AssignTaskToProjectJSONBody struct {
 
 // CreateTaskReminderJSONBody defines parameters for CreateTaskReminder.
 type CreateTaskReminderJSONBody struct {
+	// RemindAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	RemindAt freelotime.Time `json:"remind_at"`
 }
 
 // GetSubtasksInTaskParams defines parameters for GetSubtasksInTask.
 type GetSubtasksInTaskParams struct {
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // SetTotalTimeEstimateJSONBody defines parameters for SetTotalTimeEstimate.
@@ -2211,11 +2816,23 @@ type SetUserTimeEstimateJSONBody struct {
 // CreateWorkReportJSONBody defines parameters for CreateWorkReport.
 type CreateWorkReportJSONBody struct {
 	// Cost Currency amount (2 decimal places × 100)
-	Cost         *string             `json:"cost,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Minutes      int                 `json:"minutes"`
-	Note         *string             `json:"note,omitempty"`
-	WorkerId     *int                `json:"worker_id,omitempty"`
+	Cost *string `json:"cost,omitempty"`
+
+	// DateReported Start timestamp of the work session. Accepts either a full ISO 8601 datetime
+	// (`2026-05-08T08:00:00+02:00`) or a date-only string (`2026-05-08`).
+	// Datetime form records the exact start moment; date-only defaults to start of day.
+	DateReported *string `json:"date_reported,omitempty"`
+	Minutes      int     `json:"minutes"`
+	Note         *string `json:"note,omitempty"`
+	WorkerId     *int    `json:"worker_id,omitempty"`
+}
+
+// EditTaskcheckJSONBody defines parameters for EditTaskcheck.
+type EditTaskcheckJSONBody struct {
+	Name *string `json:"name,omitempty"`
+
+	// Worker User id of the worker to assign. Pass `null` to clear.
+	Worker *int `json:"worker,omitempty"`
 }
 
 // CreateTasklistFromTemplateJSONBody defines parameters for CreateTasklistFromTemplate.
@@ -2229,12 +2846,27 @@ type CreateTasklistFromTemplateJSONBody struct {
 	UsersIds   *[]int `json:"users_ids,omitempty"`
 }
 
+// EditTasklistJSONBody defines parameters for EditTasklist.
+type EditTasklistJSONBody struct {
+	// Budget Integer amount in minor currency units, encoded as a string (e.g. "100000" for 1000.00). `null` or `"0"` clears the budget. Decimal strings ("100.50") are rejected with HTTP 400.
+	Budget                    *string `json:"budget,omitempty"`
+	Name                      *string `json:"name,omitempty"`
+	Priority                  *int    `json:"priority,omitempty"`
+	ShouldChangeExistingTasks *bool   `json:"should_change_existing_tasks,omitempty"`
+	TimeBudgetMinutes         *int    `json:"time_budget_minutes,omitempty"`
+	TrackingUsersIds          *[]int  `json:"tracking_users_ids,omitempty"`
+	WorkerId                  *int    `json:"worker_id,omitempty"`
+}
+
 // GetFinishedTasksParams defines parameters for GetFinishedTasks.
 type GetFinishedTasksParams struct {
 	SearchQuery *string `form:"search_query,omitempty" json:"search_query,omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // FindTaskRelationsBulkJSONBody defines parameters for FindTaskRelationsBulk.
@@ -2252,8 +2884,11 @@ type GetTemplateProjectsParams struct {
 	CreatedInRangeDateFrom *openapi_types.Date               `form:"created_in_range[date_from],omitempty" json:"created_in_range[date_from],omitempty"`
 	CreatedInRangeDateTo   *openapi_types.Date               `form:"created_in_range[date_to],omitempty" json:"created_in_range[date_to],omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetTemplateProjectsParamsOrderBy defines parameters for GetTemplateProjects.
@@ -2264,6 +2899,9 @@ type GetTemplateProjectsParamsOrder string
 
 // EditTimeTrackingJSONBody defines parameters for EditTimeTracking.
 type EditTimeTrackingJSONBody struct {
+	// DateReported New start timestamp for the running session (ISO 8601, e.g. `2026-05-07T09:00:00+02:00`). Used to correct or backdate the timer's start time. The work report produced by `/timetracking/stop` will compute its duration from this value.
+	DateReported *freelotime.Time `json:"date_reported,omitempty"`
+
 	// Note Updated note for the time tracking session.
 	Note *string `json:"note,omitempty"`
 
@@ -2287,8 +2925,11 @@ type GetUserProjectsParams struct {
 	OrderBy   *GetUserProjectsParamsOrderBy     `form:"order_by,omitempty" json:"order_by,omitempty"`
 	Order     *GetUserProjectsParamsOrder       `form:"order,omitempty" json:"order,omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetUserProjectsParamsStatesIds defines parameters for GetUserProjects.
@@ -2303,15 +2944,21 @@ type GetUserProjectsParamsOrder string
 // EnableOutOfOfficeJSONBody defines parameters for EnableOutOfOffice.
 type EnableOutOfOfficeJSONBody struct {
 	OutOfOffice struct {
+		// DateFrom Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 		DateFrom freelotime.Time `json:"date_from"`
-		DateTo   freelotime.Time `json:"date_to"`
+
+		// DateTo Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+		DateTo freelotime.Time `json:"date_to"`
 	} `json:"out_of_office"`
 }
 
 // GetAllUsersParams defines parameters for GetAllUsers.
 type GetAllUsersParams struct {
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // InviteUsersToProjectsJSONBody defines parameters for InviteUsersToProjects.
@@ -2335,20 +2982,34 @@ type GetWorkReportsParams struct {
 	DateAddRangeDateTo        *openapi_types.Date   `form:"date_add_range[date_to],omitempty" json:"date_add_range[date_to],omitempty"`
 	DateEditedFrom            *openapi_types.Date   `form:"date_edited_from,omitempty" json:"date_edited_from,omitempty"`
 
-	// WithOwnTaskless Include the authenticated user's work reports without an associated task. Automatically filters by the authenticated user.
-	WithOwnTaskless *bool `form:"with_own_taskless,omitempty" json:"with_own_taskless,omitempty"`
+	// WithOwnTaskless Include the authenticated user's work reports without an associated task. Automatically filters by the authenticated user. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default. Mutually exclusive with `users_ids[]`.
+	WithOwnTaskless *GetWorkReportsParamsWithOwnTaskless `form:"with_own_taskless,omitempty" json:"with_own_taskless,omitempty"`
 
-	// P Page number (starting from 0)
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
+
+// GetWorkReportsParamsWithOwnTaskless defines parameters for GetWorkReports.
+type GetWorkReportsParamsWithOwnTaskless int
 
 // EditWorkReportJSONBody defines parameters for EditWorkReport.
 type EditWorkReportJSONBody struct {
-	Cost         *string             `json:"cost,omitempty"`
-	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
-	Minutes      *int                `json:"minutes,omitempty"`
-	Note         *string             `json:"note,omitempty"`
-	TaskId       *int                `json:"task_id,omitempty"`
+	Cost *string `json:"cost,omitempty"`
+
+	// DateReported Start timestamp of the work session. Accepts either a full ISO 8601 datetime
+	// (`2026-05-08T08:00:00+02:00`) or a date-only string (`2026-05-08`).
+	// Datetime form records the exact start moment; date-only defaults to start of day.
+	DateReported *string `json:"date_reported,omitempty"`
+	Minutes      *int    `json:"minutes,omitempty"`
+
+	// Note Note for the work report. Pass `null` to clear an existing note. Empty string is rejected.
+	Note *string `json:"note,omitempty"`
+
+	// TaskId ID of the task this work report belongs to. Pass `null` to detach the report from its current task.
+	TaskId *int `json:"task_id,omitempty"`
 }
 
 // EditCommentJSONRequestBody defines body for EditComment for application/json ContentType.
@@ -2459,8 +3120,14 @@ type SetUserTimeEstimateJSONRequestBody SetUserTimeEstimateJSONBody
 // CreateWorkReportJSONRequestBody defines body for CreateWorkReport for application/json ContentType.
 type CreateWorkReportJSONRequestBody CreateWorkReportJSONBody
 
+// EditTaskcheckJSONRequestBody defines body for EditTaskcheck for application/json ContentType.
+type EditTaskcheckJSONRequestBody EditTaskcheckJSONBody
+
 // CreateTasklistFromTemplateJSONRequestBody defines body for CreateTasklistFromTemplate for application/json ContentType.
 type CreateTasklistFromTemplateJSONRequestBody CreateTasklistFromTemplateJSONBody
+
+// EditTasklistJSONRequestBody defines body for EditTasklist for application/json ContentType.
+type EditTasklistJSONRequestBody EditTasklistJSONBody
 
 // FindTaskRelationsBulkJSONRequestBody defines body for FindTaskRelationsBulk for application/json ContentType.
 type FindTaskRelationsBulkJSONRequestBody FindTaskRelationsBulkJSONBody
@@ -2944,6 +3611,9 @@ type ClientInterface interface {
 
 	AddTaskLabelsToTask(ctx context.Context, taskId TaskIdParam, body AddTaskLabelsToTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// FindAvailableTaskLabels request
+	FindAvailableTaskLabels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// RemoveTaskLabelsFromTaskWithBody request with any body
 	RemoveTaskLabelsFromTaskWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3037,6 +3707,20 @@ type ClientInterface interface {
 
 	CreateWorkReport(ctx context.Context, taskId TaskIdParam, body CreateWorkReportJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteTaskcheck request
+	DeleteTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EditTaskcheckWithBody request with any body
+	EditTaskcheckWithBody(ctx context.Context, taskcheckId TaskcheckIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	EditTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, body EditTaskcheckJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ActivateTaskcheck request
+	ActivateTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FinishTaskcheck request
+	FinishTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateTasklistFromTemplateWithBody request with any body
 	CreateTasklistFromTemplateWithBody(ctx context.Context, templateId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3044,6 +3728,11 @@ type ClientInterface interface {
 
 	// GetTasklist request
 	GetTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EditTasklistWithBody request with any body
+	EditTasklistWithBody(ctx context.Context, tasklistId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	EditTasklist(ctx context.Context, tasklistId int, body EditTasklistJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetFinishedTasks request
 	GetFinishedTasks(ctx context.Context, tasklistId TasklistIdParam, params *GetFinishedTasksParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4168,6 +4857,18 @@ func (c *Client) AddTaskLabelsToTask(ctx context.Context, taskId TaskIdParam, bo
 	return c.Client.Do(req)
 }
 
+func (c *Client) FindAvailableTaskLabels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAvailableTaskLabelsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) RemoveTaskLabelsFromTaskWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRemoveTaskLabelsFromTaskRequestWithBody(c.Server, taskId, contentType, body)
 	if err != nil {
@@ -4588,6 +5289,66 @@ func (c *Client) CreateWorkReport(ctx context.Context, taskId TaskIdParam, body 
 	return c.Client.Do(req)
 }
 
+func (c *Client) DeleteTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteTaskcheckRequest(c.Server, taskcheckId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditTaskcheckWithBody(ctx context.Context, taskcheckId TaskcheckIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditTaskcheckRequestWithBody(c.Server, taskcheckId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, body EditTaskcheckJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditTaskcheckRequest(c.Server, taskcheckId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ActivateTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewActivateTaskcheckRequest(c.Server, taskcheckId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FinishTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFinishTaskcheckRequest(c.Server, taskcheckId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) CreateTasklistFromTemplateWithBody(ctx context.Context, templateId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateTasklistFromTemplateRequestWithBody(c.Server, templateId, contentType, body)
 	if err != nil {
@@ -4614,6 +5375,30 @@ func (c *Client) CreateTasklistFromTemplate(ctx context.Context, templateId int,
 
 func (c *Client) GetTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetTasklistRequest(c.Server, tasklistId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditTasklistWithBody(ctx context.Context, tasklistId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditTasklistRequestWithBody(c.Server, tasklistId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditTasklist(ctx context.Context, tasklistId int, body EditTasklistJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditTasklistRequest(c.Server, tasklistId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5000,6 +5785,18 @@ func NewGetAllCommentsRequest(server string, params *GetAllCommentsParams) (*htt
 
 		}
 
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -5069,6 +5866,18 @@ func NewGetAllDocsAndFilesRequest(server string, params *GetAllDocsAndFilesParam
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -5182,7 +5991,7 @@ func NewGetAllNotificationsRequest(server string, params *GetAllNotificationsPar
 
 		if params.OnlyUnread != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "only_unread", *params.OnlyUnread, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "only_unread", *params.OnlyUnread, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -5195,6 +6004,18 @@ func NewGetAllNotificationsRequest(server string, params *GetAllNotificationsPar
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -5342,6 +6163,18 @@ func NewGetAllProjectsRequest(server string, params *GetAllProjectsParams) (*htt
 
 		}
 
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -5423,6 +6256,18 @@ func NewGetAllTasklistsRequest(server string, params *GetAllTasklistsParams) (*h
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -5584,7 +6429,7 @@ func NewGetAllTasksRequest(server string, params *GetAllTasksParams) (*http.Requ
 
 		if params.NoDueDate != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "no_due_date", *params.NoDueDate, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "no_due_date", *params.NoDueDate, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -5620,7 +6465,7 @@ func NewGetAllTasksRequest(server string, params *GetAllTasksParams) (*http.Requ
 
 		if params.FinishedOverdue != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "finished_overdue", *params.FinishedOverdue, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "finished_overdue", *params.FinishedOverdue, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -5666,9 +6511,33 @@ func NewGetAllTasksRequest(server string, params *GetAllTasksParams) (*http.Requ
 
 		}
 
+		if params.MyPriorities != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "my_priorities", *params.MyPriorities, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -5723,6 +6592,18 @@ func NewGetArchivedProjectsRequest(server string, params *GetArchivedProjectsPar
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -6450,6 +7331,18 @@ func NewGetAllEventsRequest(server string, params *GetAllEventsParams) (*http.Re
 
 		}
 
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -6558,6 +7451,18 @@ func NewGetInvitedProjectsRequest(server string, params *GetInvitedProjectsParam
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -6797,6 +7702,18 @@ func NewGetIssuedInvoicesRequest(server string, params *GetIssuedInvoicesParams)
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -7913,6 +8830,18 @@ func NewGetProjectWorkersRequest(server string, projectId ProjectIdParam, params
 
 		}
 
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -8251,6 +9180,33 @@ func NewAddTaskLabelsToTaskRequestWithBody(server string, taskId TaskIdParam, co
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewFindAvailableTaskLabelsRequest generates requests for FindAvailableTaskLabels
+func NewFindAvailableTaskLabelsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/task-labels/find-available")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -8964,6 +9920,18 @@ func NewGetSubtasksInTaskRequest(server string, taskId TaskIdParam, params *GetS
 
 		}
 
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -9248,6 +10216,155 @@ func NewCreateWorkReportRequestWithBody(server string, taskId TaskIdParam, conte
 	return req, nil
 }
 
+// NewDeleteTaskcheckRequest generates requests for DeleteTaskcheck
+func NewDeleteTaskcheckRequest(server string, taskcheckId TaskcheckIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "taskcheck_id", taskcheckId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/taskcheck/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewEditTaskcheckRequest calls the generic EditTaskcheck builder with application/json body
+func NewEditTaskcheckRequest(server string, taskcheckId TaskcheckIdParam, body EditTaskcheckJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewEditTaskcheckRequestWithBody(server, taskcheckId, "application/json", bodyReader)
+}
+
+// NewEditTaskcheckRequestWithBody generates requests for EditTaskcheck with any type of body
+func NewEditTaskcheckRequestWithBody(server string, taskcheckId TaskcheckIdParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "taskcheck_id", taskcheckId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/taskcheck/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewActivateTaskcheckRequest generates requests for ActivateTaskcheck
+func NewActivateTaskcheckRequest(server string, taskcheckId TaskcheckIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "taskcheck_id", taskcheckId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/taskcheck/%s/activate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFinishTaskcheckRequest generates requests for FinishTaskcheck
+func NewFinishTaskcheckRequest(server string, taskcheckId TaskcheckIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "taskcheck_id", taskcheckId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/taskcheck/%s/finish", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCreateTasklistFromTemplateRequest calls the generic CreateTasklistFromTemplate builder with application/json body
 func NewCreateTasklistFromTemplateRequest(server string, templateId int, body CreateTasklistFromTemplateJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -9329,6 +10446,53 @@ func NewGetTasklistRequest(server string, tasklistId TasklistIdParam) (*http.Req
 	return req, nil
 }
 
+// NewEditTasklistRequest calls the generic EditTasklist builder with application/json body
+func NewEditTasklistRequest(server string, tasklistId int, body EditTasklistJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewEditTasklistRequestWithBody(server, tasklistId, "application/json", bodyReader)
+}
+
+// NewEditTasklistRequestWithBody generates requests for EditTasklist with any type of body
+func NewEditTasklistRequestWithBody(server string, tasklistId int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tasklist_id", tasklistId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tasklist/%s/edit", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetFinishedTasksRequest generates requests for GetFinishedTasks
 func NewGetFinishedTasksRequest(server string, tasklistId TasklistIdParam, params *GetFinishedTasksParams) (*http.Request, error) {
 	var err error
@@ -9379,6 +10543,18 @@ func NewGetFinishedTasksRequest(server string, tasklistId TasklistIdParam, param
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -9545,6 +10721,18 @@ func NewGetTemplateProjectsRequest(server string, params *GetTemplateProjectsPar
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -9785,6 +10973,18 @@ func NewGetUserProjectsRequest(server string, userId int, params *GetUserProject
 
 		}
 
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -9945,6 +11145,18 @@ func NewGetAllUsersRequest(server string, params *GetAllUsersParams) (*http.Requ
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -10200,7 +11412,7 @@ func NewGetWorkReportsRequest(server string, params *GetWorkReportsParams) (*htt
 
 		if params.WithOwnTaskless != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "with_own_taskless", *params.WithOwnTaskless, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "with_own_taskless", *params.WithOwnTaskless, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -10213,6 +11425,18 @@ func NewGetWorkReportsRequest(server string, params *GetWorkReportsParams) (*htt
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -10601,6 +11825,9 @@ type ClientWithResponsesInterface interface {
 
 	AddTaskLabelsToTaskWithResponse(ctx context.Context, taskId TaskIdParam, body AddTaskLabelsToTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*AddTaskLabelsToTaskResponse, error)
 
+	// FindAvailableTaskLabelsWithResponse request
+	FindAvailableTaskLabelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*FindAvailableTaskLabelsResponse, error)
+
 	// RemoveTaskLabelsFromTaskWithBodyWithResponse request with any body
 	RemoveTaskLabelsFromTaskWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveTaskLabelsFromTaskResponse, error)
 
@@ -10694,6 +11921,20 @@ type ClientWithResponsesInterface interface {
 
 	CreateWorkReportWithResponse(ctx context.Context, taskId TaskIdParam, body CreateWorkReportJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateWorkReportResponse, error)
 
+	// DeleteTaskcheckWithResponse request
+	DeleteTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*DeleteTaskcheckResponse, error)
+
+	// EditTaskcheckWithBodyWithResponse request with any body
+	EditTaskcheckWithBodyWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditTaskcheckResponse, error)
+
+	EditTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, body EditTaskcheckJSONRequestBody, reqEditors ...RequestEditorFn) (*EditTaskcheckResponse, error)
+
+	// ActivateTaskcheckWithResponse request
+	ActivateTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*ActivateTaskcheckResponse, error)
+
+	// FinishTaskcheckWithResponse request
+	FinishTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*FinishTaskcheckResponse, error)
+
 	// CreateTasklistFromTemplateWithBodyWithResponse request with any body
 	CreateTasklistFromTemplateWithBodyWithResponse(ctx context.Context, templateId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTasklistFromTemplateResponse, error)
 
@@ -10701,6 +11942,11 @@ type ClientWithResponsesInterface interface {
 
 	// GetTasklistWithResponse request
 	GetTasklistWithResponse(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*GetTasklistResponse, error)
+
+	// EditTasklistWithBodyWithResponse request with any body
+	EditTasklistWithBodyWithResponse(ctx context.Context, tasklistId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditTasklistResponse, error)
+
+	EditTasklistWithResponse(ctx context.Context, tasklistId int, body EditTasklistJSONRequestBody, reqEditors ...RequestEditorFn) (*EditTasklistResponse, error)
 
 	// GetFinishedTasksWithResponse request
 	GetFinishedTasksWithResponse(ctx context.Context, tasklistId TasklistIdParam, params *GetFinishedTasksParams, reqEditors ...RequestEditorFn) (*GetFinishedTasksResponse, error)
@@ -12023,7 +13269,7 @@ type FindAvailableProjectLabelsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Label *[]ProjectLabel `json:"label,omitempty"`
+		Labels *[]ProjectLabel `json:"labels,omitempty"`
 	}
 }
 
@@ -12449,7 +13695,7 @@ func (r RemoveProjectWorkersByIdsResponse) ContentType() string {
 type GetAssignableWorkersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]UserBasic
+	JSON200      *[]UserWithEmail
 }
 
 // Status returns HTTPResponse.Status
@@ -12572,7 +13818,7 @@ type GetProjectWorkersResponse struct {
 	JSON200      *struct {
 		Count *int `json:"count,omitempty"`
 		Data  *struct {
-			Workers *[]UserBasic `json:"workers,omitempty"`
+			Workers *[]UserWithEmail `json:"workers,omitempty"`
 		} `json:"data,omitempty"`
 		Page    *int `json:"page,omitempty"`
 		PerPage *int `json:"per_page,omitempty"`
@@ -12849,6 +14095,38 @@ func (r AddTaskLabelsToTaskResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AddTaskLabelsToTaskResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type FindAvailableTaskLabelsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Labels *[]TaskLabel `json:"labels,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r FindAvailableTaskLabelsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FindAvailableTaskLabelsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FindAvailableTaskLabelsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -13323,6 +14601,7 @@ type CreateTaskReminderResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
+		// RemindAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 		RemindAt *freelotime.Time `json:"remind_at,omitempty"`
 		Task     *struct {
 			Id   *int    `json:"id,omitempty"`
@@ -13573,6 +14852,126 @@ func (r CreateWorkReportResponse) ContentType() string {
 	return ""
 }
 
+type DeleteTaskcheckResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteTaskcheckResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteTaskcheckResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteTaskcheckResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type EditTaskcheckResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r EditTaskcheckResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EditTaskcheckResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r EditTaskcheckResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ActivateTaskcheckResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ActivateTaskcheckResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ActivateTaskcheckResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ActivateTaskcheckResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type FinishTaskcheckResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r FinishTaskcheckResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FinishTaskcheckResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FinishTaskcheckResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type CreateTasklistFromTemplateResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -13634,6 +15033,39 @@ func (r GetTasklistResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetTasklistResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type EditTasklistResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// PriorityApplied `true` when the priority renumber finished (or was not requested). `false` when other fields committed but the priority renumber failed (the client may retry the priority field alone).
+		PriorityApplied bool `json:"priorityApplied"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r EditTasklistResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EditTasklistResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r EditTasklistResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -13826,7 +15258,7 @@ type GetTimeTrackingStatusResponse struct {
 		// Cost Cost information
 		Cost *map[string]interface{} `json:"cost,omitempty"`
 
-		// DateReported Timestamp when the session was started (ISO 8601 / ATOM format)
+		// DateReported Timestamp when the session was started. Naive ISO8601 in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 		DateReported *freelotime.Time `json:"date_reported,omitempty"`
 		IsBillable   *bool            `json:"is_billable,omitempty"`
 		IsCostFixed  *bool            `json:"is_cost_fixed,omitempty"`
@@ -13987,8 +15419,11 @@ type GetOutOfOfficeResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *struct {
 		OutOfOffice *struct {
+			// DateFrom Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 			DateFrom *freelotime.Time `json:"date_from,omitempty"`
-			DateTo   *freelotime.Time `json:"date_to,omitempty"`
+
+			// DateTo Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+			DateTo *freelotime.Time `json:"date_to,omitempty"`
 		} `json:"out_of_office,omitempty"`
 	}
 }
@@ -14053,7 +15488,7 @@ type GetAllUsersResponse struct {
 	JSON200      *struct {
 		Count *int `json:"count,omitempty"`
 		Data  *struct {
-			Users *[]UserBasic `json:"users,omitempty"`
+			Users *[]UserWithEmail `json:"users,omitempty"`
 		} `json:"data,omitempty"`
 		Page    *int `json:"page,omitempty"`
 		PerPage *int `json:"per_page,omitempty"`
@@ -14133,8 +15568,18 @@ type GetUsersMeResponse struct {
 	JSON200      *struct {
 		Result string `json:"result"`
 		User   struct {
+			// Email Email address of the authenticated user
+			Email openapi_types.Email `json:"email"`
+
+			// Fullname Full name of the authenticated user (first name + last name, or email if name is empty).
+			Fullname string `json:"fullname"`
+
 			// Id ID of the authenticated user
 			Id int `json:"id"`
+
+			// MentionKey Normalized form of the authenticated user's `fullname` (whitespace stripped, diacritics removed) used in comments as the visible text after `@` inside a mention span. Build a mention with:
+			// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+			MentionKey string `json:"mention_key"`
 		} `json:"user"`
 	}
 	JSON401 *struct {
@@ -15065,6 +16510,15 @@ func (c *ClientWithResponses) AddTaskLabelsToTaskWithResponse(ctx context.Contex
 	return ParseAddTaskLabelsToTaskResponse(rsp)
 }
 
+// FindAvailableTaskLabelsWithResponse request returning *FindAvailableTaskLabelsResponse
+func (c *ClientWithResponses) FindAvailableTaskLabelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*FindAvailableTaskLabelsResponse, error) {
+	rsp, err := c.FindAvailableTaskLabels(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFindAvailableTaskLabelsResponse(rsp)
+}
+
 // RemoveTaskLabelsFromTaskWithBodyWithResponse request with arbitrary body returning *RemoveTaskLabelsFromTaskResponse
 func (c *ClientWithResponses) RemoveTaskLabelsFromTaskWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveTaskLabelsFromTaskResponse, error) {
 	rsp, err := c.RemoveTaskLabelsFromTaskWithBody(ctx, taskId, contentType, body, reqEditors...)
@@ -15368,6 +16822,50 @@ func (c *ClientWithResponses) CreateWorkReportWithResponse(ctx context.Context, 
 	return ParseCreateWorkReportResponse(rsp)
 }
 
+// DeleteTaskcheckWithResponse request returning *DeleteTaskcheckResponse
+func (c *ClientWithResponses) DeleteTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*DeleteTaskcheckResponse, error) {
+	rsp, err := c.DeleteTaskcheck(ctx, taskcheckId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteTaskcheckResponse(rsp)
+}
+
+// EditTaskcheckWithBodyWithResponse request with arbitrary body returning *EditTaskcheckResponse
+func (c *ClientWithResponses) EditTaskcheckWithBodyWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditTaskcheckResponse, error) {
+	rsp, err := c.EditTaskcheckWithBody(ctx, taskcheckId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditTaskcheckResponse(rsp)
+}
+
+func (c *ClientWithResponses) EditTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, body EditTaskcheckJSONRequestBody, reqEditors ...RequestEditorFn) (*EditTaskcheckResponse, error) {
+	rsp, err := c.EditTaskcheck(ctx, taskcheckId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditTaskcheckResponse(rsp)
+}
+
+// ActivateTaskcheckWithResponse request returning *ActivateTaskcheckResponse
+func (c *ClientWithResponses) ActivateTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*ActivateTaskcheckResponse, error) {
+	rsp, err := c.ActivateTaskcheck(ctx, taskcheckId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseActivateTaskcheckResponse(rsp)
+}
+
+// FinishTaskcheckWithResponse request returning *FinishTaskcheckResponse
+func (c *ClientWithResponses) FinishTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*FinishTaskcheckResponse, error) {
+	rsp, err := c.FinishTaskcheck(ctx, taskcheckId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFinishTaskcheckResponse(rsp)
+}
+
 // CreateTasklistFromTemplateWithBodyWithResponse request with arbitrary body returning *CreateTasklistFromTemplateResponse
 func (c *ClientWithResponses) CreateTasklistFromTemplateWithBodyWithResponse(ctx context.Context, templateId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTasklistFromTemplateResponse, error) {
 	rsp, err := c.CreateTasklistFromTemplateWithBody(ctx, templateId, contentType, body, reqEditors...)
@@ -15392,6 +16890,23 @@ func (c *ClientWithResponses) GetTasklistWithResponse(ctx context.Context, taskl
 		return nil, err
 	}
 	return ParseGetTasklistResponse(rsp)
+}
+
+// EditTasklistWithBodyWithResponse request with arbitrary body returning *EditTasklistResponse
+func (c *ClientWithResponses) EditTasklistWithBodyWithResponse(ctx context.Context, tasklistId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditTasklistResponse, error) {
+	rsp, err := c.EditTasklistWithBody(ctx, tasklistId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditTasklistResponse(rsp)
+}
+
+func (c *ClientWithResponses) EditTasklistWithResponse(ctx context.Context, tasklistId int, body EditTasklistJSONRequestBody, reqEditors ...RequestEditorFn) (*EditTasklistResponse, error) {
+	rsp, err := c.EditTasklist(ctx, tasklistId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditTasklistResponse(rsp)
 }
 
 // GetFinishedTasksWithResponse request returning *GetFinishedTasksResponse
@@ -16700,7 +18215,7 @@ func ParseFindAvailableProjectLabelsResponse(rsp *http.Response) (*FindAvailable
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Label *[]ProjectLabel `json:"label,omitempty"`
+			Labels *[]ProjectLabel `json:"labels,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -17070,7 +18585,7 @@ func ParseGetAssignableWorkersResponse(rsp *http.Response) (*GetAssignableWorker
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []UserBasic
+		var dest []UserWithEmail
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -17177,7 +18692,7 @@ func ParseGetProjectWorkersResponse(rsp *http.Response) (*GetProjectWorkersRespo
 		var dest struct {
 			Count *int `json:"count,omitempty"`
 			Data  *struct {
-				Workers *[]UserBasic `json:"workers,omitempty"`
+				Workers *[]UserWithEmail `json:"workers,omitempty"`
 			} `json:"data,omitempty"`
 			Page    *int `json:"page,omitempty"`
 			PerPage *int `json:"per_page,omitempty"`
@@ -17393,6 +18908,34 @@ func ParseAddTaskLabelsToTaskResponse(rsp *http.Response) (*AddTaskLabelsToTaskR
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFindAvailableTaskLabelsResponse parses an HTTP response from a FindAvailableTaskLabelsWithResponse call
+func ParseFindAvailableTaskLabelsResponse(rsp *http.Response) (*FindAvailableTaskLabelsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FindAvailableTaskLabelsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Labels *[]TaskLabel `json:"labels,omitempty"`
+		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -17823,6 +19366,7 @@ func ParseCreateTaskReminderResponse(rsp *http.Response) (*CreateTaskReminderRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
+			// RemindAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 			RemindAt *freelotime.Time `json:"remind_at,omitempty"`
 			Task     *struct {
 				Id   *int    `json:"id,omitempty"`
@@ -18029,6 +19573,110 @@ func ParseCreateWorkReportResponse(rsp *http.Response) (*CreateWorkReportRespons
 	return response, nil
 }
 
+// ParseDeleteTaskcheckResponse parses an HTTP response from a DeleteTaskcheckWithResponse call
+func ParseDeleteTaskcheckResponse(rsp *http.Response) (*DeleteTaskcheckResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteTaskcheckResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseEditTaskcheckResponse parses an HTTP response from a EditTaskcheckWithResponse call
+func ParseEditTaskcheckResponse(rsp *http.Response) (*EditTaskcheckResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EditTaskcheckResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseActivateTaskcheckResponse parses an HTTP response from a ActivateTaskcheckWithResponse call
+func ParseActivateTaskcheckResponse(rsp *http.Response) (*ActivateTaskcheckResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ActivateTaskcheckResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFinishTaskcheckResponse parses an HTTP response from a FinishTaskcheckWithResponse call
+func ParseFinishTaskcheckResponse(rsp *http.Response) (*FinishTaskcheckResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FinishTaskcheckResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseCreateTasklistFromTemplateResponse parses an HTTP response from a CreateTasklistFromTemplateWithResponse call
 func ParseCreateTasklistFromTemplateResponse(rsp *http.Response) (*CreateTasklistFromTemplateResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -18078,6 +19726,35 @@ func ParseGetTasklistResponse(rsp *http.Response) (*GetTasklistResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest TasklistDetail
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseEditTasklistResponse parses an HTTP response from a EditTasklistWithResponse call
+func ParseEditTasklistResponse(rsp *http.Response) (*EditTasklistResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EditTasklistResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// PriorityApplied `true` when the priority renumber finished (or was not requested). `false` when other fields committed but the priority renumber failed (the client may retry the priority field alone).
+			PriorityApplied bool `json:"priorityApplied"`
+		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -18278,7 +19955,7 @@ func ParseGetTimeTrackingStatusResponse(rsp *http.Response) (*GetTimeTrackingSta
 			// Cost Cost information
 			Cost *map[string]interface{} `json:"cost,omitempty"`
 
-			// DateReported Timestamp when the session was started (ISO 8601 / ATOM format)
+			// DateReported Timestamp when the session was started. Naive ISO8601 in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 			DateReported *freelotime.Time `json:"date_reported,omitempty"`
 			IsBillable   *bool            `json:"is_billable,omitempty"`
 			IsCostFixed  *bool            `json:"is_cost_fixed,omitempty"`
@@ -18429,8 +20106,11 @@ func ParseGetOutOfOfficeResponse(rsp *http.Response) (*GetOutOfOfficeResponse, e
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			OutOfOffice *struct {
+				// DateFrom Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 				DateFrom *freelotime.Time `json:"date_from,omitempty"`
-				DateTo   *freelotime.Time `json:"date_to,omitempty"`
+
+				// DateTo Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+				DateTo *freelotime.Time `json:"date_to,omitempty"`
 			} `json:"out_of_office,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -18487,7 +20167,7 @@ func ParseGetAllUsersResponse(rsp *http.Response) (*GetAllUsersResponse, error) 
 		var dest struct {
 			Count *int `json:"count,omitempty"`
 			Data  *struct {
-				Users *[]UserBasic `json:"users,omitempty"`
+				Users *[]UserWithEmail `json:"users,omitempty"`
 			} `json:"data,omitempty"`
 			Page    *int `json:"page,omitempty"`
 			PerPage *int `json:"per_page,omitempty"`
@@ -18559,8 +20239,18 @@ func ParseGetUsersMeResponse(rsp *http.Response) (*GetUsersMeResponse, error) {
 		var dest struct {
 			Result string `json:"result"`
 			User   struct {
+				// Email Email address of the authenticated user
+				Email openapi_types.Email `json:"email"`
+
+				// Fullname Full name of the authenticated user (first name + last name, or email if name is empty).
+				Fullname string `json:"fullname"`
+
 				// Id ID of the authenticated user
 				Id int `json:"id"`
+
+				// MentionKey Normalized form of the authenticated user's `fullname` (whitespace stripped, diacritics removed) used in comments as the visible text after `@` inside a mention span. Build a mention with:
+				// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+				MentionKey string `json:"mention_key"`
 			} `json:"user"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

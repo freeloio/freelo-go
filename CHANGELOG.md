@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Regenerated client from the latest public spec:
+  - `EditTasklistWithResponse` — edit a tasklist (`POST /tasklist/{id}/edit`).
+  - Checklist-item (taskcheck) operations: `EditTaskcheckWithResponse`,
+    `DeleteTaskcheckWithResponse`, `FinishTaskcheckWithResponse`,
+    `ActivateTaskcheckWithResponse`.
+  - `FindAvailableTaskLabelsWithResponse` — list task labels usable by
+    the caller.
+  - `GetCurrentUser` response now includes `Email`, `Fullname` and
+    `MentionKey` (for building `@mention` spans in comments).
+  - Optional `Priority` field on `CreateTasklist` body — positional
+    ordering of the new tasklist within the project.
+  - Collection endpoints accept `page` as an alias of the `p`
+    pagination parameter.
+
+### Changed
+
+- **Breaking:** `FindAvailableProjectLabels` response field renamed
+  `Label` → `Labels` (spec fix — the live API returns `labels`).
+- **Breaking:** project workers in `GetProjectWorkers` are now typed
+  `UserWithEmail` (adds `Email`) instead of `UserBasic`.
+
 ## [0.1.0] — 2026-05-01
 
 Initial release. The SDK was extracted from
