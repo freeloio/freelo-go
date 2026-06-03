@@ -5,27 +5,21 @@ All notable changes to the Freelo Go SDK are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.0](https://github.com/freeloio/freelo-go/compare/v0.1.0...v0.2.0) (2026-06-03)
+## [Unreleased]
 
+## [0.2.0](https://github.com/freeloio/freelo-go/compare/v0.1.0...v0.2.0) (2026-06-03)
 
 ### ⚠ BREAKING CHANGES
 
-* **freeloapi:** FindAvailableProjectLabels response field renamed Label -> Labels (spec fix, live API returns labels). GetProjectWorkers workers typed UserWithEmail instead of UserBasic.
+- `FindAvailableProjectLabels` response field renamed
+  `Label` → `Labels` (spec fix — the live API returns `labels`).
+- Project workers in `GetProjectWorkers` are now typed
+  `UserWithEmail` (adds `Email`) instead of `UserBasic`.
 
 ### Features
 
-* **freeloapi:** regenerate client from latest spec ([1f9dc73](https://github.com/freeloio/freelo-go/commit/1f9dc73779e3031a1b06369e1fb4b045c6b8c74c))
-
-
-### Build System
-
-* **release:** switch release-please to manifest mode, stay in 0.x ([fce95fb](https://github.com/freeloio/freelo-go/commit/fce95fbc683f40d7fc6e8ff2c0a6ef21939c260c))
-
-## [Unreleased]
-
-### Added
-
-- Regenerated client from the latest public spec:
+- Regenerated client from the latest public spec
+  ([1f9dc73](https://github.com/freeloio/freelo-go/commit/1f9dc73779e3031a1b06369e1fb4b045c6b8c74c)):
   - `EditTasklistWithResponse` — edit a tasklist (`POST /tasklist/{id}/edit`).
   - Checklist-item (taskcheck) operations: `EditTaskcheckWithResponse`,
     `DeleteTaskcheckWithResponse`, `FinishTaskcheckWithResponse`,
@@ -39,12 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Collection endpoints accept `page` as an alias of the `p`
     pagination parameter.
 
-### Changed
+### Build System
 
-- **Breaking:** `FindAvailableProjectLabels` response field renamed
-  `Label` → `Labels` (spec fix — the live API returns `labels`).
-- **Breaking:** project workers in `GetProjectWorkers` are now typed
-  `UserWithEmail` (adds `Email`) instead of `UserBasic`.
+- Switch release-please to manifest mode, stay in 0.x
+  ([fce95fb](https://github.com/freeloio/freelo-go/commit/fce95fbc683f40d7fc6e8ff2c0a6ef21939c260c))
 
 ## [0.1.0] — 2026-05-01
 
