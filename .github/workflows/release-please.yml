@@ -12,10 +12,10 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
+      # Manifest mode: reads release-please-config.json +
+      # .release-please-manifest.json. Bumps `version.go` (const
+      # SDKVersion, via the x-release-please-version marker) on every
+      # release PR. Drives changelog from conventional commit subjects
+      # (feat:, fix:, chore:, ...). bump-minor-pre-major keeps breaking
+      # changes in the 0.x range until we opt into 1.0.
       - uses: googleapis/release-please-action@v4
-        with:
-          # Go preset: bumps `version.go` (const SDKVersion = "...") on
-          # every release PR. Drives changelog from conventional commit
-          # subjects (feat:, fix:, chore:, ...).
-          release-type: go
-          package-name: freelo-go
