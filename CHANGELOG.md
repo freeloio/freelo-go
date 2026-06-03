@@ -5,6 +5,22 @@ All notable changes to the Freelo Go SDK are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0](https://github.com/freeloio/freelo-go/compare/v0.1.0...v0.2.0) (2026-06-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **freeloapi:** FindAvailableProjectLabels response field renamed Label -> Labels (spec fix, live API returns labels). GetProjectWorkers workers typed UserWithEmail instead of UserBasic.
+
+### Features
+
+* **freeloapi:** regenerate client from latest spec ([1f9dc73](https://github.com/freeloio/freelo-go/commit/1f9dc73779e3031a1b06369e1fb4b045c6b8c74c))
+
+
+### Build System
+
+* **release:** switch release-please to manifest mode, stay in 0.x ([fce95fb](https://github.com/freeloio/freelo-go/commit/fce95fbc683f40d7fc6e8ff2c0a6ef21939c260c))
+
 ## [Unreleased]
 
 ### Added
