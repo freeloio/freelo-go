@@ -2754,6 +2754,9 @@ type EditTaskJSONBodyPriorityEnum string
 
 // CreateCommentJSONBody defines parameters for CreateComment.
 type CreateCommentJSONBody struct {
+	// Content Comment body (HTML / plain text). To mention a user, embed a span:
+	// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+	// (`id` and `mention_key` come from the user's `UserBasic` object, e.g. `GET /users/me`).
 	Content string        `json:"content"`
 	Files   *[]FileUpload `json:"files,omitempty"`
 }
