@@ -15,9 +15,21 @@ jobs:
   regenerate:
     runs-on: ubuntu-latest
     steps:
+      # Generate a short-lived GitHub App token so the PR is created under the
+      # App identity instead of GITHUB_TOKEN. PRs opened by GITHUB_TOKEN do not
+      # trigger `pull_request` workflows (GitHub anti-recursion), which is why
+      # CI was skipped on the weekly spec PRs.
+      - name: Generate App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_KEY }}
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
 
       - uses: actions/setup-go@v5
         with:
@@ -36,6 +48,7 @@ jobs:
       - name: Open PR if anything changed
         uses: peter-evans/create-pull-request@v6
         with:
+          token: ${{ steps.app-token.outputs.token }}
           branch: chore/update-api-spec
           delete-branch: true
           commit-message: "chore: refresh OpenAPI spec and regenerate client"
