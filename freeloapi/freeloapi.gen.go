@@ -628,6 +628,27 @@ func (e GetAllTasksParamsMyPriorities) Valid() bool {
 	}
 }
 
+// Defines values for GetAllTasksParamsPriorityEnum.
+const (
+	GetAllTasksParamsPriorityEnumH GetAllTasksParamsPriorityEnum = "h"
+	GetAllTasksParamsPriorityEnumL GetAllTasksParamsPriorityEnum = "l"
+	GetAllTasksParamsPriorityEnumM GetAllTasksParamsPriorityEnum = "m"
+)
+
+// Valid indicates whether the value is a known member of the GetAllTasksParamsPriorityEnum enum.
+func (e GetAllTasksParamsPriorityEnum) Valid() bool {
+	switch e {
+	case GetAllTasksParamsPriorityEnumH:
+		return true
+	case GetAllTasksParamsPriorityEnumL:
+		return true
+	case GetAllTasksParamsPriorityEnumM:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetAllEventsParamsOrder.
 const (
 	GetAllEventsParamsOrderAsc  GetAllEventsParamsOrder = "asc"
@@ -939,19 +960,19 @@ func (e SearchJSONBodyStateIds) Valid() bool {
 
 // Defines values for EditTaskJSONBodyPriorityEnum.
 const (
-	EditTaskJSONBodyPriorityEnumH EditTaskJSONBodyPriorityEnum = "h"
-	EditTaskJSONBodyPriorityEnumL EditTaskJSONBodyPriorityEnum = "l"
-	EditTaskJSONBodyPriorityEnumM EditTaskJSONBodyPriorityEnum = "m"
+	H EditTaskJSONBodyPriorityEnum = "h"
+	L EditTaskJSONBodyPriorityEnum = "l"
+	M EditTaskJSONBodyPriorityEnum = "m"
 )
 
 // Valid indicates whether the value is a known member of the EditTaskJSONBodyPriorityEnum enum.
 func (e EditTaskJSONBodyPriorityEnum) Valid() bool {
 	switch e {
-	case EditTaskJSONBodyPriorityEnumH:
+	case H:
 		return true
-	case EditTaskJSONBodyPriorityEnumL:
+	case L:
 		return true
-	case EditTaskJSONBodyPriorityEnumM:
+	case M:
 		return true
 	default:
 		return false
@@ -2010,6 +2031,9 @@ type TasklistDetail struct {
 		ParentTaskId *int             `json:"parent_task_id,omitempty"`
 		Worker       *UserBasic       `json:"worker,omitempty"`
 	} `json:"tasks,omitempty"`
+
+	// WorkerId Default worker of the tasklist (same field as in POST /tasklist/{tasklist_id}/edit). `null` when not set or when the worker is no longer among the tasklist's assignable workers.
+	WorkerId *int `json:"worker_id,omitempty"`
 }
 
 // TasklistFull defines model for TasklistFull.
@@ -2337,6 +2361,9 @@ type GetAllTasksParams struct {
 	// MyPriorities Only tasks in the authenticated user's priorities ("my priorities"). Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
 	MyPriorities *GetAllTasksParamsMyPriorities `form:"my_priorities,omitempty" json:"my_priorities,omitempty"`
 
+	// PriorityEnum Filter by task priority level: `l` (low), `m` (medium) or `h` (high). Omit to return tasks of any priority.
+	PriorityEnum *GetAllTasksParamsPriorityEnum `form:"priority_enum,omitempty" json:"priority_enum,omitempty"`
+
 	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
 
@@ -2358,6 +2385,9 @@ type GetAllTasksParamsFinishedOverdue int
 
 // GetAllTasksParamsMyPriorities defines parameters for GetAllTasks.
 type GetAllTasksParamsMyPriorities int
+
+// GetAllTasksParamsPriorityEnum defines parameters for GetAllTasks.
+type GetAllTasksParamsPriorityEnum string
 
 // GetArchivedProjectsParams defines parameters for GetArchivedProjects.
 type GetArchivedProjectsParams struct {
@@ -6517,6 +6547,18 @@ func NewGetAllTasksRequest(server string, params *GetAllTasksParams) (*http.Requ
 		if params.MyPriorities != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "my_priorities", *params.MyPriorities, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.PriorityEnum != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "priority_enum", *params.PriorityEnum, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
