@@ -2759,6 +2759,26 @@ paths:
                     items:
                       $ref: '#/components/schemas/TaskLabel'
 
+  /task-label-colors:
+    get:
+      tags:
+        - Task Labels
+      summary: List the accepted task-label colors
+      description: Returns the fixed palette of colors accepted when creating or assigning task labels.
+      operationId: getTaskLabelColors
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  colors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskLabelColor'
+
   /task-labels:
     post:
       tags:
@@ -5658,6 +5678,19 @@ components:
           type: string
         color:
           type: string
+
+    TaskLabelColor:
+      type: object
+      properties:
+        color:
+          type: string
+          description: Hex value to send as the label color (e.g. "#15acc0").
+        display_name:
+          type: string
+          description: Human-readable color name, for display only; not accepted as input.
+        is_default:
+          type: boolean
+          description: True for the color applied when a label is created without a color.
 
     TaskLabelAddInput:
       description: >

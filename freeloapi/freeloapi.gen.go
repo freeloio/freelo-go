@@ -1947,6 +1947,18 @@ type TaskLabelAddInput1 struct {
 	Uuid *openapi_types.UUID `json:"uuid,omitempty"`
 }
 
+// TaskLabelColor defines model for TaskLabelColor.
+type TaskLabelColor struct {
+	// Color Hex value to send as the label color (e.g. "#15acc0").
+	Color *string `json:"color,omitempty"`
+
+	// DisplayName Human-readable color name, for display only; not accepted as input.
+	DisplayName *string `json:"display_name,omitempty"`
+
+	// IsDefault True for the color applied when a label is created without a color.
+	IsDefault *bool `json:"is_default,omitempty"`
+}
+
 // TaskLabelRemoveInput Three input modes: (1) UUID — removes the label identified by UUID. (2) Name only — removes all labels with that name regardless of color. (3) Name + color — removes the label matching both name and color.
 type TaskLabelRemoveInput struct {
 	union json.RawMessage
@@ -3634,6 +3646,9 @@ type ClientInterface interface {
 	// GetAllStates request
 	GetAllStates(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetTaskLabelColors request
+	GetTaskLabelColors(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateTaskLabelsWithBody request with any body
 	CreateTaskLabelsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4832,6 +4847,18 @@ func (c *Client) Search(ctx context.Context, body SearchJSONRequestBody, reqEdit
 
 func (c *Client) GetAllStates(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetAllStatesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetTaskLabelColors(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTaskLabelColorsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -9142,6 +9169,33 @@ func NewGetAllStatesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewGetTaskLabelColorsRequest generates requests for GetTaskLabelColors
+func NewGetTaskLabelColorsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/task-label-colors")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCreateTaskLabelsRequest calls the generic CreateTaskLabels builder with application/json body
 func NewCreateTaskLabelsRequest(server string, body CreateTaskLabelsJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -11860,6 +11914,9 @@ type ClientWithResponsesInterface interface {
 	// GetAllStatesWithResponse request
 	GetAllStatesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAllStatesResponse, error)
 
+	// GetTaskLabelColorsWithResponse request
+	GetTaskLabelColorsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTaskLabelColorsResponse, error)
+
 	// CreateTaskLabelsWithBodyWithResponse request with any body
 	CreateTaskLabelsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTaskLabelsResponse, error)
 
@@ -14081,6 +14138,38 @@ func (r GetAllStatesResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetAllStatesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetTaskLabelColorsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Colors *[]TaskLabelColor `json:"colors,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTaskLabelColorsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTaskLabelColorsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetTaskLabelColorsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -16521,6 +16610,15 @@ func (c *ClientWithResponses) GetAllStatesWithResponse(ctx context.Context, reqE
 	return ParseGetAllStatesResponse(rsp)
 }
 
+// GetTaskLabelColorsWithResponse request returning *GetTaskLabelColorsResponse
+func (c *ClientWithResponses) GetTaskLabelColorsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTaskLabelColorsResponse, error) {
+	rsp, err := c.GetTaskLabelColors(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTaskLabelColorsResponse(rsp)
+}
+
 // CreateTaskLabelsWithBodyWithResponse request with arbitrary body returning *CreateTaskLabelsResponse
 func (c *ClientWithResponses) CreateTaskLabelsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTaskLabelsResponse, error) {
 	rsp, err := c.CreateTaskLabelsWithBody(ctx, contentType, body, reqEditors...)
@@ -18910,6 +19008,34 @@ func ParseGetAllStatesResponse(rsp *http.Response) (*GetAllStatesResponse, error
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			States *[]State `json:"states,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTaskLabelColorsResponse parses an HTTP response from a GetTaskLabelColorsWithResponse call
+func ParseGetTaskLabelColorsResponse(rsp *http.Response) (*GetTaskLabelColorsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTaskLabelColorsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Colors *[]TaskLabelColor `json:"colors,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
