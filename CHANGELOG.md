@@ -5,6 +5,14 @@ All notable changes to the Freelo Go SDK are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1](https://github.com/freeloio/freelo-go/compare/v0.2.0...v0.2.1) (2026-07-10)
+
+
+### Features
+
+* add getTaskLabelColors (list task-label colors) endpoint ([022aa9a](https://github.com/freeloio/freelo-go/commit/022aa9a73ff1590bda94c70b011098909471aa7b))
+* add getTaskLabelColors (list task-label colors) endpoint ([d7391bc](https://github.com/freeloio/freelo-go/commit/d7391bc3d62b94ce7329c970112c9a3947dd0607))
+
 ## [Unreleased]
 
 ## [0.2.0](https://github.com/freeloio/freelo-go/compare/v0.1.0...v0.2.0) (2026-06-03)
