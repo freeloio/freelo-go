@@ -493,6 +493,24 @@ func (e GetAllProjectsParamsStatesIds) Valid() bool {
 	}
 }
 
+// Defines values for GetAllTasklistsParamsStates.
+const (
+	GetAllTasklistsParamsStatesActive   GetAllTasklistsParamsStates = "active"
+	GetAllTasklistsParamsStatesFinished GetAllTasklistsParamsStates = "finished"
+)
+
+// Valid indicates whether the value is a known member of the GetAllTasklistsParamsStates enum.
+func (e GetAllTasklistsParamsStates) Valid() bool {
+	switch e {
+	case GetAllTasklistsParamsStatesActive:
+		return true
+	case GetAllTasklistsParamsStatesFinished:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetAllTasklistsParamsOrderBy.
 const (
 	GetAllTasklistsParamsOrderByDateAdd      GetAllTasklistsParamsOrderBy = "date_add"
@@ -536,6 +554,7 @@ func (e GetAllTasklistsParamsOrder) Valid() bool {
 const (
 	GetAllTasksParamsOrderByDateAdd      GetAllTasksParamsOrderBy = "date_add"
 	GetAllTasksParamsOrderByDateEditedAt GetAllTasksParamsOrderBy = "date_edited_at"
+	GetAllTasksParamsOrderByDueDate      GetAllTasksParamsOrderBy = "due_date"
 	GetAllTasksParamsOrderByName         GetAllTasksParamsOrderBy = "name"
 	GetAllTasksParamsOrderByPriority     GetAllTasksParamsOrderBy = "priority"
 )
@@ -546,6 +565,8 @@ func (e GetAllTasksParamsOrderBy) Valid() bool {
 	case GetAllTasksParamsOrderByDateAdd:
 		return true
 	case GetAllTasksParamsOrderByDateEditedAt:
+		return true
+	case GetAllTasksParamsOrderByDueDate:
 		return true
 	case GetAllTasksParamsOrderByName:
 		return true
@@ -710,6 +731,7 @@ func (e CreateProjectFromTemplateJSONBodyGeneralSettingsLayout) Valid() bool {
 const (
 	GetTasksInTasklistParamsOrderByDateAdd      GetTasksInTasklistParamsOrderBy = "date_add"
 	GetTasksInTasklistParamsOrderByDateEditedAt GetTasksInTasklistParamsOrderBy = "date_edited_at"
+	GetTasksInTasklistParamsOrderByDueDate      GetTasksInTasklistParamsOrderBy = "due_date"
 	GetTasksInTasklistParamsOrderByName         GetTasksInTasklistParamsOrderBy = "name"
 	GetTasksInTasklistParamsOrderByPriority     GetTasksInTasklistParamsOrderBy = "priority"
 )
@@ -720,6 +742,8 @@ func (e GetTasksInTasklistParamsOrderBy) Valid() bool {
 	case GetTasksInTasklistParamsOrderByDateAdd:
 		return true
 	case GetTasksInTasklistParamsOrderByDateEditedAt:
+		return true
+	case GetTasksInTasklistParamsOrderByDueDate:
 		return true
 	case GetTasksInTasklistParamsOrderByName:
 		return true
@@ -927,31 +951,49 @@ func (e SearchJSONBodySortOrderBy) Valid() bool {
 
 // Defines values for SearchJSONBodyStateIds.
 const (
-	SearchJSONBodyStateIdsActive             SearchJSONBodyStateIds = "active"
-	SearchJSONBodyStateIdsArchived           SearchJSONBodyStateIds = "archived"
-	SearchJSONBodyStateIdsArchivedFinished   SearchJSONBodyStateIds = "archived_finished"
-	SearchJSONBodyStateIdsArchivedUnfinished SearchJSONBodyStateIds = "archived_unfinished"
-	SearchJSONBodyStateIdsFinished           SearchJSONBodyStateIds = "finished"
-	SearchJSONBodyStateIdsNotTemplate        SearchJSONBodyStateIds = "not_template"
-	SearchJSONBodyStateIdsTemplate           SearchJSONBodyStateIds = "template"
+	Active             SearchJSONBodyStateIds = "active"
+	Archived           SearchJSONBodyStateIds = "archived"
+	ArchivedFinished   SearchJSONBodyStateIds = "archived_finished"
+	ArchivedUnfinished SearchJSONBodyStateIds = "archived_unfinished"
+	Finished           SearchJSONBodyStateIds = "finished"
+	NotTemplate        SearchJSONBodyStateIds = "not_template"
+	Template           SearchJSONBodyStateIds = "template"
 )
 
 // Valid indicates whether the value is a known member of the SearchJSONBodyStateIds enum.
 func (e SearchJSONBodyStateIds) Valid() bool {
 	switch e {
-	case SearchJSONBodyStateIdsActive:
+	case Active:
 		return true
-	case SearchJSONBodyStateIdsArchived:
+	case Archived:
 		return true
-	case SearchJSONBodyStateIdsArchivedFinished:
+	case ArchivedFinished:
 		return true
-	case SearchJSONBodyStateIdsArchivedUnfinished:
+	case ArchivedUnfinished:
 		return true
-	case SearchJSONBodyStateIdsFinished:
+	case Finished:
 		return true
-	case SearchJSONBodyStateIdsNotTemplate:
+	case NotTemplate:
 		return true
-	case SearchJSONBodyStateIdsTemplate:
+	case Template:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetTaskParamsCommentsOrder.
+const (
+	GetTaskParamsCommentsOrderAsc  GetTaskParamsCommentsOrder = "asc"
+	GetTaskParamsCommentsOrderDesc GetTaskParamsCommentsOrder = "desc"
+)
+
+// Valid indicates whether the value is a known member of the GetTaskParamsCommentsOrder enum.
+func (e GetTaskParamsCommentsOrder) Valid() bool {
+	switch e {
+	case GetTaskParamsCommentsOrderAsc:
+		return true
+	case GetTaskParamsCommentsOrderDesc:
 		return true
 	default:
 		return false
@@ -1107,16 +1149,16 @@ func (e GetUserProjectsParamsOrderBy) Valid() bool {
 
 // Defines values for GetUserProjectsParamsOrder.
 const (
-	GetUserProjectsParamsOrderAsc  GetUserProjectsParamsOrder = "asc"
-	GetUserProjectsParamsOrderDesc GetUserProjectsParamsOrder = "desc"
+	Asc  GetUserProjectsParamsOrder = "asc"
+	Desc GetUserProjectsParamsOrder = "desc"
 )
 
 // Valid indicates whether the value is a known member of the GetUserProjectsParamsOrder enum.
 func (e GetUserProjectsParamsOrder) Valid() bool {
 	switch e {
-	case GetUserProjectsParamsOrderAsc:
+	case Asc:
 		return true
-	case GetUserProjectsParamsOrderDesc:
+	case Desc:
 		return true
 	default:
 		return false
@@ -1388,10 +1430,32 @@ type FileItem struct {
 // FileItemType defines model for FileItem.Type.
 type FileItemType string
 
-// FileUpload defines model for FileUpload.
+// FileUpload A file to attach to a comment / task description / work report. Provide **one** of two variants:
+// - **By uuid** — reference a file already uploaded via `POST /file/upload` (`{ "uuid": "…" }`).
+// - **By download_url** — give a URL that Freelo downloads the file from server-side (`{ "download_url": "…" }`).
+//
+// The variant is chosen by which key is present: if `uuid` is set it is used, otherwise `download_url` is downloaded. `caption` is optional in both.
 type FileUpload struct {
+	union json.RawMessage
+}
+
+// FileUploadByUrl defines model for FileUploadByUrl.
+type FileUploadByUrl struct {
+	// Caption Optional caption. Ignored if empty.
+	Caption *string `json:"caption,omitempty"`
+
+	// DownloadUrl URL Freelo fetches the file from (server-side download).
 	DownloadUrl string  `json:"download_url"`
 	Filename    *string `json:"filename,omitempty"`
+}
+
+// FileUploadByUuid defines model for FileUploadByUuid.
+type FileUploadByUuid struct {
+	// Caption Optional caption. Ignored if empty.
+	Caption *string `json:"caption,omitempty"`
+
+	// Uuid UUID returned by `POST /file/upload`.
+	Uuid openapi_types.UUID `json:"uuid"`
 }
 
 // IssuedInvoice defines model for IssuedInvoice.
@@ -2307,9 +2371,12 @@ type GetAllProjectsParamsStatesIds int
 
 // GetAllTasklistsParams defines parameters for GetAllTasklists.
 type GetAllTasklistsParams struct {
-	ProjectsIds *[]int                        `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
-	OrderBy     *GetAllTasklistsParamsOrderBy `form:"order_by,omitempty" json:"order_by,omitempty"`
-	Order       *GetAllTasklistsParamsOrder   `form:"order,omitempty" json:"order,omitempty"`
+	ProjectsIds *[]int `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
+
+	// States Restrict to tasklists in the given states. Defaults to both when omitted.
+	States  *[]GetAllTasklistsParamsStates `form:"states[],omitempty" json:"states[],omitempty"`
+	OrderBy *GetAllTasklistsParamsOrderBy  `form:"order_by,omitempty" json:"order_by,omitempty"`
+	Order   *GetAllTasklistsParamsOrder    `form:"order,omitempty" json:"order,omitempty"`
 
 	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
@@ -2317,6 +2384,9 @@ type GetAllTasklistsParams struct {
 	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
 	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
+
+// GetAllTasklistsParamsStates defines parameters for GetAllTasklists.
+type GetAllTasklistsParamsStates string
 
 // GetAllTasklistsParamsOrderBy defines parameters for GetAllTasklists.
 type GetAllTasklistsParamsOrderBy string
@@ -2326,7 +2396,7 @@ type GetAllTasklistsParamsOrder string
 
 // GetAllTasksParams defines parameters for GetAllTasks.
 type GetAllTasksParams struct {
-	// SearchQuery Fulltext search query for the task name
+	// SearchQuery Fulltext search query matched against the **task name only** (not descriptions, comments or files) and restricted to **top-level tasks** (subtasks and checklist items are excluded). For full-content or subtask/checklist search use `POST /search`.
 	SearchQuery *string `form:"search_query,omitempty" json:"search_query,omitempty"`
 
 	// StateId ID of the tasks state
@@ -2336,9 +2406,11 @@ type GetAllTasksParams struct {
 	ProjectsIds *[]int `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
 
 	// TasklistsIds Filter tasks by tasklist IDs
-	TasklistsIds *[]int                    `form:"tasklists_ids[],omitempty" json:"tasklists_ids[],omitempty"`
-	OrderBy      *GetAllTasksParamsOrderBy `form:"order_by,omitempty" json:"order_by,omitempty"`
-	Order        *GetAllTasksParamsOrder   `form:"order,omitempty" json:"order,omitempty"`
+	TasklistsIds *[]int `form:"tasklists_ids[],omitempty" json:"tasklists_ids[],omitempty"`
+
+	// OrderBy When `due_date`, tasks without a due date are always last; all-day tasks sort at the start of their day (00:00). Results are tie-broken by task id for stable pagination.
+	OrderBy *GetAllTasksParamsOrderBy `form:"order_by,omitempty" json:"order_by,omitempty"`
+	Order   *GetAllTasksParamsOrder   `form:"order,omitempty" json:"order,omitempty"`
 
 	// WithLabels Filter tasks that have at least one of the specified labels (case insensitive). Can be combined with with_label.
 	WithLabels *[]string `form:"with_labels[],omitempty" json:"with_labels[],omitempty"`
@@ -2412,8 +2484,11 @@ type GetArchivedProjectsParams struct {
 
 // EditCommentJSONBody defines parameters for EditComment.
 type EditCommentJSONBody struct {
-	Content string        `json:"content"`
-	Files   *[]FileUpload `json:"files,omitempty"`
+	// Content Comment body (HTML / plain text). Supports inline file anchors (`<a data-freelo-uuid="{file_uuid}">…</a>`) and user mentions — see `POST /task/{id}/comments`.
+	Content string `json:"content"`
+
+	// Files Files to attach as plain attachments (not placed inline in the body). Replaces the full attachment set. Use one mechanism per file — do not also embed the same UUID in `content`.
+	Files *[]FileUpload `json:"files,omitempty"`
 }
 
 // EditEnumOptionJSONBody defines parameters for EditEnumOption.
@@ -2600,6 +2675,7 @@ type RemoveProjectWorkersByIdsJSONBody struct {
 
 // GetTasksInTasklistParams defines parameters for GetTasksInTasklist.
 type GetTasksInTasklistParams struct {
+	// OrderBy When `due_date`, tasks without a due date are always last; all-day tasks sort at the start of their day (00:00).
 	OrderBy *GetTasksInTasklistParamsOrderBy `form:"order_by,omitempty" json:"order_by,omitempty"`
 	Order   *GetTasksInTasklistParamsOrder   `form:"order,omitempty" json:"order,omitempty"`
 }
@@ -2762,6 +2838,18 @@ type CreateTaskFromTemplateJSONBody struct {
 	UsersIds *[]int `json:"users_ids,omitempty"`
 }
 
+// GetTaskParams defines parameters for GetTask.
+type GetTaskParams struct {
+	// CommentsOrder Sort direction for inline comments by date_add. Defaults to asc (oldest first).
+	CommentsOrder *GetTaskParamsCommentsOrder `form:"comments_order,omitempty" json:"comments_order,omitempty"`
+
+	// CommentsLimit Max number of inline comments to return after ordering. Omit for all comments; 0 returns none.
+	CommentsLimit *int `form:"comments_limit,omitempty" json:"comments_limit,omitempty"`
+}
+
+// GetTaskParamsCommentsOrder defines parameters for GetTask.
+type GetTaskParamsCommentsOrder string
+
 // EditTaskJSONBody defines parameters for EditTask.
 type EditTaskJSONBody struct {
 	// AddTrackingUsersIds Add tracking users by user ID (merged with existing).
@@ -2796,11 +2884,19 @@ type EditTaskJSONBodyPriorityEnum string
 
 // CreateCommentJSONBody defines parameters for CreateComment.
 type CreateCommentJSONBody struct {
-	// Content Comment body (HTML / plain text). To mention a user, embed a span:
+	// Content Comment body (HTML / plain text).
+	//
+	// **Inline file attachment:** embed an anchor to attach an uploaded file inside the body:
+	// `<a data-freelo-uuid="{file_uuid}" href="https://app.freelo.io/file/{file_uuid}">caption</a>`
+	// The UUID is extracted server-side and the file is attached automatically (do not also list it in `files`). The anchor stays in the stored content, so the file is rendered inside the comment on read.
+	//
+	// **Mention a user:** embed a span:
 	// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
 	// (`id` and `mention_key` come from the user's `UserBasic` object, e.g. `GET /users/me`).
-	Content string        `json:"content"`
-	Files   *[]FileUpload `json:"files,omitempty"`
+	Content string `json:"content"`
+
+	// Files Files to attach as plain attachments (not placed inline in the body). Alternative to embedding an anchor in `content` — use one mechanism per file, never both for the same UUID.
+	Files *[]FileUpload `json:"files,omitempty"`
 }
 
 // EditTaskDescriptionJSONBody defines parameters for EditTaskDescription.
@@ -3192,6 +3288,68 @@ type InviteUsersToProjectsJSONRequestBody InviteUsersToProjectsJSONBody
 // EditWorkReportJSONRequestBody defines body for EditWorkReport for application/json ContentType.
 type EditWorkReportJSONRequestBody EditWorkReportJSONBody
 
+// AsFileUploadByUuid returns the union data inside the FileUpload as a FileUploadByUuid
+func (t FileUpload) AsFileUploadByUuid() (FileUploadByUuid, error) {
+	var body FileUploadByUuid
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFileUploadByUuid overwrites any union data inside the FileUpload as the provided FileUploadByUuid
+func (t *FileUpload) FromFileUploadByUuid(v FileUploadByUuid) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeFileUploadByUuid performs a merge with any union data inside the FileUpload, using the provided FileUploadByUuid
+func (t *FileUpload) MergeFileUploadByUuid(v FileUploadByUuid) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsFileUploadByUrl returns the union data inside the FileUpload as a FileUploadByUrl
+func (t FileUpload) AsFileUploadByUrl() (FileUploadByUrl, error) {
+	var body FileUploadByUrl
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromFileUploadByUrl overwrites any union data inside the FileUpload as the provided FileUploadByUrl
+func (t *FileUpload) FromFileUploadByUrl(v FileUploadByUrl) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeFileUploadByUrl performs a merge with any union data inside the FileUpload, using the provided FileUploadByUrl
+func (t *FileUpload) MergeFileUploadByUrl(v FileUploadByUrl) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t FileUpload) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *FileUpload) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // AsTaskLabelAddInput0 returns the union data inside the TaskLabelAddInput as a TaskLabelAddInput0
 func (t TaskLabelAddInput) AsTaskLabelAddInput0() (TaskLabelAddInput0, error) {
 	var body TaskLabelAddInput0
@@ -3436,6 +3594,9 @@ type ClientInterface interface {
 	// GetArchivedProjects request
 	GetArchivedProjects(ctx context.Context, params *GetArchivedProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteComment request
+	DeleteComment(ctx context.Context, commentId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// EditCommentWithBody request with any body
 	EditCommentWithBody(ctx context.Context, commentId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3500,6 +3661,9 @@ type ClientInterface interface {
 
 	// UploadFileWithBody request with any body
 	UploadFileWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteDocOrFileByUuid request
+	DeleteDocOrFileByUuid(ctx context.Context, fileUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DownloadFile request
 	DownloadFile(ctx context.Context, fileUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3676,7 +3840,7 @@ type ClientInterface interface {
 	DeleteTask(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTask request
-	GetTask(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetTask(ctx context.Context, taskId TaskIdParam, params *GetTaskParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// EditTaskWithBody request with any body
 	EditTaskWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3923,6 +4087,18 @@ func (c *Client) GetAllTasks(ctx context.Context, params *GetAllTasksParams, req
 
 func (c *Client) GetArchivedProjects(ctx context.Context, params *GetArchivedProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetArchivedProjectsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteComment(ctx context.Context, commentId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteCommentRequest(c.Server, commentId)
 	if err != nil {
 		return nil, err
 	}
@@ -4211,6 +4387,18 @@ func (c *Client) GetAllEvents(ctx context.Context, params *GetAllEventsParams, r
 
 func (c *Client) UploadFileWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUploadFileRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteDocOrFileByUuid(ctx context.Context, fileUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteDocOrFileByUuidRequest(c.Server, fileUuid)
 	if err != nil {
 		return nil, err
 	}
@@ -4989,8 +5177,8 @@ func (c *Client) DeleteTask(ctx context.Context, taskId TaskIdParam, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetTask(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTaskRequest(c.Server, taskId)
+func (c *Client) GetTask(ctx context.Context, taskId TaskIdParam, params *GetTaskParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTaskRequest(c.Server, taskId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -6289,6 +6477,18 @@ func NewGetAllTasklistsRequest(server string, params *GetAllTasklistsParams) (*h
 
 		}
 
+		if params.States != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "states[]", *params.States, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.OrderBy != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "order_by", *params.OrderBy, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
@@ -6692,6 +6892,40 @@ func NewGetArchivedProjectsRequest(server string, params *GetArchivedProjectsPar
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteCommentRequest generates requests for DeleteComment
+func NewDeleteCommentRequest(server string, commentId int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "comment_id", commentId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/comment/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -7454,6 +7688,40 @@ func NewUploadFileRequestWithBody(server string, contentType string, body io.Rea
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteDocOrFileByUuidRequest generates requests for DeleteDocOrFileByUuid
+func NewDeleteDocOrFileByUuidRequest(server string, fileUuid openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "file_uuid", fileUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/file/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -9439,7 +9707,7 @@ func NewDeleteTaskRequest(server string, taskId TaskIdParam) (*http.Request, err
 }
 
 // NewGetTaskRequest generates requests for GetTask
-func NewGetTaskRequest(server string, taskId TaskIdParam) (*http.Request, error) {
+func NewGetTaskRequest(server string, taskId TaskIdParam, params *GetTaskParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -9462,6 +9730,45 @@ func NewGetTaskRequest(server string, taskId TaskIdParam) (*http.Request, error)
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.CommentsOrder != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "comments_order", *params.CommentsOrder, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CommentsLimit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "comments_limit", *params.CommentsLimit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -11704,6 +12011,9 @@ type ClientWithResponsesInterface interface {
 	// GetArchivedProjectsWithResponse request
 	GetArchivedProjectsWithResponse(ctx context.Context, params *GetArchivedProjectsParams, reqEditors ...RequestEditorFn) (*GetArchivedProjectsResponse, error)
 
+	// DeleteCommentWithResponse request
+	DeleteCommentWithResponse(ctx context.Context, commentId int, reqEditors ...RequestEditorFn) (*DeleteCommentResponse, error)
+
 	// EditCommentWithBodyWithResponse request with any body
 	EditCommentWithBodyWithResponse(ctx context.Context, commentId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditCommentResponse, error)
 
@@ -11768,6 +12078,9 @@ type ClientWithResponsesInterface interface {
 
 	// UploadFileWithBodyWithResponse request with any body
 	UploadFileWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UploadFileResponse, error)
+
+	// DeleteDocOrFileByUuidWithResponse request
+	DeleteDocOrFileByUuidWithResponse(ctx context.Context, fileUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteDocOrFileByUuidResponse, error)
 
 	// DownloadFileWithResponse request
 	DownloadFileWithResponse(ctx context.Context, fileUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*DownloadFileResponse, error)
@@ -11944,7 +12257,7 @@ type ClientWithResponsesInterface interface {
 	DeleteTaskWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*DeleteTaskResponse, error)
 
 	// GetTaskWithResponse request
-	GetTaskWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*GetTaskResponse, error)
+	GetTaskWithResponse(ctx context.Context, taskId TaskIdParam, params *GetTaskParams, reqEditors ...RequestEditorFn) (*GetTaskResponse, error)
 
 	// EditTaskWithBodyWithResponse request with any body
 	EditTaskWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditTaskResponse, error)
@@ -12377,6 +12690,35 @@ func (r GetArchivedProjectsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetArchivedProjectsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteCommentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteCommentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteCommentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteCommentResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -12927,6 +13269,36 @@ func (r UploadFileResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r UploadFileResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteDocOrFileByUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteDocOrFileByUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteDocOrFileByUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteDocOrFileByUuidResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -15938,6 +16310,15 @@ func (c *ClientWithResponses) GetArchivedProjectsWithResponse(ctx context.Contex
 	return ParseGetArchivedProjectsResponse(rsp)
 }
 
+// DeleteCommentWithResponse request returning *DeleteCommentResponse
+func (c *ClientWithResponses) DeleteCommentWithResponse(ctx context.Context, commentId int, reqEditors ...RequestEditorFn) (*DeleteCommentResponse, error) {
+	rsp, err := c.DeleteComment(ctx, commentId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteCommentResponse(rsp)
+}
+
 // EditCommentWithBodyWithResponse request with arbitrary body returning *EditCommentResponse
 func (c *ClientWithResponses) EditCommentWithBodyWithResponse(ctx context.Context, commentId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditCommentResponse, error) {
 	rsp, err := c.EditCommentWithBody(ctx, commentId, contentType, body, reqEditors...)
@@ -16145,6 +16526,15 @@ func (c *ClientWithResponses) UploadFileWithBodyWithResponse(ctx context.Context
 		return nil, err
 	}
 	return ParseUploadFileResponse(rsp)
+}
+
+// DeleteDocOrFileByUuidWithResponse request returning *DeleteDocOrFileByUuidResponse
+func (c *ClientWithResponses) DeleteDocOrFileByUuidWithResponse(ctx context.Context, fileUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteDocOrFileByUuidResponse, error) {
+	rsp, err := c.DeleteDocOrFileByUuid(ctx, fileUuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteDocOrFileByUuidResponse(rsp)
 }
 
 // DownloadFileWithResponse request returning *DownloadFileResponse
@@ -16706,8 +17096,8 @@ func (c *ClientWithResponses) DeleteTaskWithResponse(ctx context.Context, taskId
 }
 
 // GetTaskWithResponse request returning *GetTaskResponse
-func (c *ClientWithResponses) GetTaskWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*GetTaskResponse, error) {
-	rsp, err := c.GetTask(ctx, taskId, reqEditors...)
+func (c *ClientWithResponses) GetTaskWithResponse(ctx context.Context, taskId TaskIdParam, params *GetTaskParams, reqEditors ...RequestEditorFn) (*GetTaskResponse, error) {
+	rsp, err := c.GetTask(ctx, taskId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -17500,6 +17890,22 @@ func ParseGetArchivedProjectsResponse(rsp *http.Response) (*GetArchivedProjectsR
 	return response, nil
 }
 
+// ParseDeleteCommentResponse parses an HTTP response from a DeleteCommentWithResponse call
+func ParseDeleteCommentResponse(rsp *http.Response) (*DeleteCommentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteCommentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
 // ParseEditCommentResponse parses an HTTP response from a EditCommentWithResponse call
 func ParseEditCommentResponse(rsp *http.Response) (*EditCommentResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -17972,6 +18378,32 @@ func ParseUploadFileResponse(rsp *http.Response) (*UploadFileResponse, error) {
 		var dest struct {
 			Uuid *openapi_types.UUID `json:"uuid,omitempty"`
 		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteDocOrFileByUuidResponse parses an HTTP response from a DeleteDocOrFileByUuidWithResponse call
+func ParseDeleteDocOrFileByUuidResponse(rsp *http.Response) (*DeleteDocOrFileByUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteDocOrFileByUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
