@@ -1527,12 +1527,13 @@ type Note struct {
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
 
 	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
-	Files        *[]FileFull      `json:"files,omitempty"`
-	Id           *int             `json:"id,omitempty"`
-	Name         *string          `json:"name,omitempty"`
-	Project      *ProjectBasic    `json:"project,omitempty"`
-	State        *State           `json:"state,omitempty"`
+	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
+	Files        *[]FileFull         `json:"files,omitempty"`
+	Id           *int                `json:"id,omitempty"`
+	Name         *string             `json:"name,omitempty"`
+	Project      *ProjectBasic       `json:"project,omitempty"`
+	State        *State              `json:"state,omitempty"`
+	Uuid         *openapi_types.UUID `json:"uuid,omitempty"`
 }
 
 // Notification defines model for Notification.
@@ -2249,6 +2250,9 @@ type WorkReportFull struct {
 	Tasklist *TasklistBasic `json:"tasklist,omitempty"`
 	Worker   *UserBasic     `json:"worker,omitempty"`
 }
+
+// NoteIdParam defines model for NoteIdParam.
+type NoteIdParam = string
 
 // PageAliasParam defines model for PageAliasParam.
 type PageAliasParam = int
@@ -3689,15 +3693,15 @@ type ClientInterface interface {
 	GetIssuedInvoices(ctx context.Context, params *GetIssuedInvoicesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteNote request
-	DeleteNote(ctx context.Context, noteId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteNote(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetNote request
-	GetNote(ctx context.Context, noteId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetNote(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// EditNoteWithBody request with any body
-	EditNoteWithBody(ctx context.Context, noteId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	EditNoteWithBody(ctx context.Context, noteId NoteIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	EditNote(ctx context.Context, noteId int, body EditNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	EditNote(ctx context.Context, noteId NoteIdParam, body EditNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// MarkNotificationAsRead request
 	MarkNotificationAsRead(ctx context.Context, notificationId int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4505,7 +4509,7 @@ func (c *Client) GetIssuedInvoices(ctx context.Context, params *GetIssuedInvoice
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteNote(ctx context.Context, noteId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) DeleteNote(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteNoteRequest(c.Server, noteId)
 	if err != nil {
 		return nil, err
@@ -4517,7 +4521,7 @@ func (c *Client) DeleteNote(ctx context.Context, noteId int, reqEditors ...Reque
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetNote(ctx context.Context, noteId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) GetNote(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetNoteRequest(c.Server, noteId)
 	if err != nil {
 		return nil, err
@@ -4529,7 +4533,7 @@ func (c *Client) GetNote(ctx context.Context, noteId int, reqEditors ...RequestE
 	return c.Client.Do(req)
 }
 
-func (c *Client) EditNoteWithBody(ctx context.Context, noteId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) EditNoteWithBody(ctx context.Context, noteId NoteIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewEditNoteRequestWithBody(c.Server, noteId, contentType, body)
 	if err != nil {
 		return nil, err
@@ -4541,7 +4545,7 @@ func (c *Client) EditNoteWithBody(ctx context.Context, noteId int, contentType s
 	return c.Client.Do(req)
 }
 
-func (c *Client) EditNote(ctx context.Context, noteId int, body EditNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) EditNote(ctx context.Context, noteId NoteIdParam, body EditNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewEditNoteRequest(c.Server, noteId, body)
 	if err != nil {
 		return nil, err
@@ -8078,12 +8082,12 @@ func NewGetIssuedInvoicesRequest(server string, params *GetIssuedInvoicesParams)
 }
 
 // NewDeleteNoteRequest generates requests for DeleteNote
-func NewDeleteNoteRequest(server string, noteId int) (*http.Request, error) {
+func NewDeleteNoteRequest(server string, noteId NoteIdParam) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "note_id", noteId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "note_id", noteId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
 	if err != nil {
 		return nil, err
 	}
@@ -8112,12 +8116,12 @@ func NewDeleteNoteRequest(server string, noteId int) (*http.Request, error) {
 }
 
 // NewGetNoteRequest generates requests for GetNote
-func NewGetNoteRequest(server string, noteId int) (*http.Request, error) {
+func NewGetNoteRequest(server string, noteId NoteIdParam) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "note_id", noteId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "note_id", noteId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
 	if err != nil {
 		return nil, err
 	}
@@ -8146,7 +8150,7 @@ func NewGetNoteRequest(server string, noteId int) (*http.Request, error) {
 }
 
 // NewEditNoteRequest calls the generic EditNote builder with application/json body
-func NewEditNoteRequest(server string, noteId int, body EditNoteJSONRequestBody) (*http.Request, error) {
+func NewEditNoteRequest(server string, noteId NoteIdParam, body EditNoteJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
@@ -8157,12 +8161,12 @@ func NewEditNoteRequest(server string, noteId int, body EditNoteJSONRequestBody)
 }
 
 // NewEditNoteRequestWithBody generates requests for EditNote with any type of body
-func NewEditNoteRequestWithBody(server string, noteId int, contentType string, body io.Reader) (*http.Request, error) {
+func NewEditNoteRequestWithBody(server string, noteId NoteIdParam, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "note_id", noteId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "note_id", noteId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
 	if err != nil {
 		return nil, err
 	}
@@ -12106,15 +12110,15 @@ type ClientWithResponsesInterface interface {
 	GetIssuedInvoicesWithResponse(ctx context.Context, params *GetIssuedInvoicesParams, reqEditors ...RequestEditorFn) (*GetIssuedInvoicesResponse, error)
 
 	// DeleteNoteWithResponse request
-	DeleteNoteWithResponse(ctx context.Context, noteId int, reqEditors ...RequestEditorFn) (*DeleteNoteResponse, error)
+	DeleteNoteWithResponse(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*DeleteNoteResponse, error)
 
 	// GetNoteWithResponse request
-	GetNoteWithResponse(ctx context.Context, noteId int, reqEditors ...RequestEditorFn) (*GetNoteResponse, error)
+	GetNoteWithResponse(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*GetNoteResponse, error)
 
 	// EditNoteWithBodyWithResponse request with any body
-	EditNoteWithBodyWithResponse(ctx context.Context, noteId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditNoteResponse, error)
+	EditNoteWithBodyWithResponse(ctx context.Context, noteId NoteIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditNoteResponse, error)
 
-	EditNoteWithResponse(ctx context.Context, noteId int, body EditNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*EditNoteResponse, error)
+	EditNoteWithResponse(ctx context.Context, noteId NoteIdParam, body EditNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*EditNoteResponse, error)
 
 	// MarkNotificationAsReadWithResponse request
 	MarkNotificationAsReadWithResponse(ctx context.Context, notificationId int, reqEditors ...RequestEditorFn) (*MarkNotificationAsReadResponse, error)
@@ -16609,7 +16613,7 @@ func (c *ClientWithResponses) GetIssuedInvoicesWithResponse(ctx context.Context,
 }
 
 // DeleteNoteWithResponse request returning *DeleteNoteResponse
-func (c *ClientWithResponses) DeleteNoteWithResponse(ctx context.Context, noteId int, reqEditors ...RequestEditorFn) (*DeleteNoteResponse, error) {
+func (c *ClientWithResponses) DeleteNoteWithResponse(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*DeleteNoteResponse, error) {
 	rsp, err := c.DeleteNote(ctx, noteId, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -16618,7 +16622,7 @@ func (c *ClientWithResponses) DeleteNoteWithResponse(ctx context.Context, noteId
 }
 
 // GetNoteWithResponse request returning *GetNoteResponse
-func (c *ClientWithResponses) GetNoteWithResponse(ctx context.Context, noteId int, reqEditors ...RequestEditorFn) (*GetNoteResponse, error) {
+func (c *ClientWithResponses) GetNoteWithResponse(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*GetNoteResponse, error) {
 	rsp, err := c.GetNote(ctx, noteId, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -16627,7 +16631,7 @@ func (c *ClientWithResponses) GetNoteWithResponse(ctx context.Context, noteId in
 }
 
 // EditNoteWithBodyWithResponse request with arbitrary body returning *EditNoteResponse
-func (c *ClientWithResponses) EditNoteWithBodyWithResponse(ctx context.Context, noteId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditNoteResponse, error) {
+func (c *ClientWithResponses) EditNoteWithBodyWithResponse(ctx context.Context, noteId NoteIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditNoteResponse, error) {
 	rsp, err := c.EditNoteWithBody(ctx, noteId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -16635,7 +16639,7 @@ func (c *ClientWithResponses) EditNoteWithBodyWithResponse(ctx context.Context, 
 	return ParseEditNoteResponse(rsp)
 }
 
-func (c *ClientWithResponses) EditNoteWithResponse(ctx context.Context, noteId int, body EditNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*EditNoteResponse, error) {
+func (c *ClientWithResponses) EditNoteWithResponse(ctx context.Context, noteId NoteIdParam, body EditNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*EditNoteResponse, error) {
 	rsp, err := c.EditNote(ctx, noteId, body, reqEditors...)
 	if err != nil {
 		return nil, err

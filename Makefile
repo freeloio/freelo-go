@@ -17,6 +17,8 @@ gen:
 	@echo "→ apply Client → BusinessClient rename (avoids HTTP Client name collision)"
 	@sed -i.bak 's|^    Client:|    BusinessClient:|; s|#/components/schemas/Client|#/components/schemas/BusinessClient|g' $(SPEC)
 	@rm -f $(SPEC).bak
+	@echo "→ flatten scalar oneOf parameter schemas (unions break oapi-codegen)"
+	@go run ./scripts/patchspec
 	@echo "→ run oapi-codegen"
 	@go generate ./freeloapi/...
 	@echo "→ rewrite time.Time → freelotime.Time"
