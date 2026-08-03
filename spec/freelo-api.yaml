@@ -5082,13 +5082,10 @@ paths:
 
         **Behavior notes:**
         - ACL-checked via the note's project.
+        - Accepts the numeric id **or** the note `uuid` (as returned by `GET /all-docs-and-files`).
       operationId: getNote
       parameters:
-        - name: note_id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/NoteIdParam'
       responses:
         '200':
           description: Successful response
@@ -5105,13 +5102,10 @@ paths:
 
         **Behavior notes:**
         - Overwrites content — there is no history / diff tracking exposed via the API.
+        - Accepts the numeric id **or** the note `uuid` (as returned by `GET /all-docs-and-files`).
       operationId: editNote
       parameters:
-        - name: note_id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/NoteIdParam'
       requestBody:
         required: true
         content:
@@ -5141,13 +5135,10 @@ paths:
 
         **Behavior notes:**
         - Response returns the (now-deleted) note's state for confirmation. This is a quirk — most delete endpoints return a SuccessResponse; this one returns the Note.
+        - Accepts the numeric id **or** the note `uuid` (as returned by `GET /all-docs-and-files`).
       operationId: deleteNote
       parameters:
-        - name: note_id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/NoteIdParam'
       responses:
         '200':
           description: Note deleted
@@ -5395,6 +5386,14 @@ components:
       description: ID of the taskcheck (`tasks_checks.id`)
       schema:
         type: integer
+
+    NoteIdParam:
+      name: note_id
+      in: path
+      required: true
+      description: 'Numeric note ID (`documents.id`) or note UUID (`documents.uuid`) — both are accepted in the same position. `GET /all-docs-and-files` returns only the UUID for notes.'
+      schema:
+        type: string
 
   schemas:
     SuccessResponse:
@@ -6936,6 +6935,9 @@ components:
       properties:
         id:
           type: integer
+        uuid:
+          type: string
+          format: uuid
         name:
           type: string
         date_add:
