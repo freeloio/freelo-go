@@ -189,11 +189,14 @@ make help          # list targets
 make test          # unit tests with -race
 make lint          # gofmt + go vet
 make examples      # build every example (catches API drift)
-make gen           # download spec, patch spec, regen client, patch time.Time
+make gen           # fetch spec (conditional GET), patch spec, regen client, patch time.Time
+make gen-force     # same, but ignore the cached ETag/Last-Modified validators
 make gen-check     # CI guard — fails if generated code drifts from spec
 ```
 
 Spec lives at `spec/freelo-api.yaml` (vendored). The vendored copy is byte-identical to upstream apart from two mechanical edits — a `Client → BusinessClient` rename (collision with `oapi-codegen`'s HTTP `Client` type) and the flattening of scalar `oneOf` parameter schemas to `type: string` (see `scripts/patchspec`; `oapi-codegen` generates non-compiling union types for those, and path/query params are strings on the wire anyway) — plus the post-generation `time.Time → freelotime.Time` patch (see `scripts/patchgen`). A weekly cron in `.github/workflows/update-api-spec.yml` PRs any drift.
+
+The spec is fetched by `scripts/fetchspec` with a conditional GET. `spec/.freelo-api.meta.json` is committed alongside the spec and records upstream's `ETag`/`Last-Modified` plus a SHA-256 of both the upstream body and the patched vendored file; the validators come back as `If-None-Match`/`If-Modified-Since`, so an unchanged spec costs a `304` instead of a full transfer. `api.freelo.io` currently sends neither validator (it replies `cache-control: no-cache, private`), so runs fall back to comparing the body hash — same bytes over the wire as before, but with an explicit changed/unchanged verdict. The patched-file hash keeps a hand-edited `spec/freelo-api.yaml` from hiding behind a `304`: on mismatch the cache is dropped and the spec re-downloaded. Use `make gen-force` to bypass the cache outright.
 
 ## Contributing
 
