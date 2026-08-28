@@ -4,4 +4,4 @@ package freelo
 // release-please based on conventional commits (see .github/workflows/
 // release-please.yml). Consumers should not rely on this string for
 // feature detection — use API capability checks instead.
-const SDKVersion = "v0.2.1" // x-release-please-version
+const SDKVersion = "v0.3.0" // x-release-please-version
