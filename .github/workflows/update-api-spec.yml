@@ -57,6 +57,10 @@ jobs:
             Automated weekly refresh of the Freelo OpenAPI spec.
 
             - `spec/freelo-api.yaml` updated to upstream HEAD.
+            - `spec/.freelo-api.meta.json` records the new upstream hash and
+              the re-sealed hash of the patched spec. Expected in every drift
+              PR — `scripts/fetchspec` uses it to answer "did upstream
+              change?" on the next run without re-downloading the document.
             - `freeloapi/freeloapi.gen.go` regenerated and patched
               (`time.Time` → `freelotime.Time`).
             - Tests + examples pass against the new client.
