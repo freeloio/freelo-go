@@ -1806,9 +1806,12 @@ type SubtaskCreate struct {
 	DueDate *freelotime.Time `json:"due_date,omitempty"`
 
 	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DueDateEnd       *freelotime.Time           `json:"due_date_end,omitempty"`
-	Labels           *[]TaskLabelAddInput       `json:"labels,omitempty"`
-	Name             string                     `json:"name"`
+	DueDateEnd *freelotime.Time     `json:"due_date_end,omitempty"`
+	Labels     *[]TaskLabelAddInput `json:"labels,omitempty"`
+	Name       string               `json:"name"`
+
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor     *bool                      `json:"notify_author,omitempty"`
 	PriorityEnum     *SubtaskCreatePriorityEnum `json:"priority_enum,omitempty"`
 	TrackingUsersIds *[]int                     `json:"tracking_users_ids,omitempty"`
 	Worker           *int                       `json:"worker,omitempty"`
@@ -1832,9 +1835,12 @@ type TaskCreate struct {
 	DueDate *freelotime.Time `json:"due_date,omitempty"`
 
 	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DueDateEnd             *freelotime.Time        `json:"due_date_end,omitempty"`
-	Labels                 *[]TaskLabelAddInput    `json:"labels,omitempty"`
-	Name                   string                  `json:"name"`
+	DueDateEnd *freelotime.Time     `json:"due_date_end,omitempty"`
+	Labels     *[]TaskLabelAddInput `json:"labels,omitempty"`
+	Name       string               `json:"name"`
+
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor           *bool                   `json:"notify_author,omitempty"`
 	PriorityEnum           *TaskCreatePriorityEnum `json:"priority_enum,omitempty"`
 	Subtasks               *[]SubtaskCreate        `json:"subtasks,omitempty"`
 	TrackingUsersIds       *[]int                  `json:"tracking_users_ids,omitempty"`
@@ -2493,6 +2499,9 @@ type EditCommentJSONBody struct {
 
 	// Files Files to attach as plain attachments (not placed inline in the body). Replaces the full attachment set. Use one mechanism per file — do not also embed the same UUID in `content`.
 	Files *[]FileUpload `json:"files,omitempty"`
+
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
 
 // EditEnumOptionJSONBody defines parameters for EditEnumOption.
@@ -2596,6 +2605,9 @@ type GetIssuedInvoicesParams struct {
 type EditNoteJSONBody struct {
 	Content *string `json:"content,omitempty"`
 	Name    string  `json:"name"`
+
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
 
 // AddProjectLabelToProjectJSONBody defines parameters for AddProjectLabelToProject.
@@ -2826,6 +2838,21 @@ type AddTaskLabelsToTaskJSONBody struct {
 	Labels []TaskLabelAddInput `json:"labels"`
 }
 
+// FindAvailableTaskLabelsParams defines parameters for FindAvailableTaskLabels.
+type FindAvailableTaskLabelsParams struct {
+	// ProjectId Restrict results to labels used in this project (must be accessible to the caller).
+	ProjectId *int `form:"project_id,omitempty" json:"project_id,omitempty"`
+}
+
+// MergeTaskLabelsJSONBody defines parameters for MergeTaskLabels.
+type MergeTaskLabelsJSONBody struct {
+	// FromUuids UUIDs of the labels to merge away (must be owned by the caller).
+	FromUuids []openapi_types.UUID `json:"from_uuids"`
+
+	// ToUuid UUID of the label the source labels are merged into (must be owned by the caller).
+	ToUuid openapi_types.UUID `json:"to_uuid"`
+}
+
 // RemoveTaskLabelsFromTaskJSONBody defines parameters for RemoveTaskLabelsFromTask.
 type RemoveTaskLabelsFromTaskJSONBody struct {
 	Labels []TaskLabelRemoveInput `json:"labels"`
@@ -2869,8 +2896,12 @@ type EditTaskJSONBody struct {
 	DueDate *freelotime.Time `json:"due_date,omitempty"`
 
 	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DueDateEnd *freelotime.Time `json:"due_date_end,omitempty"`
-	Name       *string          `json:"name,omitempty"`
+	DueDateEnd *freelotime.Time     `json:"due_date_end,omitempty"`
+	Labels     *[]TaskLabelAddInput `json:"labels,omitempty"`
+	Name       *string              `json:"name,omitempty"`
+
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
 
 	// PriorityEnum Allowed options are l, m, h. Set to null to remove priority.
 	PriorityEnum *EditTaskJSONBodyPriorityEnum `json:"priority_enum,omitempty"`
@@ -2885,6 +2916,12 @@ type EditTaskJSONBody struct {
 
 // EditTaskJSONBodyPriorityEnum defines parameters for EditTask.
 type EditTaskJSONBodyPriorityEnum string
+
+// ActivateTaskJSONBody defines parameters for ActivateTask.
+type ActivateTaskJSONBody struct {
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
+}
 
 // CreateCommentJSONBody defines parameters for CreateComment.
 type CreateCommentJSONBody struct {
@@ -2901,12 +2938,21 @@ type CreateCommentJSONBody struct {
 
 	// Files Files to attach as plain attachments (not placed inline in the body). Alternative to embedding an anchor in `content` — use one mechanism per file, never both for the same UUID.
 	Files *[]FileUpload `json:"files,omitempty"`
+
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
 
 // EditTaskDescriptionJSONBody defines parameters for EditTaskDescription.
 type EditTaskDescriptionJSONBody struct {
 	Content string        `json:"content"`
 	Files   *[]FileUpload `json:"files,omitempty"`
+}
+
+// FinishTaskJSONBody defines parameters for FinishTask.
+type FinishTaskJSONBody struct {
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
 
 // MoveTaskJSONBody defines parameters for MoveTask.
@@ -2976,8 +3022,17 @@ type CreateWorkReportJSONBody struct {
 type EditTaskcheckJSONBody struct {
 	Name *string `json:"name,omitempty"`
 
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
+
 	// Worker User id of the worker to assign. Pass `null` to clear.
 	Worker *int `json:"worker,omitempty"`
+}
+
+// FinishTaskcheckJSONBody defines parameters for FinishTaskcheck.
+type FinishTaskcheckJSONBody struct {
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
 
 // CreateTasklistFromTemplateJSONBody defines parameters for CreateTasklistFromTemplate.
@@ -3229,6 +3284,9 @@ type CreateTaskLabelsJSONRequestBody CreateTaskLabelsJSONBody
 // AddTaskLabelsToTaskJSONRequestBody defines body for AddTaskLabelsToTask for application/json ContentType.
 type AddTaskLabelsToTaskJSONRequestBody AddTaskLabelsToTaskJSONBody
 
+// MergeTaskLabelsJSONRequestBody defines body for MergeTaskLabels for application/json ContentType.
+type MergeTaskLabelsJSONRequestBody MergeTaskLabelsJSONBody
+
 // RemoveTaskLabelsFromTaskJSONRequestBody defines body for RemoveTaskLabelsFromTask for application/json ContentType.
 type RemoveTaskLabelsFromTaskJSONRequestBody RemoveTaskLabelsFromTaskJSONBody
 
@@ -3238,11 +3296,17 @@ type CreateTaskFromTemplateJSONRequestBody CreateTaskFromTemplateJSONBody
 // EditTaskJSONRequestBody defines body for EditTask for application/json ContentType.
 type EditTaskJSONRequestBody EditTaskJSONBody
 
+// ActivateTaskJSONRequestBody defines body for ActivateTask for application/json ContentType.
+type ActivateTaskJSONRequestBody ActivateTaskJSONBody
+
 // CreateCommentJSONRequestBody defines body for CreateComment for application/json ContentType.
 type CreateCommentJSONRequestBody CreateCommentJSONBody
 
 // EditTaskDescriptionJSONRequestBody defines body for EditTaskDescription for application/json ContentType.
 type EditTaskDescriptionJSONRequestBody EditTaskDescriptionJSONBody
+
+// FinishTaskJSONRequestBody defines body for FinishTask for application/json ContentType.
+type FinishTaskJSONRequestBody FinishTaskJSONBody
 
 // MoveTaskJSONRequestBody defines body for MoveTask for application/json ContentType.
 type MoveTaskJSONRequestBody MoveTaskJSONBody
@@ -3267,6 +3331,9 @@ type CreateWorkReportJSONRequestBody CreateWorkReportJSONBody
 
 // EditTaskcheckJSONRequestBody defines body for EditTaskcheck for application/json ContentType.
 type EditTaskcheckJSONRequestBody EditTaskcheckJSONBody
+
+// FinishTaskcheckJSONRequestBody defines body for FinishTaskcheck for application/json ContentType.
+type FinishTaskcheckJSONRequestBody FinishTaskcheckJSONBody
 
 // CreateTasklistFromTemplateJSONRequestBody defines body for CreateTasklistFromTemplate for application/json ContentType.
 type CreateTasklistFromTemplateJSONRequestBody CreateTasklistFromTemplateJSONBody
@@ -3828,7 +3895,12 @@ type ClientInterface interface {
 	AddTaskLabelsToTask(ctx context.Context, taskId TaskIdParam, body AddTaskLabelsToTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// FindAvailableTaskLabels request
-	FindAvailableTaskLabels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	FindAvailableTaskLabels(ctx context.Context, params *FindAvailableTaskLabelsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// MergeTaskLabelsWithBody request with any body
+	MergeTaskLabelsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	MergeTaskLabels(ctx context.Context, body MergeTaskLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RemoveTaskLabelsFromTaskWithBody request with any body
 	RemoveTaskLabelsFromTaskWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3851,8 +3923,10 @@ type ClientInterface interface {
 
 	EditTask(ctx context.Context, taskId TaskIdParam, body EditTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ActivateTask request
-	ActivateTask(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ActivateTaskWithBody request with any body
+	ActivateTaskWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ActivateTask(ctx context.Context, taskId TaskIdParam, body ActivateTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateCommentWithBody request with any body
 	CreateCommentWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3867,8 +3941,10 @@ type ClientInterface interface {
 
 	EditTaskDescription(ctx context.Context, taskId TaskIdParam, body EditTaskDescriptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// FinishTask request
-	FinishTask(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// FinishTaskWithBody request with any body
+	FinishTaskWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	FinishTask(ctx context.Context, taskId TaskIdParam, body FinishTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// MoveTaskWithBody request with any body
 	MoveTaskWithBody(ctx context.Context, taskId TaskIdParam, tasklistId TasklistIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3934,8 +4010,10 @@ type ClientInterface interface {
 	// ActivateTaskcheck request
 	ActivateTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// FinishTaskcheck request
-	FinishTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// FinishTaskcheckWithBody request with any body
+	FinishTaskcheckWithBody(ctx context.Context, taskcheckId TaskcheckIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	FinishTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, body FinishTaskcheckJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateTasklistFromTemplateWithBody request with any body
 	CreateTasklistFromTemplateWithBody(ctx context.Context, templateId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5109,8 +5187,32 @@ func (c *Client) AddTaskLabelsToTask(ctx context.Context, taskId TaskIdParam, bo
 	return c.Client.Do(req)
 }
 
-func (c *Client) FindAvailableTaskLabels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFindAvailableTaskLabelsRequest(c.Server)
+func (c *Client) FindAvailableTaskLabels(ctx context.Context, params *FindAvailableTaskLabelsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFindAvailableTaskLabelsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) MergeTaskLabelsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewMergeTaskLabelsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) MergeTaskLabels(ctx context.Context, body MergeTaskLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewMergeTaskLabelsRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5217,8 +5319,20 @@ func (c *Client) EditTask(ctx context.Context, taskId TaskIdParam, body EditTask
 	return c.Client.Do(req)
 }
 
-func (c *Client) ActivateTask(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewActivateTaskRequest(c.Server, taskId)
+func (c *Client) ActivateTaskWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewActivateTaskRequestWithBody(c.Server, taskId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ActivateTask(ctx context.Context, taskId TaskIdParam, body ActivateTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewActivateTaskRequest(c.Server, taskId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5289,8 +5403,20 @@ func (c *Client) EditTaskDescription(ctx context.Context, taskId TaskIdParam, bo
 	return c.Client.Do(req)
 }
 
-func (c *Client) FinishTask(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFinishTaskRequest(c.Server, taskId)
+func (c *Client) FinishTaskWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFinishTaskRequestWithBody(c.Server, taskId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FinishTask(ctx context.Context, taskId TaskIdParam, body FinishTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFinishTaskRequest(c.Server, taskId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5589,8 +5715,20 @@ func (c *Client) ActivateTaskcheck(ctx context.Context, taskcheckId TaskcheckIdP
 	return c.Client.Do(req)
 }
 
-func (c *Client) FinishTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFinishTaskcheckRequest(c.Server, taskcheckId)
+func (c *Client) FinishTaskcheckWithBody(ctx context.Context, taskcheckId TaskcheckIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFinishTaskcheckRequestWithBody(c.Server, taskcheckId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FinishTaskcheck(ctx context.Context, taskcheckId TaskcheckIdParam, body FinishTaskcheckJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFinishTaskcheckRequest(c.Server, taskcheckId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -9556,7 +9694,7 @@ func NewAddTaskLabelsToTaskRequestWithBody(server string, taskId TaskIdParam, co
 }
 
 // NewFindAvailableTaskLabelsRequest generates requests for FindAvailableTaskLabels
-func NewFindAvailableTaskLabelsRequest(server string) (*http.Request, error) {
+func NewFindAvailableTaskLabelsRequest(server string, params *FindAvailableTaskLabelsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -9574,10 +9712,77 @@ func NewFindAvailableTaskLabelsRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ProjectId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "project_id", *params.ProjectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewMergeTaskLabelsRequest calls the generic MergeTaskLabels builder with application/json body
+func NewMergeTaskLabelsRequest(server string, body MergeTaskLabelsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewMergeTaskLabelsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewMergeTaskLabelsRequestWithBody generates requests for MergeTaskLabels with any type of body
+func NewMergeTaskLabelsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/task-labels/merge")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -9830,8 +10035,19 @@ func NewEditTaskRequestWithBody(server string, taskId TaskIdParam, contentType s
 	return req, nil
 }
 
-// NewActivateTaskRequest generates requests for ActivateTask
-func NewActivateTaskRequest(server string, taskId TaskIdParam) (*http.Request, error) {
+// NewActivateTaskRequest calls the generic ActivateTask builder with application/json body
+func NewActivateTaskRequest(server string, taskId TaskIdParam, body ActivateTaskJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewActivateTaskRequestWithBody(server, taskId, "application/json", bodyReader)
+}
+
+// NewActivateTaskRequestWithBody generates requests for ActivateTask with any type of body
+func NewActivateTaskRequestWithBody(server string, taskId TaskIdParam, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -9856,10 +10072,12 @@ func NewActivateTaskRequest(server string, taskId TaskIdParam) (*http.Request, e
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -9992,8 +10210,19 @@ func NewEditTaskDescriptionRequestWithBody(server string, taskId TaskIdParam, co
 	return req, nil
 }
 
-// NewFinishTaskRequest generates requests for FinishTask
-func NewFinishTaskRequest(server string, taskId TaskIdParam) (*http.Request, error) {
+// NewFinishTaskRequest calls the generic FinishTask builder with application/json body
+func NewFinishTaskRequest(server string, taskId TaskIdParam, body FinishTaskJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewFinishTaskRequestWithBody(server, taskId, "application/json", bodyReader)
+}
+
+// NewFinishTaskRequestWithBody generates requests for FinishTask with any type of body
+func NewFinishTaskRequestWithBody(server string, taskId TaskIdParam, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -10018,10 +10247,12 @@ func NewFinishTaskRequest(server string, taskId TaskIdParam) (*http.Request, err
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -10741,8 +10972,19 @@ func NewActivateTaskcheckRequest(server string, taskcheckId TaskcheckIdParam) (*
 	return req, nil
 }
 
-// NewFinishTaskcheckRequest generates requests for FinishTaskcheck
-func NewFinishTaskcheckRequest(server string, taskcheckId TaskcheckIdParam) (*http.Request, error) {
+// NewFinishTaskcheckRequest calls the generic FinishTaskcheck builder with application/json body
+func NewFinishTaskcheckRequest(server string, taskcheckId TaskcheckIdParam, body FinishTaskcheckJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewFinishTaskcheckRequestWithBody(server, taskcheckId, "application/json", bodyReader)
+}
+
+// NewFinishTaskcheckRequestWithBody generates requests for FinishTaskcheck with any type of body
+func NewFinishTaskcheckRequestWithBody(server string, taskcheckId TaskcheckIdParam, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -10767,10 +11009,12 @@ func NewFinishTaskcheckRequest(server string, taskcheckId TaskcheckIdParam) (*ht
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -12245,7 +12489,12 @@ type ClientWithResponsesInterface interface {
 	AddTaskLabelsToTaskWithResponse(ctx context.Context, taskId TaskIdParam, body AddTaskLabelsToTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*AddTaskLabelsToTaskResponse, error)
 
 	// FindAvailableTaskLabelsWithResponse request
-	FindAvailableTaskLabelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*FindAvailableTaskLabelsResponse, error)
+	FindAvailableTaskLabelsWithResponse(ctx context.Context, params *FindAvailableTaskLabelsParams, reqEditors ...RequestEditorFn) (*FindAvailableTaskLabelsResponse, error)
+
+	// MergeTaskLabelsWithBodyWithResponse request with any body
+	MergeTaskLabelsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*MergeTaskLabelsResponse, error)
+
+	MergeTaskLabelsWithResponse(ctx context.Context, body MergeTaskLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*MergeTaskLabelsResponse, error)
 
 	// RemoveTaskLabelsFromTaskWithBodyWithResponse request with any body
 	RemoveTaskLabelsFromTaskWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveTaskLabelsFromTaskResponse, error)
@@ -12268,8 +12517,10 @@ type ClientWithResponsesInterface interface {
 
 	EditTaskWithResponse(ctx context.Context, taskId TaskIdParam, body EditTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*EditTaskResponse, error)
 
-	// ActivateTaskWithResponse request
-	ActivateTaskWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*ActivateTaskResponse, error)
+	// ActivateTaskWithBodyWithResponse request with any body
+	ActivateTaskWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ActivateTaskResponse, error)
+
+	ActivateTaskWithResponse(ctx context.Context, taskId TaskIdParam, body ActivateTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*ActivateTaskResponse, error)
 
 	// CreateCommentWithBodyWithResponse request with any body
 	CreateCommentWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCommentResponse, error)
@@ -12284,8 +12535,10 @@ type ClientWithResponsesInterface interface {
 
 	EditTaskDescriptionWithResponse(ctx context.Context, taskId TaskIdParam, body EditTaskDescriptionJSONRequestBody, reqEditors ...RequestEditorFn) (*EditTaskDescriptionResponse, error)
 
-	// FinishTaskWithResponse request
-	FinishTaskWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*FinishTaskResponse, error)
+	// FinishTaskWithBodyWithResponse request with any body
+	FinishTaskWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FinishTaskResponse, error)
+
+	FinishTaskWithResponse(ctx context.Context, taskId TaskIdParam, body FinishTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*FinishTaskResponse, error)
 
 	// MoveTaskWithBodyWithResponse request with any body
 	MoveTaskWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, tasklistId TasklistIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*MoveTaskResponse, error)
@@ -12351,8 +12604,10 @@ type ClientWithResponsesInterface interface {
 	// ActivateTaskcheckWithResponse request
 	ActivateTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*ActivateTaskcheckResponse, error)
 
-	// FinishTaskcheckWithResponse request
-	FinishTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*FinishTaskcheckResponse, error)
+	// FinishTaskcheckWithBodyWithResponse request with any body
+	FinishTaskcheckWithBodyWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FinishTaskcheckResponse, error)
+
+	FinishTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, body FinishTaskcheckJSONRequestBody, reqEditors ...RequestEditorFn) (*FinishTaskcheckResponse, error)
 
 	// CreateTasklistFromTemplateWithBodyWithResponse request with any body
 	CreateTasklistFromTemplateWithBodyWithResponse(ctx context.Context, templateId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTasklistFromTemplateResponse, error)
@@ -14637,6 +14892,36 @@ func (r FindAvailableTaskLabelsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r FindAvailableTaskLabelsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type MergeTaskLabelsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r MergeTaskLabelsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r MergeTaskLabelsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r MergeTaskLabelsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -17048,12 +17333,29 @@ func (c *ClientWithResponses) AddTaskLabelsToTaskWithResponse(ctx context.Contex
 }
 
 // FindAvailableTaskLabelsWithResponse request returning *FindAvailableTaskLabelsResponse
-func (c *ClientWithResponses) FindAvailableTaskLabelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*FindAvailableTaskLabelsResponse, error) {
-	rsp, err := c.FindAvailableTaskLabels(ctx, reqEditors...)
+func (c *ClientWithResponses) FindAvailableTaskLabelsWithResponse(ctx context.Context, params *FindAvailableTaskLabelsParams, reqEditors ...RequestEditorFn) (*FindAvailableTaskLabelsResponse, error) {
+	rsp, err := c.FindAvailableTaskLabels(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseFindAvailableTaskLabelsResponse(rsp)
+}
+
+// MergeTaskLabelsWithBodyWithResponse request with arbitrary body returning *MergeTaskLabelsResponse
+func (c *ClientWithResponses) MergeTaskLabelsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*MergeTaskLabelsResponse, error) {
+	rsp, err := c.MergeTaskLabelsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseMergeTaskLabelsResponse(rsp)
+}
+
+func (c *ClientWithResponses) MergeTaskLabelsWithResponse(ctx context.Context, body MergeTaskLabelsJSONRequestBody, reqEditors ...RequestEditorFn) (*MergeTaskLabelsResponse, error) {
+	rsp, err := c.MergeTaskLabels(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseMergeTaskLabelsResponse(rsp)
 }
 
 // RemoveTaskLabelsFromTaskWithBodyWithResponse request with arbitrary body returning *RemoveTaskLabelsFromTaskResponse
@@ -17125,9 +17427,17 @@ func (c *ClientWithResponses) EditTaskWithResponse(ctx context.Context, taskId T
 	return ParseEditTaskResponse(rsp)
 }
 
-// ActivateTaskWithResponse request returning *ActivateTaskResponse
-func (c *ClientWithResponses) ActivateTaskWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*ActivateTaskResponse, error) {
-	rsp, err := c.ActivateTask(ctx, taskId, reqEditors...)
+// ActivateTaskWithBodyWithResponse request with arbitrary body returning *ActivateTaskResponse
+func (c *ClientWithResponses) ActivateTaskWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ActivateTaskResponse, error) {
+	rsp, err := c.ActivateTaskWithBody(ctx, taskId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseActivateTaskResponse(rsp)
+}
+
+func (c *ClientWithResponses) ActivateTaskWithResponse(ctx context.Context, taskId TaskIdParam, body ActivateTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*ActivateTaskResponse, error) {
+	rsp, err := c.ActivateTask(ctx, taskId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -17177,9 +17487,17 @@ func (c *ClientWithResponses) EditTaskDescriptionWithResponse(ctx context.Contex
 	return ParseEditTaskDescriptionResponse(rsp)
 }
 
-// FinishTaskWithResponse request returning *FinishTaskResponse
-func (c *ClientWithResponses) FinishTaskWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*FinishTaskResponse, error) {
-	rsp, err := c.FinishTask(ctx, taskId, reqEditors...)
+// FinishTaskWithBodyWithResponse request with arbitrary body returning *FinishTaskResponse
+func (c *ClientWithResponses) FinishTaskWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FinishTaskResponse, error) {
+	rsp, err := c.FinishTaskWithBody(ctx, taskId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFinishTaskResponse(rsp)
+}
+
+func (c *ClientWithResponses) FinishTaskWithResponse(ctx context.Context, taskId TaskIdParam, body FinishTaskJSONRequestBody, reqEditors ...RequestEditorFn) (*FinishTaskResponse, error) {
+	rsp, err := c.FinishTask(ctx, taskId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -17394,9 +17712,17 @@ func (c *ClientWithResponses) ActivateTaskcheckWithResponse(ctx context.Context,
 	return ParseActivateTaskcheckResponse(rsp)
 }
 
-// FinishTaskcheckWithResponse request returning *FinishTaskcheckResponse
-func (c *ClientWithResponses) FinishTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, reqEditors ...RequestEditorFn) (*FinishTaskcheckResponse, error) {
-	rsp, err := c.FinishTaskcheck(ctx, taskcheckId, reqEditors...)
+// FinishTaskcheckWithBodyWithResponse request with arbitrary body returning *FinishTaskcheckResponse
+func (c *ClientWithResponses) FinishTaskcheckWithBodyWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FinishTaskcheckResponse, error) {
+	rsp, err := c.FinishTaskcheckWithBody(ctx, taskcheckId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFinishTaskcheckResponse(rsp)
+}
+
+func (c *ClientWithResponses) FinishTaskcheckWithResponse(ctx context.Context, taskcheckId TaskcheckIdParam, body FinishTaskcheckJSONRequestBody, reqEditors ...RequestEditorFn) (*FinishTaskcheckResponse, error) {
+	rsp, err := c.FinishTaskcheck(ctx, taskcheckId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -19543,6 +19869,32 @@ func ParseFindAvailableTaskLabelsResponse(rsp *http.Response) (*FindAvailableTas
 		var dest struct {
 			Labels *[]TaskLabel `json:"labels,omitempty"`
 		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseMergeTaskLabelsResponse parses an HTTP response from a MergeTaskLabelsWithResponse call
+func ParseMergeTaskLabelsResponse(rsp *http.Response) (*MergeTaskLabelsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &MergeTaskLabelsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
