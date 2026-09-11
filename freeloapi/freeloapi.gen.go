@@ -288,22 +288,22 @@ func (e TaskFullType) Valid() bool {
 
 // Defines values for TaskRelationType.
 const (
-	BlockedBy   TaskRelationType = "blocked_by"
-	Blocks      TaskRelationType = "blocks"
-	DuplicateOf TaskRelationType = "duplicate_of"
-	RelatedTo   TaskRelationType = "related_to"
+	TaskRelationTypeBlockedBy   TaskRelationType = "blocked_by"
+	TaskRelationTypeBlocks      TaskRelationType = "blocks"
+	TaskRelationTypeDuplicateOf TaskRelationType = "duplicate_of"
+	TaskRelationTypeRelatedTo   TaskRelationType = "related_to"
 )
 
 // Valid indicates whether the value is a known member of the TaskRelationType enum.
 func (e TaskRelationType) Valid() bool {
 	switch e {
-	case BlockedBy:
+	case TaskRelationTypeBlockedBy:
 		return true
-	case Blocks:
+	case TaskRelationTypeBlocks:
 		return true
-	case DuplicateOf:
+	case TaskRelationTypeDuplicateOf:
 		return true
-	case RelatedTo:
+	case TaskRelationTypeRelatedTo:
 		return true
 	default:
 		return false
@@ -1066,6 +1066,30 @@ func (e MoveTaskJSONBodyWorkReportsAction) Valid() bool {
 	}
 }
 
+// Defines values for CreateTaskRelationJSONBodyType.
+const (
+	CreateTaskRelationJSONBodyTypeBlockedBy   CreateTaskRelationJSONBodyType = "blocked_by"
+	CreateTaskRelationJSONBodyTypeBlocks      CreateTaskRelationJSONBodyType = "blocks"
+	CreateTaskRelationJSONBodyTypeDuplicateOf CreateTaskRelationJSONBodyType = "duplicate_of"
+	CreateTaskRelationJSONBodyTypeRelatedTo   CreateTaskRelationJSONBodyType = "related_to"
+)
+
+// Valid indicates whether the value is a known member of the CreateTaskRelationJSONBodyType enum.
+func (e CreateTaskRelationJSONBodyType) Valid() bool {
+	switch e {
+	case CreateTaskRelationJSONBodyTypeBlockedBy:
+		return true
+	case CreateTaskRelationJSONBodyTypeBlocks:
+		return true
+	case CreateTaskRelationJSONBodyTypeDuplicateOf:
+		return true
+	case CreateTaskRelationJSONBodyTypeRelatedTo:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetTemplateProjectsParamsOrderBy.
 const (
 	GetTemplateProjectsParamsOrderByDateAdd      GetTemplateProjectsParamsOrderBy = "date_add"
@@ -1590,6 +1614,57 @@ type ProjectBasic struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// ProjectBudgetSettingsInput Budget settings to set or change.
+//
+// To **cancel** the budget, send `budget: null` and `minutes_budget: 0` (with `is_recurrent: false`)
+// — it resets to empty/zero. The budget currency always follows the project currency.
+type ProjectBudgetSettingsInput struct {
+	// Budget Cost budget in minor currency units, e.g. "100000" for 1000.00. Must be a non-negative whole number. Send null or omit to clear it.
+	Budget      *string `json:"budget,omitempty"`
+	IsRecurrent bool    `json:"is_recurrent"`
+
+	// MinutesBudget Time budget in minutes. Use 0 for none.
+	MinutesBudget *int `json:"minutes_budget,omitempty"`
+
+	// NullAfterMonthsCount Reset interval in months for a recurrent budget. Required and at most 300 when `is_recurrent` is true; ignored otherwise.
+	NullAfterMonthsCount *int `json:"null_after_months_count,omitempty"`
+
+	// NullInDayOfMonth Day of month to reset a recurrent budget. Required and must be 1–31 when `is_recurrent` is true; ignored otherwise.
+	NullInDayOfMonth *int `json:"null_in_day_of_month,omitempty"`
+}
+
+// ProjectBudgetState Current budget state — configured settings plus consumption (čerpání) and remaining (zbývá)
+// values for both money and time. All monetary amounts use the `Currency` format (amount ×100).
+type ProjectBudgetState struct {
+	// Budget Configured cost budget (project currency). Amount is `0` when no cost budget is set.
+	Budget      Currency `json:"budget"`
+	IsRecurrent bool     `json:"is_recurrent"`
+
+	// MinutesBudget Configured time budget in minutes.
+	MinutesBudget int `json:"minutes_budget"`
+
+	// NextResetDate When a recurrent budget will next reset (naive ISO8601, Europe/Prague). null for non-recurrent budgets.
+	NextResetDate *freelotime.Time `json:"next_reset_date"`
+
+	// NullAfterMonthsCount Reset interval in months for a recurrent budget. 0 when not recurrent.
+	NullAfterMonthsCount int `json:"null_after_months_count"`
+
+	// NullInDayOfMonth Day of month (1–31) when a recurrent budget resets. 0 when not recurrent.
+	NullInDayOfMonth int `json:"null_in_day_of_month"`
+
+	// RemainingCost Remaining cost budget (budget − spent; may be negative when overspent).
+	RemainingCost Currency `json:"remaining_cost"`
+
+	// RemainingMinutes Remaining time budget in minutes (may be negative when overspent).
+	RemainingMinutes int `json:"remaining_minutes"`
+
+	// SpentCost Cost consumed so far (čerpání).
+	SpentCost Currency `json:"spent_cost"`
+
+	// SpentMinutes Time consumed so far in minutes (čerpání).
+	SpentMinutes int `json:"spent_minutes"`
+}
+
 // ProjectDetail defines model for ProjectDetail.
 type ProjectDetail struct {
 	Budget *Currency `json:"budget,omitempty"`
@@ -1598,14 +1673,17 @@ type ProjectDetail struct {
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
 
 	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateEditedAt     *freelotime.Time `json:"date_edited_at,omitempty"`
-	Id               *int             `json:"id,omitempty"`
-	MinutesBudget    *int             `json:"minutes_budget,omitempty"`
-	Name             *string          `json:"name,omitempty"`
-	Owner            *UserBasic       `json:"owner,omitempty"`
-	RealCost         *Currency        `json:"real_cost,omitempty"`
-	RealMinutesSpent *int             `json:"real_minutes_spent,omitempty"`
-	State            *State           `json:"state,omitempty"`
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+	// DueDate Project deadline as a calendar date (`YYYY-MM-DD`). The project deadline has no time-of-day component.
+	DueDate          *openapi_types.Date `json:"due_date,omitempty"`
+	Id               *int                `json:"id,omitempty"`
+	MinutesBudget    *int                `json:"minutes_budget,omitempty"`
+	Name             *string             `json:"name,omitempty"`
+	Owner            *UserBasic          `json:"owner,omitempty"`
+	RealCost         *Currency           `json:"real_cost,omitempty"`
+	RealMinutesSpent *int                `json:"real_minutes_spent,omitempty"`
+	State            *State              `json:"state,omitempty"`
 	Tasklists        *[]struct {
 		Id    *int    `json:"id,omitempty"`
 		Name  *string `json:"name,omitempty"`
@@ -1640,14 +1718,17 @@ type ProjectFull struct {
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
 
 	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateEditedAt     *freelotime.Time `json:"date_edited_at,omitempty"`
-	Id               *int             `json:"id,omitempty"`
-	MinutesBudget    *int             `json:"minutes_budget,omitempty"`
-	Name             *string          `json:"name,omitempty"`
-	Owner            *UserBasic       `json:"owner,omitempty"`
-	RealCost         *Currency        `json:"real_cost,omitempty"`
-	RealMinutesSpent *int             `json:"real_minutes_spent,omitempty"`
-	State            *State           `json:"state,omitempty"`
+	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+	// DueDate Project deadline as a calendar date (`YYYY-MM-DD`). The project deadline has no time-of-day component.
+	DueDate          *openapi_types.Date `json:"due_date,omitempty"`
+	Id               *int                `json:"id,omitempty"`
+	MinutesBudget    *int                `json:"minutes_budget,omitempty"`
+	Name             *string             `json:"name,omitempty"`
+	Owner            *UserBasic          `json:"owner,omitempty"`
+	RealCost         *Currency           `json:"real_cost,omitempty"`
+	RealMinutesSpent *int                `json:"real_minutes_spent,omitempty"`
+	State            *State              `json:"state,omitempty"`
 }
 
 // ProjectLabel defines model for ProjectLabel.
@@ -1662,6 +1743,14 @@ type ProjectLabel struct {
 	UsersId     *int    `json:"users_id,omitempty"`
 }
 
+// ProjectMutationResult defines model for ProjectMutationResult.
+type ProjectMutationResult struct {
+	// DueDate Project deadline as a calendar date (`YYYY-MM-DD`). The project deadline has no time-of-day component.
+	DueDate *openapi_types.Date `json:"due_date,omitempty"`
+	Id      *int                `json:"id,omitempty"`
+	Name    *string             `json:"name,omitempty"`
+}
+
 // ProjectWithTasklists defines model for ProjectWithTasklists.
 type ProjectWithTasklists struct {
 	Client *BusinessClient `json:"client,omitempty"`
@@ -1671,9 +1760,12 @@ type ProjectWithTasklists struct {
 
 	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
-	Id           *int             `json:"id,omitempty"`
-	Name         *string          `json:"name,omitempty"`
-	Tasklists    *[]TasklistBasic `json:"tasklists,omitempty"`
+
+	// DueDate Project deadline as a calendar date (`YYYY-MM-DD`). The project deadline has no time-of-day component.
+	DueDate   *openapi_types.Date `json:"due_date,omitempty"`
+	Id        *int                `json:"id,omitempty"`
+	Name      *string             `json:"name,omitempty"`
+	Tasklists *[]TasklistBasic    `json:"tasklists,omitempty"`
 }
 
 // SearchResult Single search hit. Fields marked **conditional** below appear only for specific `type` values:
@@ -1895,14 +1987,18 @@ type TaskDetail struct {
 	DueDate *freelotime.Time `json:"due_date,omitempty"`
 
 	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DueDateEnd         *freelotime.Time    `json:"due_date_end,omitempty"`
-	Id                 *int                `json:"id,omitempty"`
-	Labels             *[]TaskLabel        `json:"labels,omitempty"`
-	Minutes            *int                `json:"minutes,omitempty"`
-	Name               *string             `json:"name,omitempty"`
-	ParentTaskId       *int                `json:"parent_task_id,omitempty"`
-	PriorityEnum       *string             `json:"priority_enum,omitempty"`
-	Project            *ProjectBasic       `json:"project,omitempty"`
+	DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Labels       *[]TaskLabel     `json:"labels,omitempty"`
+	Minutes      *int             `json:"minutes,omitempty"`
+	Name         *string          `json:"name,omitempty"`
+	ParentTaskId *int             `json:"parent_task_id,omitempty"`
+	PriorityEnum *string          `json:"priority_enum,omitempty"`
+	Project      *ProjectBasic    `json:"project,omitempty"`
+
+	// Relations Empty when the project owner's plan has no team features — the detail stays readable and
+	// the relations are simply omitted. `GET /task/{task_id}/relations` returns 403 in that case.
+	Relations          *[]TaskRelation     `json:"relations,omitempty"`
 	State              *State              `json:"state,omitempty"`
 	Tasklist           *TasklistBasic      `json:"tasklist,omitempty"`
 	TotalTimeEstimate  *TimeEstimate       `json:"total_time_estimate,omitempty"`
@@ -2053,9 +2149,10 @@ type TaskLabelRemoveInput2 struct {
 
 // TaskRelation defines model for TaskRelation.
 type TaskRelation struct {
-	RelatedTaskId   *int              `json:"related_task_id,omitempty"`
-	RelatedTaskName *string           `json:"related_task_name,omitempty"`
-	Type            *TaskRelationType `json:"type,omitempty"`
+	RelatedTaskId   *int                `json:"related_task_id,omitempty"`
+	RelatedTaskName *string             `json:"related_task_name,omitempty"`
+	Type            *TaskRelationType   `json:"type,omitempty"`
+	Uuid            *openapi_types.UUID `json:"uuid,omitempty"`
 }
 
 // TaskRelationType defines model for TaskRelation.Type.
@@ -2664,6 +2761,13 @@ type CreateProjectFromTemplateJSONBodyCurrencyIso string
 // CreateProjectFromTemplateJSONBodyGeneralSettingsLayout defines parameters for CreateProjectFromTemplate.
 type CreateProjectFromTemplateJSONBodyGeneralSettingsLayout string
 
+// UpdateProjectJSONBody defines parameters for UpdateProject.
+type UpdateProjectJSONBody struct {
+	// DueDate Project deadline as a calendar date (`YYYY-MM-DD`). The project deadline has no time-of-day component.
+	DueDate *openapi_types.Date `json:"due_date,omitempty"`
+	Name    *string             `json:"name,omitempty"`
+}
+
 // CreateNoteJSONBody defines parameters for CreateNote.
 type CreateNoteJSONBody struct {
 	Content *string `json:"content,omitempty"`
@@ -2742,7 +2846,10 @@ type GetProjectsParamsOrder string
 type CreateProjectJSONBody struct {
 	// CurrencyIso Currency used for budgets and invoicing in this project. Cannot be changed afterwards.
 	CurrencyIso CreateProjectJSONBodyCurrencyIso `json:"currency_iso"`
-	Name        string                           `json:"name"`
+
+	// DueDate Project deadline as a calendar date (`YYYY-MM-DD`). The project deadline has no time-of-day component.
+	DueDate *openapi_types.Date `json:"due_date,omitempty"`
+	Name    string              `json:"name"`
 
 	// ProjectOwnerId ID of user assigned as owner. Must be an owner-eligible user in the caller's account.
 	// If omitted, the authenticated caller becomes the owner.
@@ -2860,6 +2967,14 @@ type RemoveTaskLabelsFromTaskJSONBody struct {
 
 // CreateTaskFromTemplateJSONBody defines parameters for CreateTaskFromTemplate.
 type CreateTaskFromTemplateJSONBody struct {
+	// Description Overrides the task description copied from the template. Same shape as the POST /task/{task_id}/description request body. Omit (or send null) to keep the template description.
+	Description *struct {
+		Content string        `json:"content"`
+		Files   *[]FileUpload `json:"files,omitempty"`
+	} `json:"description,omitempty"`
+
+	// Name Overrides the task name copied from the template. Trimmed before use; an empty or whitespace-only value is rejected. Omit (or send null) to keep the template one.
+	Name             *string             `json:"name,omitempty"`
 	PresetDateFrom   *openapi_types.Date `json:"preset_date_from,omitempty"`
 	TargetProjectId  *int                `json:"target_project_id,omitempty"`
 	TargetTasklistId *int                `json:"target_tasklist_id,omitempty"`
@@ -2978,6 +3093,19 @@ type AssignTaskToProjectJSONBody struct {
 	// TasklistId Target tasklist ID (the project is derived from it)
 	TasklistId int `json:"tasklist_id"`
 }
+
+// CreateTaskRelationJSONBody defines parameters for CreateTaskRelation.
+type CreateTaskRelationJSONBody struct {
+	// RelatedTaskId The task on the other side of the relation.
+	RelatedTaskId int `json:"related_task_id"`
+
+	// Type Relation type from the point of view of `task_id`. `related_to` and `duplicate_of`
+	// are symmetric.
+	Type CreateTaskRelationJSONBodyType `json:"type"`
+}
+
+// CreateTaskRelationJSONBodyType defines parameters for CreateTaskRelation.
+type CreateTaskRelationJSONBodyType string
 
 // CreateTaskReminderJSONBody defines parameters for CreateTaskReminder.
 type CreateTaskReminderJSONBody struct {
@@ -3254,6 +3382,12 @@ type EditProjectLabelJSONRequestBody EditProjectLabelJSONBody
 // CreateProjectFromTemplateJSONRequestBody defines body for CreateProjectFromTemplate for application/json ContentType.
 type CreateProjectFromTemplateJSONRequestBody CreateProjectFromTemplateJSONBody
 
+// UpdateProjectJSONRequestBody defines body for UpdateProject for application/json ContentType.
+type UpdateProjectJSONRequestBody UpdateProjectJSONBody
+
+// UpdateProjectBudgetJSONRequestBody defines body for UpdateProjectBudget for application/json ContentType.
+type UpdateProjectBudgetJSONRequestBody = ProjectBudgetSettingsInput
+
 // CreateNoteJSONRequestBody defines body for CreateNote for application/json ContentType.
 type CreateNoteJSONRequestBody CreateNoteJSONBody
 
@@ -3313,6 +3447,9 @@ type MoveTaskJSONRequestBody MoveTaskJSONBody
 
 // AssignTaskToProjectJSONRequestBody defines body for AssignTaskToProject for application/json ContentType.
 type AssignTaskToProjectJSONRequestBody AssignTaskToProjectJSONBody
+
+// CreateTaskRelationJSONRequestBody defines body for CreateTaskRelation for application/json ContentType.
+type CreateTaskRelationJSONRequestBody CreateTaskRelationJSONBody
 
 // CreateTaskReminderJSONRequestBody defines body for CreateTaskReminder for application/json ContentType.
 type CreateTaskReminderJSONRequestBody CreateTaskReminderJSONBody
@@ -3811,11 +3948,27 @@ type ClientInterface interface {
 	// GetProject request
 	GetProject(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// UpdateProjectWithBody request with any body
+	UpdateProjectWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateProject(ctx context.Context, projectId ProjectIdParam, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ActivateProject request
 	ActivateProject(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ArchiveProject request
 	ArchiveProject(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetProjectBudget request
+	GetProjectBudget(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateProjectBudgetWithBody request with any body
+	UpdateProjectBudgetWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateProjectBudget(ctx context.Context, projectId ProjectIdParam, body UpdateProjectBudgetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ResetProjectBudget request
+	ResetProjectBudget(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateNoteWithBody request with any body
 	CreateNoteWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3962,6 +4115,14 @@ type ClientInterface interface {
 	// GetTaskRelations request
 	GetTaskRelations(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateTaskRelationWithBody request with any body
+	CreateTaskRelationWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateTaskRelation(ctx context.Context, taskId TaskIdParam, body CreateTaskRelationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteTaskRelation request
+	DeleteTaskRelation(ctx context.Context, taskId TaskIdParam, relationUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteTaskReminder request
 	DeleteTaskReminder(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4020,8 +4181,17 @@ type ClientInterface interface {
 
 	CreateTasklistFromTemplate(ctx context.Context, templateId int, body CreateTasklistFromTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteTasklist request
+	DeleteTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetTasklist request
 	GetTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ActivateTasklist request
+	ActivateTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ArchiveTasklist request
+	ArchiveTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// EditTasklistWithBody request with any body
 	EditTasklistWithBody(ctx context.Context, tasklistId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4815,6 +4985,30 @@ func (c *Client) GetProject(ctx context.Context, projectId ProjectIdParam, reqEd
 	return c.Client.Do(req)
 }
 
+func (c *Client) UpdateProjectWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateProjectRequestWithBody(c.Server, projectId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateProject(ctx context.Context, projectId ProjectIdParam, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateProjectRequest(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ActivateProject(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewActivateProjectRequest(c.Server, projectId)
 	if err != nil {
@@ -4829,6 +5023,54 @@ func (c *Client) ActivateProject(ctx context.Context, projectId ProjectIdParam, 
 
 func (c *Client) ArchiveProject(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewArchiveProjectRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetProjectBudget(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProjectBudgetRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateProjectBudgetWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateProjectBudgetRequestWithBody(c.Server, projectId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateProjectBudget(ctx context.Context, projectId ProjectIdParam, body UpdateProjectBudgetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateProjectBudgetRequest(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ResetProjectBudget(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResetProjectBudgetRequest(c.Server, projectId)
 	if err != nil {
 		return nil, err
 	}
@@ -5499,6 +5741,42 @@ func (c *Client) GetTaskRelations(ctx context.Context, taskId TaskIdParam, reqEd
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateTaskRelationWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTaskRelationRequestWithBody(c.Server, taskId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateTaskRelation(ctx context.Context, taskId TaskIdParam, body CreateTaskRelationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTaskRelationRequest(c.Server, taskId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteTaskRelation(ctx context.Context, taskId TaskIdParam, relationUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteTaskRelationRequest(c.Server, taskId, relationUuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteTaskReminder(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteTaskReminderRequest(c.Server, taskId)
 	if err != nil {
@@ -5763,8 +6041,44 @@ func (c *Client) CreateTasklistFromTemplate(ctx context.Context, templateId int,
 	return c.Client.Do(req)
 }
 
+func (c *Client) DeleteTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteTasklistRequest(c.Server, tasklistId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetTasklistRequest(c.Server, tasklistId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ActivateTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewActivateTasklistRequest(c.Server, tasklistId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ArchiveTasklist(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewArchiveTasklistRequest(c.Server, tasklistId)
 	if err != nil {
 		return nil, err
 	}
@@ -8753,6 +9067,53 @@ func NewGetProjectRequest(server string, projectId ProjectIdParam) (*http.Reques
 	return req, nil
 }
 
+// NewUpdateProjectRequest calls the generic UpdateProject builder with application/json body
+func NewUpdateProjectRequest(server string, projectId ProjectIdParam, body UpdateProjectJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateProjectRequestWithBody(server, projectId, "application/json", bodyReader)
+}
+
+// NewUpdateProjectRequestWithBody generates requests for UpdateProject with any type of body
+func NewUpdateProjectRequestWithBody(server string, projectId ProjectIdParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewActivateProjectRequest generates requests for ActivateProject
 func NewActivateProjectRequest(server string, projectId ProjectIdParam) (*http.Request, error) {
 	var err error
@@ -8804,6 +9165,121 @@ func NewArchiveProjectRequest(server string, projectId ProjectIdParam) (*http.Re
 	}
 
 	operationPath := fmt.Sprintf("/project/%s/archive", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetProjectBudgetRequest generates requests for GetProjectBudget
+func NewGetProjectBudgetRequest(server string, projectId ProjectIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project/%s/budget", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateProjectBudgetRequest calls the generic UpdateProjectBudget builder with application/json body
+func NewUpdateProjectBudgetRequest(server string, projectId ProjectIdParam, body UpdateProjectBudgetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateProjectBudgetRequestWithBody(server, projectId, "application/json", bodyReader)
+}
+
+// NewUpdateProjectBudgetRequestWithBody generates requests for UpdateProjectBudget with any type of body
+func NewUpdateProjectBudgetRequestWithBody(server string, projectId ProjectIdParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project/%s/budget", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewResetProjectBudgetRequest generates requests for ResetProjectBudget
+func NewResetProjectBudgetRequest(server string, projectId ProjectIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project/%s/budget/reset", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -10433,6 +10909,94 @@ func NewGetTaskRelationsRequest(server string, taskId TaskIdParam) (*http.Reques
 	return req, nil
 }
 
+// NewCreateTaskRelationRequest calls the generic CreateTaskRelation builder with application/json body
+func NewCreateTaskRelationRequest(server string, taskId TaskIdParam, body CreateTaskRelationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateTaskRelationRequestWithBody(server, taskId, "application/json", bodyReader)
+}
+
+// NewCreateTaskRelationRequestWithBody generates requests for CreateTaskRelation with any type of body
+func NewCreateTaskRelationRequestWithBody(server string, taskId TaskIdParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "task_id", taskId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/task/%s/relations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteTaskRelationRequest generates requests for DeleteTaskRelation
+func NewDeleteTaskRelationRequest(server string, taskId TaskIdParam, relationUuid openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "task_id", taskId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "relation_uuid", relationUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/task/%s/relations/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewDeleteTaskReminderRequest generates requests for DeleteTaskReminder
 func NewDeleteTaskReminderRequest(server string, taskId TaskIdParam) (*http.Request, error) {
 	var err error
@@ -11066,6 +11630,40 @@ func NewCreateTasklistFromTemplateRequestWithBody(server string, templateId int,
 	return req, nil
 }
 
+// NewDeleteTasklistRequest generates requests for DeleteTasklist
+func NewDeleteTasklistRequest(server string, tasklistId TasklistIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tasklist_id", tasklistId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tasklist/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetTasklistRequest generates requests for GetTasklist
 func NewGetTasklistRequest(server string, tasklistId TasklistIdParam) (*http.Request, error) {
 	var err error
@@ -11093,6 +11691,74 @@ func NewGetTasklistRequest(server string, tasklistId TasklistIdParam) (*http.Req
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewActivateTasklistRequest generates requests for ActivateTasklist
+func NewActivateTasklistRequest(server string, tasklistId TasklistIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tasklist_id", tasklistId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tasklist/%s/activate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewArchiveTasklistRequest generates requests for ArchiveTasklist
+func NewArchiveTasklistRequest(server string, tasklistId TasklistIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tasklist_id", tasklistId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tasklist/%s/archive", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -12405,11 +13071,27 @@ type ClientWithResponsesInterface interface {
 	// GetProjectWithResponse request
 	GetProjectWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*GetProjectResponse, error)
 
+	// UpdateProjectWithBodyWithResponse request with any body
+	UpdateProjectWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
+
+	UpdateProjectWithResponse(ctx context.Context, projectId ProjectIdParam, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
+
 	// ActivateProjectWithResponse request
 	ActivateProjectWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*ActivateProjectResponse, error)
 
 	// ArchiveProjectWithResponse request
 	ArchiveProjectWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*ArchiveProjectResponse, error)
+
+	// GetProjectBudgetWithResponse request
+	GetProjectBudgetWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*GetProjectBudgetResponse, error)
+
+	// UpdateProjectBudgetWithBodyWithResponse request with any body
+	UpdateProjectBudgetWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectBudgetResponse, error)
+
+	UpdateProjectBudgetWithResponse(ctx context.Context, projectId ProjectIdParam, body UpdateProjectBudgetJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectBudgetResponse, error)
+
+	// ResetProjectBudgetWithResponse request
+	ResetProjectBudgetWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*ResetProjectBudgetResponse, error)
 
 	// CreateNoteWithBodyWithResponse request with any body
 	CreateNoteWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error)
@@ -12556,6 +13238,14 @@ type ClientWithResponsesInterface interface {
 	// GetTaskRelationsWithResponse request
 	GetTaskRelationsWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*GetTaskRelationsResponse, error)
 
+	// CreateTaskRelationWithBodyWithResponse request with any body
+	CreateTaskRelationWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTaskRelationResponse, error)
+
+	CreateTaskRelationWithResponse(ctx context.Context, taskId TaskIdParam, body CreateTaskRelationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTaskRelationResponse, error)
+
+	// DeleteTaskRelationWithResponse request
+	DeleteTaskRelationWithResponse(ctx context.Context, taskId TaskIdParam, relationUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteTaskRelationResponse, error)
+
 	// DeleteTaskReminderWithResponse request
 	DeleteTaskReminderWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*DeleteTaskReminderResponse, error)
 
@@ -12614,8 +13304,17 @@ type ClientWithResponsesInterface interface {
 
 	CreateTasklistFromTemplateWithResponse(ctx context.Context, templateId int, body CreateTasklistFromTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTasklistFromTemplateResponse, error)
 
+	// DeleteTasklistWithResponse request
+	DeleteTasklistWithResponse(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*DeleteTasklistResponse, error)
+
 	// GetTasklistWithResponse request
 	GetTasklistWithResponse(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*GetTasklistResponse, error)
+
+	// ActivateTasklistWithResponse request
+	ActivateTasklistWithResponse(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*ActivateTasklistResponse, error)
+
+	// ArchiveTasklistWithResponse request
+	ArchiveTasklistWithResponse(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*ArchiveTasklistResponse, error)
 
 	// EditTasklistWithBodyWithResponse request with any body
 	EditTasklistWithBodyWithResponse(ctx context.Context, tasklistId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditTasklistResponse, error)
@@ -14215,6 +14914,36 @@ func (r GetProjectResponse) ContentType() string {
 	return ""
 }
 
+type UpdateProjectResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ProjectMutationResult
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateProjectResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateProjectResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateProjectResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type ActivateProjectResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -14269,6 +14998,96 @@ func (r ArchiveProjectResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ArchiveProjectResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetProjectBudgetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ProjectBudgetState
+}
+
+// Status returns HTTPResponse.Status
+func (r GetProjectBudgetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetProjectBudgetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetProjectBudgetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateProjectBudgetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ProjectBudgetState
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateProjectBudgetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateProjectBudgetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateProjectBudgetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ResetProjectBudgetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ProjectBudgetState
+}
+
+// Status returns HTTPResponse.Status
+func (r ResetProjectBudgetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ResetProjectBudgetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ResetProjectBudgetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -14616,7 +15435,7 @@ func (r GetProjectsResponse) ContentType() string {
 type CreateProjectResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *ProjectBasic
+	JSON200      *ProjectMutationResult
 }
 
 // Status returns HTTPResponse.Status
@@ -15362,6 +16181,66 @@ func (r GetTaskRelationsResponse) ContentType() string {
 	return ""
 }
 
+type CreateTaskRelationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TaskRelation
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateTaskRelationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateTaskRelationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateTaskRelationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteTaskRelationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteTaskRelationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteTaskRelationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteTaskRelationResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type DeleteTaskReminderResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -15804,6 +16683,36 @@ func (r CreateTasklistFromTemplateResponse) ContentType() string {
 	return ""
 }
 
+type DeleteTasklistResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteTasklistResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteTasklistResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteTasklistResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type GetTasklistResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -15828,6 +16737,66 @@ func (r GetTasklistResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetTasklistResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ActivateTasklistResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ActivateTasklistResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ActivateTasklistResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ActivateTasklistResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ArchiveTasklistResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r ArchiveTasklistResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ArchiveTasklistResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ArchiveTasklistResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -17063,6 +18032,23 @@ func (c *ClientWithResponses) GetProjectWithResponse(ctx context.Context, projec
 	return ParseGetProjectResponse(rsp)
 }
 
+// UpdateProjectWithBodyWithResponse request with arbitrary body returning *UpdateProjectResponse
+func (c *ClientWithResponses) UpdateProjectWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error) {
+	rsp, err := c.UpdateProjectWithBody(ctx, projectId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateProjectResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateProjectWithResponse(ctx context.Context, projectId ProjectIdParam, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error) {
+	rsp, err := c.UpdateProject(ctx, projectId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateProjectResponse(rsp)
+}
+
 // ActivateProjectWithResponse request returning *ActivateProjectResponse
 func (c *ClientWithResponses) ActivateProjectWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*ActivateProjectResponse, error) {
 	rsp, err := c.ActivateProject(ctx, projectId, reqEditors...)
@@ -17079,6 +18065,41 @@ func (c *ClientWithResponses) ArchiveProjectWithResponse(ctx context.Context, pr
 		return nil, err
 	}
 	return ParseArchiveProjectResponse(rsp)
+}
+
+// GetProjectBudgetWithResponse request returning *GetProjectBudgetResponse
+func (c *ClientWithResponses) GetProjectBudgetWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*GetProjectBudgetResponse, error) {
+	rsp, err := c.GetProjectBudget(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetProjectBudgetResponse(rsp)
+}
+
+// UpdateProjectBudgetWithBodyWithResponse request with arbitrary body returning *UpdateProjectBudgetResponse
+func (c *ClientWithResponses) UpdateProjectBudgetWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectBudgetResponse, error) {
+	rsp, err := c.UpdateProjectBudgetWithBody(ctx, projectId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateProjectBudgetResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateProjectBudgetWithResponse(ctx context.Context, projectId ProjectIdParam, body UpdateProjectBudgetJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectBudgetResponse, error) {
+	rsp, err := c.UpdateProjectBudget(ctx, projectId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateProjectBudgetResponse(rsp)
+}
+
+// ResetProjectBudgetWithResponse request returning *ResetProjectBudgetResponse
+func (c *ClientWithResponses) ResetProjectBudgetWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*ResetProjectBudgetResponse, error) {
+	rsp, err := c.ResetProjectBudget(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseResetProjectBudgetResponse(rsp)
 }
 
 // CreateNoteWithBodyWithResponse request with arbitrary body returning *CreateNoteResponse
@@ -17556,6 +18577,32 @@ func (c *ClientWithResponses) GetTaskRelationsWithResponse(ctx context.Context, 
 	return ParseGetTaskRelationsResponse(rsp)
 }
 
+// CreateTaskRelationWithBodyWithResponse request with arbitrary body returning *CreateTaskRelationResponse
+func (c *ClientWithResponses) CreateTaskRelationWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTaskRelationResponse, error) {
+	rsp, err := c.CreateTaskRelationWithBody(ctx, taskId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTaskRelationResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateTaskRelationWithResponse(ctx context.Context, taskId TaskIdParam, body CreateTaskRelationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTaskRelationResponse, error) {
+	rsp, err := c.CreateTaskRelation(ctx, taskId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTaskRelationResponse(rsp)
+}
+
+// DeleteTaskRelationWithResponse request returning *DeleteTaskRelationResponse
+func (c *ClientWithResponses) DeleteTaskRelationWithResponse(ctx context.Context, taskId TaskIdParam, relationUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteTaskRelationResponse, error) {
+	rsp, err := c.DeleteTaskRelation(ctx, taskId, relationUuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteTaskRelationResponse(rsp)
+}
+
 // DeleteTaskReminderWithResponse request returning *DeleteTaskReminderResponse
 func (c *ClientWithResponses) DeleteTaskReminderWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*DeleteTaskReminderResponse, error) {
 	rsp, err := c.DeleteTaskReminder(ctx, taskId, reqEditors...)
@@ -17746,6 +18793,15 @@ func (c *ClientWithResponses) CreateTasklistFromTemplateWithResponse(ctx context
 	return ParseCreateTasklistFromTemplateResponse(rsp)
 }
 
+// DeleteTasklistWithResponse request returning *DeleteTasklistResponse
+func (c *ClientWithResponses) DeleteTasklistWithResponse(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*DeleteTasklistResponse, error) {
+	rsp, err := c.DeleteTasklist(ctx, tasklistId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteTasklistResponse(rsp)
+}
+
 // GetTasklistWithResponse request returning *GetTasklistResponse
 func (c *ClientWithResponses) GetTasklistWithResponse(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*GetTasklistResponse, error) {
 	rsp, err := c.GetTasklist(ctx, tasklistId, reqEditors...)
@@ -17753,6 +18809,24 @@ func (c *ClientWithResponses) GetTasklistWithResponse(ctx context.Context, taskl
 		return nil, err
 	}
 	return ParseGetTasklistResponse(rsp)
+}
+
+// ActivateTasklistWithResponse request returning *ActivateTasklistResponse
+func (c *ClientWithResponses) ActivateTasklistWithResponse(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*ActivateTasklistResponse, error) {
+	rsp, err := c.ActivateTasklist(ctx, tasklistId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseActivateTasklistResponse(rsp)
+}
+
+// ArchiveTasklistWithResponse request returning *ArchiveTasklistResponse
+func (c *ClientWithResponses) ArchiveTasklistWithResponse(ctx context.Context, tasklistId TasklistIdParam, reqEditors ...RequestEditorFn) (*ArchiveTasklistResponse, error) {
+	rsp, err := c.ArchiveTasklist(ctx, tasklistId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseArchiveTasklistResponse(rsp)
 }
 
 // EditTasklistWithBodyWithResponse request with arbitrary body returning *EditTasklistResponse
@@ -19293,6 +20367,32 @@ func ParseGetProjectResponse(rsp *http.Response) (*GetProjectResponse, error) {
 	return response, nil
 }
 
+// ParseUpdateProjectResponse parses an HTTP response from a UpdateProjectWithResponse call
+func ParseUpdateProjectResponse(rsp *http.Response) (*UpdateProjectResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateProjectResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectMutationResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseActivateProjectResponse parses an HTTP response from a ActivateProjectWithResponse call
 func ParseActivateProjectResponse(rsp *http.Response) (*ActivateProjectResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -19335,6 +20435,84 @@ func ParseArchiveProjectResponse(rsp *http.Response) (*ArchiveProjectResponse, e
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetProjectBudgetResponse parses an HTTP response from a GetProjectBudgetWithResponse call
+func ParseGetProjectBudgetResponse(rsp *http.Response) (*GetProjectBudgetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetProjectBudgetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectBudgetState
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateProjectBudgetResponse parses an HTTP response from a UpdateProjectBudgetWithResponse call
+func ParseUpdateProjectBudgetResponse(rsp *http.Response) (*UpdateProjectBudgetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateProjectBudgetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectBudgetState
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseResetProjectBudgetResponse parses an HTTP response from a ResetProjectBudgetWithResponse call
+func ParseResetProjectBudgetResponse(rsp *http.Response) (*ResetProjectBudgetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ResetProjectBudgetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectBudgetState
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -19654,7 +20832,7 @@ func ParseCreateProjectResponse(rsp *http.Response) (*CreateProjectResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ProjectBasic
+		var dest ProjectMutationResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -20283,6 +21461,58 @@ func ParseGetTaskRelationsResponse(rsp *http.Response) (*GetTaskRelationsRespons
 	return response, nil
 }
 
+// ParseCreateTaskRelationResponse parses an HTTP response from a CreateTaskRelationWithResponse call
+func ParseCreateTaskRelationResponse(rsp *http.Response) (*CreateTaskRelationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateTaskRelationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TaskRelation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteTaskRelationResponse parses an HTTP response from a DeleteTaskRelationWithResponse call
+func ParseDeleteTaskRelationResponse(rsp *http.Response) (*DeleteTaskRelationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteTaskRelationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteTaskReminderResponse parses an HTTP response from a DeleteTaskReminderWithResponse call
 func ParseDeleteTaskReminderResponse(rsp *http.Response) (*DeleteTaskReminderResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -20669,6 +21899,32 @@ func ParseCreateTasklistFromTemplateResponse(rsp *http.Response) (*CreateTasklis
 	return response, nil
 }
 
+// ParseDeleteTasklistResponse parses an HTTP response from a DeleteTasklistWithResponse call
+func ParseDeleteTasklistResponse(rsp *http.Response) (*DeleteTasklistResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteTasklistResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetTasklistResponse parses an HTTP response from a GetTasklistWithResponse call
 func ParseGetTasklistResponse(rsp *http.Response) (*GetTasklistResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -20685,6 +21941,58 @@ func ParseGetTasklistResponse(rsp *http.Response) (*GetTasklistResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest TasklistDetail
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseActivateTasklistResponse parses an HTTP response from a ActivateTasklistWithResponse call
+func ParseActivateTasklistResponse(rsp *http.Response) (*ActivateTasklistResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ActivateTasklistResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseArchiveTasklistResponse parses an HTTP response from a ArchiveTasklistWithResponse call
+func ParseArchiveTasklistResponse(rsp *http.Response) (*ArchiveTasklistResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ArchiveTasklistResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
