@@ -1275,6 +1275,17 @@ type CommentWithFiles struct {
 	IsDescription *bool            `json:"is_description,omitempty"`
 }
 
+// CopiedFromTask Origin task this task was copied from (template copy or multi-project copy); `null` otherwise.
+type CopiedFromTask struct {
+	Id      *int `json:"id,omitempty"`
+	Project *struct {
+		Id *int `json:"id,omitempty"`
+
+		// IsTemplate Whether the origin project is a template (or a deleted project that was one).
+		IsTemplate *bool `json:"is_template,omitempty"`
+	} `json:"project,omitempty"`
+}
+
 // Currency defines model for Currency.
 type Currency struct {
 	// Amount Amount multiplied by 100
@@ -1319,6 +1330,22 @@ type CustomFieldEnumValue struct {
 	TaskId       *int                `json:"task_id,omitempty"`
 	Uuid         *openapi_types.UUID `json:"uuid,omitempty"`
 	Value        *string             `json:"value,omitempty"`
+}
+
+// CustomFieldMutationResult Shape returned by the custom-field create / rename / restore endpoints. It differs from
+// the read shape: the type UUID is exposed as `type`, not as `custom_fields_types_uuid`.
+type CustomFieldMutationResult struct {
+	AuthorId *int `json:"author_id,omitempty"`
+
+	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DateAdd   *freelotime.Time `json:"date_add,omitempty"`
+	Name      *string          `json:"name,omitempty"`
+	Priority  *int             `json:"priority,omitempty"`
+	ProjectId *int             `json:"project_id,omitempty"`
+
+	// Type UUID of the custom-field type (see `GET /custom-field/get-types`).
+	Type *openapi_types.UUID `json:"type,omitempty"`
+	Uuid *openapi_types.UUID `json:"uuid,omitempty"`
 }
 
 // CustomFieldValue defines model for CustomFieldValue.
@@ -1541,6 +1568,24 @@ type IssuedInvoiceDetail struct {
 // IssuedInvoiceDetailCurrency defines model for IssuedInvoiceDetail.Currency.
 type IssuedInvoiceDetailCurrency string
 
+// MultiProjectTask Mapping of the task across the projects it is assigned to. `null` when the task is a
+// child instance of a multi-project task — the block is only rendered on the parent.
+type MultiProjectTask struct {
+	// AssignedTo One entry per project the task is assigned to, including the root task.
+	AssignedTo *[]struct {
+		Project *ProjectBasic `json:"project,omitempty"`
+		Task    *struct {
+			Id        *int    `json:"id,omitempty"`
+			Name      *string `json:"name,omitempty"`
+			SortingId *int    `json:"sorting_id,omitempty"`
+		} `json:"task,omitempty"`
+		Tasklist *TasklistBasic `json:"tasklist,omitempty"`
+	} `json:"assigned_to,omitempty"`
+
+	// IsMultiProject Whether the task lives in more than one project.
+	IsMultiProject *bool `json:"is_multi_project,omitempty"`
+}
+
 // Note defines model for Note.
 type Note struct {
 	Author   *UserBasic          `json:"author,omitempty"`
@@ -1562,7 +1607,12 @@ type Note struct {
 
 // Notification defines model for Notification.
 type Notification struct {
-	Author  *UserBasic `json:"author,omitempty"`
+	// Author The author of the notification. Unlike everywhere else in the API, the user's name is
+	// exposed here as `name`, not as `fullname`.
+	Author *struct {
+		Id   *int    `json:"id,omitempty"`
+		Name *string `json:"name,omitempty"`
+	} `json:"author,omitempty"`
 	Comment *struct {
 		Id *int `json:"id,omitempty"`
 	} `json:"comment,omitempty"`
@@ -1578,19 +1628,39 @@ type Notification struct {
 		Filename *string             `json:"filename,omitempty"`
 		Uuid     *openapi_types.UUID `json:"uuid,omitempty"`
 	} `json:"file,omitempty"`
-	Id           *int          `json:"id,omitempty"`
-	IsNew        *bool         `json:"is_new,omitempty"`
-	IsUnread     *bool         `json:"is_unread,omitempty"`
-	MoreComments *bool         `json:"more_comments,omitempty"`
-	MoreUsers    *[]UserBasic  `json:"more_users,omitempty"`
-	Project      *ProjectBasic `json:"project,omitempty"`
-	Task         *struct {
+	FileComment *struct {
+		Id *int `json:"id,omitempty"`
+	} `json:"file_comment,omitempty"`
+	Id           *int         `json:"id,omitempty"`
+	IsNew        *bool        `json:"is_new,omitempty"`
+	IsUnread     *bool        `json:"is_unread,omitempty"`
+	MoreComments *bool        `json:"more_comments,omitempty"`
+	MoreUsers    *[]UserBasic `json:"more_users,omitempty"`
+
+	// MultiNotification Some notifications carry information about more than one action (e.g. several new comments).
+	MultiNotification *[]string     `json:"multi_notification,omitempty"`
+	Project           *ProjectBasic `json:"project,omitempty"`
+	ProjectLink       *struct {
+		Id   *int    `json:"id,omitempty"`
+		Name *string `json:"name,omitempty"`
+	} `json:"project_link,omitempty"`
+	ProjectLinkComment *struct {
+		Id *int `json:"id,omitempty"`
+	} `json:"project_link_comment,omitempty"`
+	Task *struct {
 		Id   *int    `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
 	} `json:"task,omitempty"`
 	Tasklist *TasklistBasic `json:"tasklist,omitempty"`
 	Type     *string        `json:"type,omitempty"`
 	Who      *UserBasic     `json:"who,omitempty"`
+
+	// WorkDeleted Present only on the deleted-work notification; describes the work that was removed.
+	WorkDeleted *struct {
+		Cost    *Currency `json:"cost,omitempty"`
+		Minutes *int      `json:"minutes,omitempty"`
+		Note    *string   `json:"note,omitempty"`
+	} `json:"work_deleted,omitempty"`
 }
 
 // PaginatedResponse defines model for PaginatedResponse.
@@ -1912,6 +1982,31 @@ type SubtaskCreate struct {
 // SubtaskCreatePriorityEnum defines model for SubtaskCreate.PriorityEnum.
 type SubtaskCreatePriorityEnum string
 
+// SubtaskCreated Shape returned when a subtask is created. It is narrower than the read shape of
+// `GET /task/{task_id}/subtasks` — no project, tasklist, state or counters.
+type SubtaskCreated struct {
+	Comment *struct {
+		Content *string `json:"content,omitempty"`
+	} `json:"comment,omitempty"`
+
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
+	Id           *int             `json:"id,omitempty"`
+	Labels       *[]TaskLabel     `json:"labels,omitempty"`
+	Name         *string          `json:"name,omitempty"`
+	PriorityEnum *string          `json:"priority_enum,omitempty"`
+
+	// TaskId ID of the underlying full task; `null` for a simple checklist item (taskcheck).
+	TaskId *int `json:"task_id,omitempty"`
+
+	// TrackingUsers Followers of the subtask.
+	TrackingUsers *[]UserBasic `json:"tracking_users,omitempty"`
+	Worker        *UserBasic   `json:"worker,omitempty"`
+}
+
 // SuccessResponse defines model for SuccessResponse.
 type SuccessResponse struct {
 	Result *string `json:"result,omitempty"`
@@ -1968,11 +2063,14 @@ type TaskCreated struct {
 
 // TaskDetail defines model for TaskDetail.
 type TaskDetail struct {
-	Author        *UserBasic              `json:"author,omitempty"`
-	Comments      *[]CommentWithFiles     `json:"comments,omitempty"`
-	Cost          *Currency               `json:"cost,omitempty"`
-	CountSubtasks *int                    `json:"count_subtasks,omitempty"`
-	CustomFields  *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
+	Author   *UserBasic          `json:"author,omitempty"`
+	Comments *[]CommentWithFiles `json:"comments,omitempty"`
+
+	// CopiedFromTask Origin task this task was copied from (template copy or multi-project copy); `null` otherwise.
+	CopiedFromTask *CopiedFromTask         `json:"copied_from_task,omitempty"`
+	Cost           *Currency               `json:"cost,omitempty"`
+	CountSubtasks  *int                    `json:"count_subtasks,omitempty"`
+	CustomFields   *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
 
 	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
@@ -1987,14 +2085,18 @@ type TaskDetail struct {
 	DueDate *freelotime.Time `json:"due_date,omitempty"`
 
 	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DueDateEnd   *freelotime.Time `json:"due_date_end,omitempty"`
-	Id           *int             `json:"id,omitempty"`
-	Labels       *[]TaskLabel     `json:"labels,omitempty"`
-	Minutes      *int             `json:"minutes,omitempty"`
-	Name         *string          `json:"name,omitempty"`
-	ParentTaskId *int             `json:"parent_task_id,omitempty"`
-	PriorityEnum *string          `json:"priority_enum,omitempty"`
-	Project      *ProjectBasic    `json:"project,omitempty"`
+	DueDateEnd *freelotime.Time `json:"due_date_end,omitempty"`
+	Id         *int             `json:"id,omitempty"`
+	Labels     *[]TaskLabel     `json:"labels,omitempty"`
+	Minutes    *int             `json:"minutes,omitempty"`
+
+	// MultiProjectTask Mapping of the task across the projects it is assigned to. `null` when the task is a
+	// child instance of a multi-project task — the block is only rendered on the parent.
+	MultiProjectTask *MultiProjectTask `json:"multi_project_task,omitempty"`
+	Name             *string           `json:"name,omitempty"`
+	ParentTaskId     *int              `json:"parent_task_id,omitempty"`
+	PriorityEnum     *string           `json:"priority_enum,omitempty"`
+	Project          *ProjectBasic     `json:"project,omitempty"`
 
 	// Relations Empty when the project owner's plan has no team features — the detail stays readable and
 	// the relations are simply omitted. `GET /task/{task_id}/relations` returns 403 in that case.
@@ -2612,6 +2714,17 @@ type CreateEnumOptionJSONBody struct {
 	Value string              `json:"value"`
 }
 
+// AddCustomFieldEnumValueJSONBody defines parameters for AddCustomFieldEnumValue.
+type AddCustomFieldEnumValueJSONBody struct {
+	CustomFieldUuid openapi_types.UUID `json:"customFieldUuid"`
+
+	// Uuid UUID of the created value. Generated server-side when omitted.
+	Uuid *openapi_types.UUID `json:"uuid,omitempty"`
+
+	// Value UUID of the enum option.
+	Value openapi_types.UUID `json:"value"`
+}
+
 // AddOrEditEnumValueJSONBody defines parameters for AddOrEditEnumValue.
 type AddOrEditEnumValueJSONBody struct {
 	CustomFieldUuid openapi_types.UUID `json:"customFieldUuid"`
@@ -2626,6 +2739,26 @@ type AddOrEditCustomFieldValueJSONBody struct {
 	CustomFieldUuid openapi_types.UUID `json:"custom_field_uuid"`
 	TaskId          int                `json:"task_id"`
 	Value           string             `json:"value"`
+}
+
+// AddCustomFieldValueJSONBody defines parameters for AddCustomFieldValue.
+type AddCustomFieldValueJSONBody struct {
+	CustomFieldUuid openapi_types.UUID `json:"custom_field_uuid"`
+
+	// Uuid UUID of the created value. Generated server-side when omitted.
+	Uuid  *openapi_types.UUID `json:"uuid,omitempty"`
+	Value string              `json:"value"`
+}
+
+// ChangeCustomFieldEnumValueJSONBody defines parameters for ChangeCustomFieldEnumValue.
+type ChangeCustomFieldEnumValueJSONBody struct {
+	// Value UUID of the enum option.
+	Value openapi_types.UUID `json:"value"`
+}
+
+// ChangeCustomFieldValueJSONBody defines parameters for ChangeCustomFieldValue.
+type ChangeCustomFieldValueJSONBody struct {
+	Value string `json:"value"`
 }
 
 // CreateCustomFieldJSONBody defines parameters for CreateCustomField.
@@ -3043,8 +3176,8 @@ type CreateCommentJSONBody struct {
 	// Content Comment body (HTML / plain text).
 	//
 	// **Inline file attachment:** embed an anchor to attach an uploaded file inside the body:
-	// `<a data-freelo-uuid="{file_uuid}" href="https://app.freelo.io/file/{file_uuid}">caption</a>`
-	// The UUID is extracted server-side and the file is attached automatically (do not also list it in `files`). The anchor stays in the stored content, so the file is rendered inside the comment on read.
+	// `<a data-filename="{filename}" data-freelo-uuid="{file_uuid}">caption</a>`
+	// The UUID is extracted server-side and the file is attached automatically (do not also list it in `files`). The anchor stays in the stored content, so the file is rendered inside the comment on read. Send no `href` and no `target` — the server adds the file metadata and `target` itself.
 	//
 	// **Mention a user:** embed a span:
 	// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
@@ -3349,11 +3482,23 @@ type EditEnumOptionJSONRequestBody EditEnumOptionJSONBody
 // CreateEnumOptionJSONRequestBody defines body for CreateEnumOption for application/json ContentType.
 type CreateEnumOptionJSONRequestBody CreateEnumOptionJSONBody
 
+// AddCustomFieldEnumValueJSONRequestBody defines body for AddCustomFieldEnumValue for application/json ContentType.
+type AddCustomFieldEnumValueJSONRequestBody AddCustomFieldEnumValueJSONBody
+
 // AddOrEditEnumValueJSONRequestBody defines body for AddOrEditEnumValue for application/json ContentType.
 type AddOrEditEnumValueJSONRequestBody AddOrEditEnumValueJSONBody
 
 // AddOrEditCustomFieldValueJSONRequestBody defines body for AddOrEditCustomFieldValue for application/json ContentType.
 type AddOrEditCustomFieldValueJSONRequestBody AddOrEditCustomFieldValueJSONBody
+
+// AddCustomFieldValueJSONRequestBody defines body for AddCustomFieldValue for application/json ContentType.
+type AddCustomFieldValueJSONRequestBody AddCustomFieldValueJSONBody
+
+// ChangeCustomFieldEnumValueJSONRequestBody defines body for ChangeCustomFieldEnumValue for application/json ContentType.
+type ChangeCustomFieldEnumValueJSONRequestBody ChangeCustomFieldEnumValueJSONBody
+
+// ChangeCustomFieldValueJSONRequestBody defines body for ChangeCustomFieldValue for application/json ContentType.
+type ChangeCustomFieldValueJSONRequestBody ChangeCustomFieldValueJSONBody
 
 // CreateCustomFieldJSONRequestBody defines body for CreateCustomField for application/json ContentType.
 type CreateCustomFieldJSONRequestBody CreateCustomFieldJSONBody
@@ -3829,6 +3974,11 @@ type ClientInterface interface {
 	// GetEnumOptionsForCustomField request
 	GetEnumOptionsForCustomField(ctx context.Context, customFieldUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// AddCustomFieldEnumValueWithBody request with any body
+	AddCustomFieldEnumValueWithBody(ctx context.Context, taskId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AddCustomFieldEnumValue(ctx context.Context, taskId int, body AddCustomFieldEnumValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// AddOrEditEnumValueWithBody request with any body
 	AddOrEditEnumValueWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3838,6 +3988,21 @@ type ClientInterface interface {
 	AddOrEditCustomFieldValueWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	AddOrEditCustomFieldValue(ctx context.Context, body AddOrEditCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AddCustomFieldValueWithBody request with any body
+	AddCustomFieldValueWithBody(ctx context.Context, taskId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AddCustomFieldValue(ctx context.Context, taskId int, body AddCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ChangeCustomFieldEnumValueWithBody request with any body
+	ChangeCustomFieldEnumValueWithBody(ctx context.Context, uuid openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ChangeCustomFieldEnumValue(ctx context.Context, uuid openapi_types.UUID, body ChangeCustomFieldEnumValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ChangeCustomFieldValueWithBody request with any body
+	ChangeCustomFieldValueWithBody(ctx context.Context, uuid openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ChangeCustomFieldValue(ctx context.Context, uuid openapi_types.UUID, body ChangeCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateCustomFieldWithBody request with any body
 	CreateCustomFieldWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4469,6 +4634,30 @@ func (c *Client) GetEnumOptionsForCustomField(ctx context.Context, customFieldUu
 	return c.Client.Do(req)
 }
 
+func (c *Client) AddCustomFieldEnumValueWithBody(ctx context.Context, taskId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddCustomFieldEnumValueRequestWithBody(c.Server, taskId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddCustomFieldEnumValue(ctx context.Context, taskId int, body AddCustomFieldEnumValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddCustomFieldEnumValueRequest(c.Server, taskId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) AddOrEditEnumValueWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAddOrEditEnumValueRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -4507,6 +4696,78 @@ func (c *Client) AddOrEditCustomFieldValueWithBody(ctx context.Context, contentT
 
 func (c *Client) AddOrEditCustomFieldValue(ctx context.Context, body AddOrEditCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAddOrEditCustomFieldValueRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddCustomFieldValueWithBody(ctx context.Context, taskId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddCustomFieldValueRequestWithBody(c.Server, taskId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddCustomFieldValue(ctx context.Context, taskId int, body AddCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddCustomFieldValueRequest(c.Server, taskId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ChangeCustomFieldEnumValueWithBody(ctx context.Context, uuid openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeCustomFieldEnumValueRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ChangeCustomFieldEnumValue(ctx context.Context, uuid openapi_types.UUID, body ChangeCustomFieldEnumValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeCustomFieldEnumValueRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ChangeCustomFieldValueWithBody(ctx context.Context, uuid openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeCustomFieldValueRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ChangeCustomFieldValue(ctx context.Context, uuid openapi_types.UUID, body ChangeCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeCustomFieldValueRequest(c.Server, uuid, body)
 	if err != nil {
 		return nil, err
 	}
@@ -7632,6 +7893,53 @@ func NewGetEnumOptionsForCustomFieldRequest(server string, customFieldUuid opena
 	return req, nil
 }
 
+// NewAddCustomFieldEnumValueRequest calls the generic AddCustomFieldEnumValue builder with application/json body
+func NewAddCustomFieldEnumValueRequest(server string, taskId int, body AddCustomFieldEnumValueJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAddCustomFieldEnumValueRequestWithBody(server, taskId, "application/json", bodyReader)
+}
+
+// NewAddCustomFieldEnumValueRequestWithBody generates requests for AddCustomFieldEnumValue with any type of body
+func NewAddCustomFieldEnumValueRequestWithBody(server string, taskId int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "task_id", taskId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/custom-field/add-enum-value/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewAddOrEditEnumValueRequest calls the generic AddOrEditEnumValue builder with application/json body
 func NewAddOrEditEnumValueRequest(server string, body AddOrEditEnumValueJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -7693,6 +8001,147 @@ func NewAddOrEditCustomFieldValueRequestWithBody(server string, contentType stri
 	}
 
 	operationPath := fmt.Sprintf("/custom-field/add-or-edit-value")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAddCustomFieldValueRequest calls the generic AddCustomFieldValue builder with application/json body
+func NewAddCustomFieldValueRequest(server string, taskId int, body AddCustomFieldValueJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAddCustomFieldValueRequestWithBody(server, taskId, "application/json", bodyReader)
+}
+
+// NewAddCustomFieldValueRequestWithBody generates requests for AddCustomFieldValue with any type of body
+func NewAddCustomFieldValueRequestWithBody(server string, taskId int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "task_id", taskId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/custom-field/add-value/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewChangeCustomFieldEnumValueRequest calls the generic ChangeCustomFieldEnumValue builder with application/json body
+func NewChangeCustomFieldEnumValueRequest(server string, uuid openapi_types.UUID, body ChangeCustomFieldEnumValueJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewChangeCustomFieldEnumValueRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewChangeCustomFieldEnumValueRequestWithBody generates requests for ChangeCustomFieldEnumValue with any type of body
+func NewChangeCustomFieldEnumValueRequestWithBody(server string, uuid openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "uuid", uuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/custom-field/change-enum-value/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewChangeCustomFieldValueRequest calls the generic ChangeCustomFieldValue builder with application/json body
+func NewChangeCustomFieldValueRequest(server string, uuid openapi_types.UUID, body ChangeCustomFieldValueJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewChangeCustomFieldValueRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewChangeCustomFieldValueRequestWithBody generates requests for ChangeCustomFieldValue with any type of body
+func NewChangeCustomFieldValueRequestWithBody(server string, uuid openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "uuid", uuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/custom-field/change-value/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -12952,6 +13401,11 @@ type ClientWithResponsesInterface interface {
 	// GetEnumOptionsForCustomFieldWithResponse request
 	GetEnumOptionsForCustomFieldWithResponse(ctx context.Context, customFieldUuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetEnumOptionsForCustomFieldResponse, error)
 
+	// AddCustomFieldEnumValueWithBodyWithResponse request with any body
+	AddCustomFieldEnumValueWithBodyWithResponse(ctx context.Context, taskId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddCustomFieldEnumValueResponse, error)
+
+	AddCustomFieldEnumValueWithResponse(ctx context.Context, taskId int, body AddCustomFieldEnumValueJSONRequestBody, reqEditors ...RequestEditorFn) (*AddCustomFieldEnumValueResponse, error)
+
 	// AddOrEditEnumValueWithBodyWithResponse request with any body
 	AddOrEditEnumValueWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddOrEditEnumValueResponse, error)
 
@@ -12961,6 +13415,21 @@ type ClientWithResponsesInterface interface {
 	AddOrEditCustomFieldValueWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddOrEditCustomFieldValueResponse, error)
 
 	AddOrEditCustomFieldValueWithResponse(ctx context.Context, body AddOrEditCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*AddOrEditCustomFieldValueResponse, error)
+
+	// AddCustomFieldValueWithBodyWithResponse request with any body
+	AddCustomFieldValueWithBodyWithResponse(ctx context.Context, taskId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddCustomFieldValueResponse, error)
+
+	AddCustomFieldValueWithResponse(ctx context.Context, taskId int, body AddCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*AddCustomFieldValueResponse, error)
+
+	// ChangeCustomFieldEnumValueWithBodyWithResponse request with any body
+	ChangeCustomFieldEnumValueWithBodyWithResponse(ctx context.Context, uuid openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeCustomFieldEnumValueResponse, error)
+
+	ChangeCustomFieldEnumValueWithResponse(ctx context.Context, uuid openapi_types.UUID, body ChangeCustomFieldEnumValueJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeCustomFieldEnumValueResponse, error)
+
+	// ChangeCustomFieldValueWithBodyWithResponse request with any body
+	ChangeCustomFieldValueWithBodyWithResponse(ctx context.Context, uuid openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeCustomFieldValueResponse, error)
+
+	ChangeCustomFieldValueWithResponse(ctx context.Context, uuid openapi_types.UUID, body ChangeCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeCustomFieldValueResponse, error)
 
 	// CreateCustomFieldWithBodyWithResponse request with any body
 	CreateCustomFieldWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCustomFieldResponse, error)
@@ -13875,6 +14344,38 @@ func (r GetEnumOptionsForCustomFieldResponse) ContentType() string {
 	return ""
 }
 
+type AddCustomFieldEnumValueResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r AddCustomFieldEnumValueResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AddCustomFieldEnumValueResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AddCustomFieldEnumValueResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type AddOrEditEnumValueResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -13939,11 +14440,109 @@ func (r AddOrEditCustomFieldValueResponse) ContentType() string {
 	return ""
 }
 
+type AddCustomFieldValueResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r AddCustomFieldValueResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AddCustomFieldValueResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AddCustomFieldValueResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ChangeCustomFieldEnumValueResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r ChangeCustomFieldEnumValueResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ChangeCustomFieldEnumValueResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ChangeCustomFieldEnumValueResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ChangeCustomFieldValueResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r ChangeCustomFieldValueResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ChangeCustomFieldValueResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ChangeCustomFieldValueResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type CreateCustomFieldResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CustomField *CustomField `json:"custom_field,omitempty"`
+		// CustomField Shape returned by the custom-field create / rename / restore endpoints. It differs from
+		// the read shape: the type UUID is exposed as `type`, not as `custom_fields_types_uuid`.
+		CustomField *CustomFieldMutationResult `json:"custom_field,omitempty"`
 	}
 }
 
@@ -14103,7 +14702,9 @@ type RenameCustomFieldResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CustomField *CustomField `json:"custom_field,omitempty"`
+		// CustomField Shape returned by the custom-field create / rename / restore endpoints. It differs from
+		// the read shape: the type UUID is exposed as `type`, not as `custom_fields_types_uuid`.
+		CustomField *CustomFieldMutationResult `json:"custom_field,omitempty"`
 	}
 }
 
@@ -14135,7 +14736,9 @@ type RestoreCustomFieldResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CustomField *CustomField `json:"custom_field,omitempty"`
+		// CustomField Shape returned by the custom-field create / rename / restore endpoints. It differs from
+		// the read shape: the type UUID is exposed as `type`, not as `custom_fields_types_uuid`.
+		CustomField *CustomFieldMutationResult `json:"custom_field,omitempty"`
 	}
 }
 
@@ -16349,7 +16952,7 @@ func (r GetSubtasksInTaskResponse) ContentType() string {
 type CreateSubtaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Subtask
+	JSON200      *SubtaskCreated
 }
 
 // Status returns HTTPResponse.Status
@@ -17655,6 +18258,23 @@ func (c *ClientWithResponses) GetEnumOptionsForCustomFieldWithResponse(ctx conte
 	return ParseGetEnumOptionsForCustomFieldResponse(rsp)
 }
 
+// AddCustomFieldEnumValueWithBodyWithResponse request with arbitrary body returning *AddCustomFieldEnumValueResponse
+func (c *ClientWithResponses) AddCustomFieldEnumValueWithBodyWithResponse(ctx context.Context, taskId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddCustomFieldEnumValueResponse, error) {
+	rsp, err := c.AddCustomFieldEnumValueWithBody(ctx, taskId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddCustomFieldEnumValueResponse(rsp)
+}
+
+func (c *ClientWithResponses) AddCustomFieldEnumValueWithResponse(ctx context.Context, taskId int, body AddCustomFieldEnumValueJSONRequestBody, reqEditors ...RequestEditorFn) (*AddCustomFieldEnumValueResponse, error) {
+	rsp, err := c.AddCustomFieldEnumValue(ctx, taskId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddCustomFieldEnumValueResponse(rsp)
+}
+
 // AddOrEditEnumValueWithBodyWithResponse request with arbitrary body returning *AddOrEditEnumValueResponse
 func (c *ClientWithResponses) AddOrEditEnumValueWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddOrEditEnumValueResponse, error) {
 	rsp, err := c.AddOrEditEnumValueWithBody(ctx, contentType, body, reqEditors...)
@@ -17687,6 +18307,57 @@ func (c *ClientWithResponses) AddOrEditCustomFieldValueWithResponse(ctx context.
 		return nil, err
 	}
 	return ParseAddOrEditCustomFieldValueResponse(rsp)
+}
+
+// AddCustomFieldValueWithBodyWithResponse request with arbitrary body returning *AddCustomFieldValueResponse
+func (c *ClientWithResponses) AddCustomFieldValueWithBodyWithResponse(ctx context.Context, taskId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddCustomFieldValueResponse, error) {
+	rsp, err := c.AddCustomFieldValueWithBody(ctx, taskId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddCustomFieldValueResponse(rsp)
+}
+
+func (c *ClientWithResponses) AddCustomFieldValueWithResponse(ctx context.Context, taskId int, body AddCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*AddCustomFieldValueResponse, error) {
+	rsp, err := c.AddCustomFieldValue(ctx, taskId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddCustomFieldValueResponse(rsp)
+}
+
+// ChangeCustomFieldEnumValueWithBodyWithResponse request with arbitrary body returning *ChangeCustomFieldEnumValueResponse
+func (c *ClientWithResponses) ChangeCustomFieldEnumValueWithBodyWithResponse(ctx context.Context, uuid openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeCustomFieldEnumValueResponse, error) {
+	rsp, err := c.ChangeCustomFieldEnumValueWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeCustomFieldEnumValueResponse(rsp)
+}
+
+func (c *ClientWithResponses) ChangeCustomFieldEnumValueWithResponse(ctx context.Context, uuid openapi_types.UUID, body ChangeCustomFieldEnumValueJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeCustomFieldEnumValueResponse, error) {
+	rsp, err := c.ChangeCustomFieldEnumValue(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeCustomFieldEnumValueResponse(rsp)
+}
+
+// ChangeCustomFieldValueWithBodyWithResponse request with arbitrary body returning *ChangeCustomFieldValueResponse
+func (c *ClientWithResponses) ChangeCustomFieldValueWithBodyWithResponse(ctx context.Context, uuid openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeCustomFieldValueResponse, error) {
+	rsp, err := c.ChangeCustomFieldValueWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeCustomFieldValueResponse(rsp)
+}
+
+func (c *ClientWithResponses) ChangeCustomFieldValueWithResponse(ctx context.Context, uuid openapi_types.UUID, body ChangeCustomFieldValueJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeCustomFieldValueResponse, error) {
+	rsp, err := c.ChangeCustomFieldValue(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeCustomFieldValueResponse(rsp)
 }
 
 // CreateCustomFieldWithBodyWithResponse request with arbitrary body returning *CreateCustomFieldResponse
@@ -19478,6 +20149,34 @@ func ParseGetEnumOptionsForCustomFieldResponse(rsp *http.Response) (*GetEnumOpti
 	return response, nil
 }
 
+// ParseAddCustomFieldEnumValueResponse parses an HTTP response from a AddCustomFieldEnumValueWithResponse call
+func ParseAddCustomFieldEnumValueResponse(rsp *http.Response) (*AddCustomFieldEnumValueResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AddCustomFieldEnumValueResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseAddOrEditEnumValueResponse parses an HTTP response from a AddOrEditEnumValueWithResponse call
 func ParseAddOrEditEnumValueResponse(rsp *http.Response) (*AddOrEditEnumValueResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -19534,6 +20233,90 @@ func ParseAddOrEditCustomFieldValueResponse(rsp *http.Response) (*AddOrEditCusto
 	return response, nil
 }
 
+// ParseAddCustomFieldValueResponse parses an HTTP response from a AddCustomFieldValueWithResponse call
+func ParseAddCustomFieldValueResponse(rsp *http.Response) (*AddCustomFieldValueResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AddCustomFieldValueResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseChangeCustomFieldEnumValueResponse parses an HTTP response from a ChangeCustomFieldEnumValueWithResponse call
+func ParseChangeCustomFieldEnumValueResponse(rsp *http.Response) (*ChangeCustomFieldEnumValueResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ChangeCustomFieldEnumValueResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseChangeCustomFieldValueResponse parses an HTTP response from a ChangeCustomFieldValueWithResponse call
+func ParseChangeCustomFieldValueResponse(rsp *http.Response) (*ChangeCustomFieldValueResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ChangeCustomFieldValueResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseCreateCustomFieldResponse parses an HTTP response from a CreateCustomFieldWithResponse call
 func ParseCreateCustomFieldResponse(rsp *http.Response) (*CreateCustomFieldResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -19550,7 +20333,9 @@ func ParseCreateCustomFieldResponse(rsp *http.Response) (*CreateCustomFieldRespo
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CustomField *CustomField `json:"custom_field,omitempty"`
+			// CustomField Shape returned by the custom-field create / rename / restore endpoints. It differs from
+			// the read shape: the type UUID is exposed as `type`, not as `custom_fields_types_uuid`.
+			CustomField *CustomFieldMutationResult `json:"custom_field,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -19690,7 +20475,9 @@ func ParseRenameCustomFieldResponse(rsp *http.Response) (*RenameCustomFieldRespo
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CustomField *CustomField `json:"custom_field,omitempty"`
+			// CustomField Shape returned by the custom-field create / rename / restore endpoints. It differs from
+			// the read shape: the type UUID is exposed as `type`, not as `custom_fields_types_uuid`.
+			CustomField *CustomFieldMutationResult `json:"custom_field,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -19718,7 +20505,9 @@ func ParseRestoreCustomFieldResponse(rsp *http.Response) (*RestoreCustomFieldRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CustomField *CustomField `json:"custom_field,omitempty"`
+			// CustomField Shape returned by the custom-field create / rename / restore endpoints. It differs from
+			// the read shape: the type UUID is exposed as `type`, not as `custom_fields_types_uuid`.
+			CustomField *CustomFieldMutationResult `json:"custom_field,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21621,7 +22410,7 @@ func ParseCreateSubtaskResponse(rsp *http.Response) (*CreateSubtaskResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Subtask
+		var dest SubtaskCreated
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
