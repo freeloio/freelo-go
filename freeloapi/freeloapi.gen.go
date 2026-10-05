@@ -415,18 +415,18 @@ func (e GetAllNotificationsParamsOrder) Valid() bool {
 	}
 }
 
-// Defines values for GetAllNotificationsParamsOnlyUnread.
+// Defines values for GetAllNotificationsParamsIsOnlyUnread.
 const (
-	GetAllNotificationsParamsOnlyUnreadN0 GetAllNotificationsParamsOnlyUnread = 0
-	GetAllNotificationsParamsOnlyUnreadN1 GetAllNotificationsParamsOnlyUnread = 1
+	GetAllNotificationsParamsIsOnlyUnreadN0 GetAllNotificationsParamsIsOnlyUnread = 0
+	GetAllNotificationsParamsIsOnlyUnreadN1 GetAllNotificationsParamsIsOnlyUnread = 1
 )
 
-// Valid indicates whether the value is a known member of the GetAllNotificationsParamsOnlyUnread enum.
-func (e GetAllNotificationsParamsOnlyUnread) Valid() bool {
+// Valid indicates whether the value is a known member of the GetAllNotificationsParamsIsOnlyUnread enum.
+func (e GetAllNotificationsParamsIsOnlyUnread) Valid() bool {
 	switch e {
-	case GetAllNotificationsParamsOnlyUnreadN0:
+	case GetAllNotificationsParamsIsOnlyUnreadN0:
 		return true
-	case GetAllNotificationsParamsOnlyUnreadN1:
+	case GetAllNotificationsParamsIsOnlyUnreadN1:
 		return true
 	default:
 		return false
@@ -2525,13 +2525,13 @@ type GetAllNotificationsParams struct {
 	ProjectsIds *[]int `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
 
 	// UsersIds Authors of notifications
-	UsersIds          *[]int                          `form:"users_ids[],omitempty" json:"users_ids[],omitempty"`
-	TeamsUuids        *[]openapi_types.UUID           `form:"teams_uuids[],omitempty" json:"teams_uuids[],omitempty"`
-	Order             *GetAllNotificationsParamsOrder `form:"order,omitempty" json:"order,omitempty"`
-	NotificationTypes *[]string                       `form:"notification_types[],omitempty" json:"notification_types[],omitempty"`
+	UsersIds           *[]int                          `form:"users_ids[],omitempty" json:"users_ids[],omitempty"`
+	TeamsUuids         *[]openapi_types.UUID           `form:"teams_uuids[],omitempty" json:"teams_uuids[],omitempty"`
+	Order              *GetAllNotificationsParamsOrder `form:"order,omitempty" json:"order,omitempty"`
+	NotificationsTypes *[]string                       `form:"notifications_types[],omitempty" json:"notifications_types[],omitempty"`
 
-	// OnlyUnread Only return unread notifications. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
-	OnlyUnread *GetAllNotificationsParamsOnlyUnread `form:"only_unread,omitempty" json:"only_unread,omitempty"`
+	// IsOnlyUnread Only return unread notifications. Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
+	IsOnlyUnread *GetAllNotificationsParamsIsOnlyUnread `form:"is_only_unread,omitempty" json:"is_only_unread,omitempty"`
 
 	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
@@ -2543,8 +2543,8 @@ type GetAllNotificationsParams struct {
 // GetAllNotificationsParamsOrder defines parameters for GetAllNotifications.
 type GetAllNotificationsParamsOrder string
 
-// GetAllNotificationsParamsOnlyUnread defines parameters for GetAllNotifications.
-type GetAllNotificationsParamsOnlyUnread int
+// GetAllNotificationsParamsIsOnlyUnread defines parameters for GetAllNotifications.
+type GetAllNotificationsParamsIsOnlyUnread int
 
 // GetAllProjectsParams defines parameters for GetAllProjects.
 type GetAllProjectsParams struct {
@@ -3187,7 +3187,7 @@ type CreateCommentJSONBody struct {
 	// Files Files to attach as plain attachments (not placed inline in the body). Alternative to embedding an anchor in `content` — use one mechanism per file, never both for the same UUID.
 	Files *[]FileUpload `json:"files,omitempty"`
 
-	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target. If this call creates the task's description (the task has no comments yet), it behaves as on `POST /task/{task_id}/description`: it only keeps your existing unread notifications on the task, and the description does not notify you.
 	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
 
@@ -3195,6 +3195,9 @@ type CreateCommentJSONBody struct {
 type EditTaskDescriptionJSONBody struct {
 	Content string        `json:"content"`
 	Files   *[]FileUpload `json:"files,omitempty"`
+
+	// NotifyAuthor On the **first** call (the one that creates the description), keeps the authenticated caller's existing unread notifications on the task instead of clearing them because they wrote the description. It never creates a notification — the description itself is not announced to its own author. On later calls (the description already exists) it has the usual meaning: the caller is kept among the recipients of the description-edit notification.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
 
 // FinishTaskJSONBody defines parameters for FinishTask.
@@ -3212,6 +3215,9 @@ type MoveTaskJSONBody struct {
 		// SourceTasklistId ID of the source tasklist identifying which project instance to move
 		SourceTasklistId *int `json:"source_tasklist_id,omitempty"`
 	} `json:"multi_project_task,omitempty"`
+
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you already follow the task or the target tasklist — following the task is enough, and if the move takes it out of your reach you get the "moved away" variant that does not name the destination. Ignored when `multi_project_task.source_tasklist_id` points at a child task's tasklist — that flow moves the child within its own project and emits no move notification.
+	NotifyAuthor      *bool                              `json:"notify_author,omitempty"`
 	WorkReportsAction *MoveTaskJSONBodyWorkReportsAction `json:"work_reports_action,omitempty"`
 }
 
@@ -6942,9 +6948,9 @@ func NewGetAllNotificationsRequest(server string, params *GetAllNotificationsPar
 
 		}
 
-		if params.NotificationTypes != nil {
+		if params.NotificationsTypes != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "notification_types[]", *params.NotificationTypes, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "notifications_types[]", *params.NotificationsTypes, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -6954,9 +6960,9 @@ func NewGetAllNotificationsRequest(server string, params *GetAllNotificationsPar
 
 		}
 
-		if params.OnlyUnread != nil {
+		if params.IsOnlyUnread != nil {
 
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "only_unread", *params.OnlyUnread, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "is_only_unread", *params.IsOnlyUnread, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
