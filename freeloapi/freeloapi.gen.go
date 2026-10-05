@@ -3187,7 +3187,7 @@ type CreateCommentJSONBody struct {
 	// Files Files to attach as plain attachments (not placed inline in the body). Alternative to embedding an anchor in `content` — use one mechanism per file, never both for the same UUID.
 	Files *[]FileUpload `json:"files,omitempty"`
 
-	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target. If this call creates the task's description (the task has no comments yet), it behaves as on `POST /task/{task_id}/description`: it only keeps your existing unread notifications on the task, and the description does not notify you.
 	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
 
@@ -3195,6 +3195,9 @@ type CreateCommentJSONBody struct {
 type EditTaskDescriptionJSONBody struct {
 	Content string        `json:"content"`
 	Files   *[]FileUpload `json:"files,omitempty"`
+
+	// NotifyAuthor On the **first** call (the one that creates the description), keeps the authenticated caller's existing unread notifications on the task instead of clearing them because they wrote the description. It never creates a notification — the description itself is not announced to its own author. On later calls (the description already exists) it has the usual meaning: the caller is kept among the recipients of the description-edit notification.
+	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
 
 // FinishTaskJSONBody defines parameters for FinishTask.
@@ -3212,6 +3215,9 @@ type MoveTaskJSONBody struct {
 		// SourceTasklistId ID of the source tasklist identifying which project instance to move
 		SourceTasklistId *int `json:"source_tasklist_id,omitempty"`
 	} `json:"multi_project_task,omitempty"`
+
+	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you already follow the task or the target tasklist — following the task is enough, and if the move takes it out of your reach you get the "moved away" variant that does not name the destination. Ignored when `multi_project_task.source_tasklist_id` points at a child task's tasklist — that flow moves the child within its own project and emits no move notification.
+	NotifyAuthor      *bool                              `json:"notify_author,omitempty"`
 	WorkReportsAction *MoveTaskJSONBodyWorkReportsAction `json:"work_reports_action,omitempty"`
 }
 
