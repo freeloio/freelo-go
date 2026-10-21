@@ -557,6 +557,10 @@ const (
 	GetAllTasksParamsOrderByDueDate      GetAllTasksParamsOrderBy = "due_date"
 	GetAllTasksParamsOrderByName         GetAllTasksParamsOrderBy = "name"
 	GetAllTasksParamsOrderByPriority     GetAllTasksParamsOrderBy = "priority"
+	GetAllTasksParamsOrderByPriorityEnum GetAllTasksParamsOrderBy = "priority_enum"
+	GetAllTasksParamsOrderByProject      GetAllTasksParamsOrderBy = "project"
+	GetAllTasksParamsOrderByTasklist     GetAllTasksParamsOrderBy = "tasklist"
+	GetAllTasksParamsOrderByWorker       GetAllTasksParamsOrderBy = "worker"
 )
 
 // Valid indicates whether the value is a known member of the GetAllTasksParamsOrderBy enum.
@@ -571,6 +575,14 @@ func (e GetAllTasksParamsOrderBy) Valid() bool {
 	case GetAllTasksParamsOrderByName:
 		return true
 	case GetAllTasksParamsOrderByPriority:
+		return true
+	case GetAllTasksParamsOrderByPriorityEnum:
+		return true
+	case GetAllTasksParamsOrderByProject:
+		return true
+	case GetAllTasksParamsOrderByTasklist:
+		return true
+	case GetAllTasksParamsOrderByWorker:
 		return true
 	default:
 		return false
@@ -2617,7 +2629,7 @@ type GetAllTasksParams struct {
 	// TasklistsIds Filter tasks by tasklist IDs
 	TasklistsIds *[]int `form:"tasklists_ids[],omitempty" json:"tasklists_ids[],omitempty"`
 
-	// OrderBy When `due_date`, tasks without a due date are always last; all-day tasks sort at the start of their day (00:00). Results are tie-broken by task id for stable pagination.
+	// OrderBy `priority` is the manual position of the task in its tasklist; `priority_enum` orders by priority high → medium → low (reversed for `desc`). `worker` orders by the assignee's full name, `tasklist` and `project` by the name of the task's tasklist and project. When `due_date`, tasks without a due date are always last; all-day tasks sort at the start of their day (00:00). Tasks without an assignee (`worker`) or without a priority (`priority_enum`) are always last too. Results are tie-broken by task id for stable pagination.
 	OrderBy *GetAllTasksParamsOrderBy `form:"order_by,omitempty" json:"order_by,omitempty"`
 	Order   *GetAllTasksParamsOrder   `form:"order,omitempty" json:"order,omitempty"`
 

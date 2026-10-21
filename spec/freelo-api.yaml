@@ -1904,12 +1904,18 @@ paths:
           in: query
           schema:
             type: string
-            enum: [priority, name, date_add, date_edited_at, due_date]
+            enum: [priority, name, date_add, date_edited_at, due_date, worker, tasklist, project, priority_enum]
             default: date_add
           description: >-
-            When `due_date`, tasks without a due date are always last;
-            all-day tasks sort at the start of their day (00:00). Results are
-            tie-broken by task id for stable pagination.
+            `priority` is the manual position of the task in its tasklist;
+            `priority_enum` orders by priority high → medium → low (reversed
+            for `desc`). `worker` orders by the assignee's full name,
+            `tasklist` and `project` by the name of the task's tasklist and
+            project. When `due_date`, tasks without a due date are always last;
+            all-day tasks sort at the start of their day (00:00). Tasks without
+            an assignee (`worker`) or without a priority (`priority_enum`) are
+            always last too. Results are tie-broken by task id for stable
+            pagination.
         - name: order
           in: query
           schema:
@@ -4660,7 +4666,7 @@ paths:
         - Notifications are **always scoped to the caller** — there is no way to read another user's notifications through this endpoint.
         - `users_ids[]` filters by **authors** of the notification-triggering events, not recipients.
         - `teams_uuids[]` filters by the team context of the notification (e.g. all notifications from Team X).
-        - `only_unread=true` is useful for badge counters.
+        - `is_only_unread=1` is useful for badge counters.
         - Default order: `date_add desc` (newest first).
       operationId: getAllNotifications
       parameters:
