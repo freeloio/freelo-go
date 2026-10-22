@@ -5,6 +5,13 @@ All notable changes to the Freelo Go SDK are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2](https://github.com/freeloio/freelo-go/compare/v0.3.1...v0.3.2) (2026-10-22)
+
+
+### Bug Fixes
+
+* send the notification filters under the names the API reads ([#23](https://github.com/freeloio/freelo-go/issues/23)) ([57aaee0](https://github.com/freeloio/freelo-go/commit/57aaee03b0bb3daf632512a77aff6d9ea1c77ec5))
+
 ## [0.3.1](https://github.com/freeloio/freelo-go/compare/v0.3.0...v0.3.1) (2026-08-28)
 
 
