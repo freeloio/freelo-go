@@ -43,6 +43,126 @@ func (e CurrencyCurrency) Valid() bool {
 	}
 }
 
+// Defines values for DirectoryCreateRequestColor.
+const (
+	DirectoryCreateRequestColorHash10aa40 DirectoryCreateRequestColor = "#10aa40"
+	DirectoryCreateRequestColorHash15acc0 DirectoryCreateRequestColor = "#15acc0"
+	DirectoryCreateRequestColorHash367fee DirectoryCreateRequestColor = "#367fee"
+	DirectoryCreateRequestColorHash77787a DirectoryCreateRequestColor = "#77787a"
+	DirectoryCreateRequestColorHash9235e4 DirectoryCreateRequestColor = "#9235e4"
+	DirectoryCreateRequestColorHashCa3e99 DirectoryCreateRequestColor = "#ca3e99"
+	DirectoryCreateRequestColorHashE3b51e DirectoryCreateRequestColor = "#e3b51e"
+	DirectoryCreateRequestColorHashE9483a DirectoryCreateRequestColor = "#e9483a"
+	DirectoryCreateRequestColorHashF2830b DirectoryCreateRequestColor = "#f2830b"
+	DirectoryCreateRequestColorHashFfffff DirectoryCreateRequestColor = "#ffffff"
+)
+
+// Valid indicates whether the value is a known member of the DirectoryCreateRequestColor enum.
+func (e DirectoryCreateRequestColor) Valid() bool {
+	switch e {
+	case DirectoryCreateRequestColorHash10aa40:
+		return true
+	case DirectoryCreateRequestColorHash15acc0:
+		return true
+	case DirectoryCreateRequestColorHash367fee:
+		return true
+	case DirectoryCreateRequestColorHash77787a:
+		return true
+	case DirectoryCreateRequestColorHash9235e4:
+		return true
+	case DirectoryCreateRequestColorHashCa3e99:
+		return true
+	case DirectoryCreateRequestColorHashE3b51e:
+		return true
+	case DirectoryCreateRequestColorHashE9483a:
+		return true
+	case DirectoryCreateRequestColorHashF2830b:
+		return true
+	case DirectoryCreateRequestColorHashFfffff:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DirectoryEditRequestColor.
+const (
+	DirectoryEditRequestColorHash10aa40 DirectoryEditRequestColor = "#10aa40"
+	DirectoryEditRequestColorHash15acc0 DirectoryEditRequestColor = "#15acc0"
+	DirectoryEditRequestColorHash367fee DirectoryEditRequestColor = "#367fee"
+	DirectoryEditRequestColorHash77787a DirectoryEditRequestColor = "#77787a"
+	DirectoryEditRequestColorHash9235e4 DirectoryEditRequestColor = "#9235e4"
+	DirectoryEditRequestColorHashCa3e99 DirectoryEditRequestColor = "#ca3e99"
+	DirectoryEditRequestColorHashE3b51e DirectoryEditRequestColor = "#e3b51e"
+	DirectoryEditRequestColorHashE9483a DirectoryEditRequestColor = "#e9483a"
+	DirectoryEditRequestColorHashF2830b DirectoryEditRequestColor = "#f2830b"
+	DirectoryEditRequestColorHashFfffff DirectoryEditRequestColor = "#ffffff"
+)
+
+// Valid indicates whether the value is a known member of the DirectoryEditRequestColor enum.
+func (e DirectoryEditRequestColor) Valid() bool {
+	switch e {
+	case DirectoryEditRequestColorHash10aa40:
+		return true
+	case DirectoryEditRequestColorHash15acc0:
+		return true
+	case DirectoryEditRequestColorHash367fee:
+		return true
+	case DirectoryEditRequestColorHash77787a:
+		return true
+	case DirectoryEditRequestColorHash9235e4:
+		return true
+	case DirectoryEditRequestColorHashCa3e99:
+		return true
+	case DirectoryEditRequestColorHashE3b51e:
+		return true
+	case DirectoryEditRequestColorHashE9483a:
+		return true
+	case DirectoryEditRequestColorHashF2830b:
+		return true
+	case DirectoryEditRequestColorHashFfffff:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FileItemLinkType.
+const (
+	FileItemLinkTypeDropbox       FileItemLinkType = "dropbox"
+	FileItemLinkTypeGoogleDoc     FileItemLinkType = "google_doc"
+	FileItemLinkTypeGoogleGeneral FileItemLinkType = "google_general"
+	FileItemLinkTypeGoogleSheet   FileItemLinkType = "google_sheet"
+	FileItemLinkTypeGoogleSlide   FileItemLinkType = "google_slide"
+	FileItemLinkTypeLessThannil   FileItemLinkType = "<nil>"
+	FileItemLinkTypeLink          FileItemLinkType = "link"
+	FileItemLinkTypeOnedrive      FileItemLinkType = "onedrive"
+)
+
+// Valid indicates whether the value is a known member of the FileItemLinkType enum.
+func (e FileItemLinkType) Valid() bool {
+	switch e {
+	case FileItemLinkTypeDropbox:
+		return true
+	case FileItemLinkTypeGoogleDoc:
+		return true
+	case FileItemLinkTypeGoogleGeneral:
+		return true
+	case FileItemLinkTypeGoogleSheet:
+		return true
+	case FileItemLinkTypeGoogleSlide:
+		return true
+	case FileItemLinkTypeLessThannil:
+		return true
+	case FileItemLinkTypeLink:
+		return true
+	case FileItemLinkTypeOnedrive:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for FileItemType.
 const (
 	FileItemTypeDirectory FileItemType = "directory"
@@ -103,6 +223,135 @@ func (e IssuedInvoiceDetailCurrency) Valid() bool {
 	case IssuedInvoiceDetailCurrencyEUR:
 		return true
 	case IssuedInvoiceDetailCurrencyUSD:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LinkCreateRequestColor.
+const (
+	LinkCreateRequestColorHash10aa40  LinkCreateRequestColor = "#10aa40"
+	LinkCreateRequestColorHash15acc0  LinkCreateRequestColor = "#15acc0"
+	LinkCreateRequestColorHash367fee  LinkCreateRequestColor = "#367fee"
+	LinkCreateRequestColorHash77787a  LinkCreateRequestColor = "#77787a"
+	LinkCreateRequestColorHash9235e4  LinkCreateRequestColor = "#9235e4"
+	LinkCreateRequestColorHashCa3e99  LinkCreateRequestColor = "#ca3e99"
+	LinkCreateRequestColorHashE3b51e  LinkCreateRequestColor = "#e3b51e"
+	LinkCreateRequestColorHashE9483a  LinkCreateRequestColor = "#e9483a"
+	LinkCreateRequestColorHashF2830b  LinkCreateRequestColor = "#f2830b"
+	LinkCreateRequestColorHashFfffff  LinkCreateRequestColor = "#ffffff"
+	LinkCreateRequestColorLessThannil LinkCreateRequestColor = "<nil>"
+)
+
+// Valid indicates whether the value is a known member of the LinkCreateRequestColor enum.
+func (e LinkCreateRequestColor) Valid() bool {
+	switch e {
+	case LinkCreateRequestColorHash10aa40:
+		return true
+	case LinkCreateRequestColorHash15acc0:
+		return true
+	case LinkCreateRequestColorHash367fee:
+		return true
+	case LinkCreateRequestColorHash77787a:
+		return true
+	case LinkCreateRequestColorHash9235e4:
+		return true
+	case LinkCreateRequestColorHashCa3e99:
+		return true
+	case LinkCreateRequestColorHashE3b51e:
+		return true
+	case LinkCreateRequestColorHashE9483a:
+		return true
+	case LinkCreateRequestColorHashF2830b:
+		return true
+	case LinkCreateRequestColorHashFfffff:
+		return true
+	case LinkCreateRequestColorLessThannil:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LinkEditRequestColor.
+const (
+	LinkEditRequestColorHash10aa40 LinkEditRequestColor = "#10aa40"
+	LinkEditRequestColorHash15acc0 LinkEditRequestColor = "#15acc0"
+	LinkEditRequestColorHash367fee LinkEditRequestColor = "#367fee"
+	LinkEditRequestColorHash77787a LinkEditRequestColor = "#77787a"
+	LinkEditRequestColorHash9235e4 LinkEditRequestColor = "#9235e4"
+	LinkEditRequestColorHashCa3e99 LinkEditRequestColor = "#ca3e99"
+	LinkEditRequestColorHashE3b51e LinkEditRequestColor = "#e3b51e"
+	LinkEditRequestColorHashE9483a LinkEditRequestColor = "#e9483a"
+	LinkEditRequestColorHashF2830b LinkEditRequestColor = "#f2830b"
+	LinkEditRequestColorHashFfffff LinkEditRequestColor = "#ffffff"
+)
+
+// Valid indicates whether the value is a known member of the LinkEditRequestColor enum.
+func (e LinkEditRequestColor) Valid() bool {
+	switch e {
+	case LinkEditRequestColorHash10aa40:
+		return true
+	case LinkEditRequestColorHash15acc0:
+		return true
+	case LinkEditRequestColorHash367fee:
+		return true
+	case LinkEditRequestColorHash77787a:
+		return true
+	case LinkEditRequestColorHash9235e4:
+		return true
+	case LinkEditRequestColorHashCa3e99:
+		return true
+	case LinkEditRequestColorHashE3b51e:
+		return true
+	case LinkEditRequestColorHashE9483a:
+		return true
+	case LinkEditRequestColorHashF2830b:
+		return true
+	case LinkEditRequestColorHashFfffff:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectFileEditRequestColor.
+const (
+	ProjectFileEditRequestColorHash10aa40 ProjectFileEditRequestColor = "#10aa40"
+	ProjectFileEditRequestColorHash15acc0 ProjectFileEditRequestColor = "#15acc0"
+	ProjectFileEditRequestColorHash367fee ProjectFileEditRequestColor = "#367fee"
+	ProjectFileEditRequestColorHash77787a ProjectFileEditRequestColor = "#77787a"
+	ProjectFileEditRequestColorHash9235e4 ProjectFileEditRequestColor = "#9235e4"
+	ProjectFileEditRequestColorHashCa3e99 ProjectFileEditRequestColor = "#ca3e99"
+	ProjectFileEditRequestColorHashE3b51e ProjectFileEditRequestColor = "#e3b51e"
+	ProjectFileEditRequestColorHashE9483a ProjectFileEditRequestColor = "#e9483a"
+	ProjectFileEditRequestColorHashF2830b ProjectFileEditRequestColor = "#f2830b"
+	ProjectFileEditRequestColorHashFfffff ProjectFileEditRequestColor = "#ffffff"
+)
+
+// Valid indicates whether the value is a known member of the ProjectFileEditRequestColor enum.
+func (e ProjectFileEditRequestColor) Valid() bool {
+	switch e {
+	case ProjectFileEditRequestColorHash10aa40:
+		return true
+	case ProjectFileEditRequestColorHash15acc0:
+		return true
+	case ProjectFileEditRequestColorHash367fee:
+		return true
+	case ProjectFileEditRequestColorHash77787a:
+		return true
+	case ProjectFileEditRequestColorHash9235e4:
+		return true
+	case ProjectFileEditRequestColorHashCa3e99:
+		return true
+	case ProjectFileEditRequestColorHashE3b51e:
+		return true
+	case ProjectFileEditRequestColorHashE9483a:
+		return true
+	case ProjectFileEditRequestColorHashF2830b:
+		return true
+	case ProjectFileEditRequestColorHashFfffff:
 		return true
 	default:
 		return false
@@ -700,6 +949,48 @@ func (e GetAllEventsParamsOrder) Valid() bool {
 	}
 }
 
+// Defines values for CreateProjectFileMultipartBodyColor.
+const (
+	CreateProjectFileMultipartBodyColorHash10aa40 CreateProjectFileMultipartBodyColor = "#10aa40"
+	CreateProjectFileMultipartBodyColorHash15acc0 CreateProjectFileMultipartBodyColor = "#15acc0"
+	CreateProjectFileMultipartBodyColorHash367fee CreateProjectFileMultipartBodyColor = "#367fee"
+	CreateProjectFileMultipartBodyColorHash77787a CreateProjectFileMultipartBodyColor = "#77787a"
+	CreateProjectFileMultipartBodyColorHash9235e4 CreateProjectFileMultipartBodyColor = "#9235e4"
+	CreateProjectFileMultipartBodyColorHashCa3e99 CreateProjectFileMultipartBodyColor = "#ca3e99"
+	CreateProjectFileMultipartBodyColorHashE3b51e CreateProjectFileMultipartBodyColor = "#e3b51e"
+	CreateProjectFileMultipartBodyColorHashE9483a CreateProjectFileMultipartBodyColor = "#e9483a"
+	CreateProjectFileMultipartBodyColorHashF2830b CreateProjectFileMultipartBodyColor = "#f2830b"
+	CreateProjectFileMultipartBodyColorHashFfffff CreateProjectFileMultipartBodyColor = "#ffffff"
+)
+
+// Valid indicates whether the value is a known member of the CreateProjectFileMultipartBodyColor enum.
+func (e CreateProjectFileMultipartBodyColor) Valid() bool {
+	switch e {
+	case CreateProjectFileMultipartBodyColorHash10aa40:
+		return true
+	case CreateProjectFileMultipartBodyColorHash15acc0:
+		return true
+	case CreateProjectFileMultipartBodyColorHash367fee:
+		return true
+	case CreateProjectFileMultipartBodyColorHash77787a:
+		return true
+	case CreateProjectFileMultipartBodyColorHash9235e4:
+		return true
+	case CreateProjectFileMultipartBodyColorHashCa3e99:
+		return true
+	case CreateProjectFileMultipartBodyColorHashE3b51e:
+		return true
+	case CreateProjectFileMultipartBodyColorHashE9483a:
+		return true
+	case CreateProjectFileMultipartBodyColorHashF2830b:
+		return true
+	case CreateProjectFileMultipartBodyColorHashFfffff:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateProjectFromTemplateJSONBodyCurrencyIso.
 const (
 	CreateProjectFromTemplateJSONBodyCurrencyIsoCZK CreateProjectFromTemplateJSONBodyCurrencyIso = "CZK"
@@ -1006,6 +1297,27 @@ func (e GetTaskParamsCommentsOrder) Valid() bool {
 	case GetTaskParamsCommentsOrderAsc:
 		return true
 	case GetTaskParamsCommentsOrderDesc:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EditTaskJSONBodyCollisionMode.
+const (
+	KeepGap EditTaskJSONBodyCollisionMode = "keep_gap"
+	None    EditTaskJSONBodyCollisionMode = "none"
+	UseGap  EditTaskJSONBodyCollisionMode = "use_gap"
+)
+
+// Valid indicates whether the value is a known member of the EditTaskJSONBodyCollisionMode enum.
+func (e EditTaskJSONBodyCollisionMode) Valid() bool {
+	switch e {
+	case KeepGap:
+		return true
+	case None:
+		return true
+	case UseGap:
 		return true
 	default:
 		return false
@@ -1396,6 +1708,38 @@ type CustomFieldWithValue struct {
 	ValueUuid         *openapi_types.UUID `json:"value_uuid,omitempty"`
 }
 
+// DirectoryCreateRequest defines model for DirectoryCreateRequest.
+type DirectoryCreateRequest struct {
+	Color *DirectoryCreateRequestColor `json:"color,omitempty"`
+
+	// DirectoryUuid Parent directory; null or missing = project root.
+	DirectoryUuid *openapi_types.UUID `json:"directory_uuid,omitempty"`
+
+	// Name Plain text, not HTML. Surrounding whitespace (including no-break spaces) is trimmed; control and bidirectional control characters (e.g. U+202E) are rejected.
+	Name      string `json:"name"`
+	ProjectId int    `json:"project_id"`
+}
+
+// DirectoryCreateRequestColor defines model for DirectoryCreateRequest.Color.
+type DirectoryCreateRequestColor string
+
+// DirectoryEditRequest defines model for DirectoryEditRequest.
+type DirectoryEditRequest struct {
+	Color *DirectoryEditRequestColor `json:"color,omitempty"`
+
+	// DirectoryUuid Target parent directory; null moves the directory to the project root.
+	DirectoryUuid *openapi_types.UUID `json:"directory_uuid,omitempty"`
+
+	// Name Plain text, not HTML. Surrounding whitespace (including no-break spaces) is trimmed; control and bidirectional control characters (e.g. U+202E) are rejected.
+	Name *string `json:"name,omitempty"`
+}
+
+// DirectoryEditRequestColor defines model for DirectoryEditRequest.Color.
+type DirectoryEditRequestColor string
+
+// DocsAndFilesItem defines model for DocsAndFilesItem.
+type DocsAndFilesItem = FileItem
+
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
 	Errors *[]string `json:"errors,omitempty"`
@@ -1468,27 +1812,39 @@ type FileFull struct {
 
 // FileItem defines model for FileItem.
 type FileItem struct {
-	Author  *UserBasic `json:"author,omitempty"`
-	Caption *string    `json:"caption,omitempty"`
-	Color   *string    `json:"color,omitempty"`
+	Author *UserBasic `json:"author,omitempty"`
+
+	// Caption Files only: caption editable by users (defaults to the original file name).
+	Caption *string `json:"caption,omitempty"`
+	Color   *string `json:"color,omitempty"`
 
 	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAdd       *freelotime.Time    `json:"date_add,omitempty"`
 	DirectoryUuid *openapi_types.UUID `json:"directory_uuid,omitempty"`
 	Extension     *string             `json:"extension,omitempty"`
-	Filename      *string             `json:"filename,omitempty"`
-	ItemsCount    *int                `json:"items_count,omitempty"`
-	Link          *string             `json:"link,omitempty"`
-	LinkType      *string             `json:"link_type,omitempty"`
-	MimeType      *string             `json:"mime_type,omitempty"`
-	Name          *string             `json:"name,omitempty"`
-	Note          *string             `json:"note,omitempty"`
-	Order         *int                `json:"order,omitempty"`
-	Project       *ProjectBasic       `json:"project,omitempty"`
-	Size          *int                `json:"size,omitempty"`
-	Type          *FileItemType       `json:"type,omitempty"`
-	Uuid          *openapi_types.UUID `json:"uuid,omitempty"`
+
+	// Filename Files only: internal storage name (contains a random prefix). Do not use it as a display name.
+	Filename   *string           `json:"filename,omitempty"`
+	ItemsCount *int              `json:"items_count,omitempty"`
+	Link       *string           `json:"link,omitempty"`
+	LinkType   *FileItemLinkType `json:"link_type,omitempty"`
+	MimeType   *string           `json:"mime_type,omitempty"`
+
+	// Name Display name. Directory, link, note: their name. File: `caption`, or `original_filename` when the caption is empty.
+	Name  *string `json:"name,omitempty"`
+	Note  *string `json:"note,omitempty"`
+	Order *int    `json:"order,omitempty"`
+
+	// OriginalFilename Files only: the name of the file when it was uploaded; null for other types.
+	OriginalFilename *string             `json:"original_filename,omitempty"`
+	Project          *ProjectBasic       `json:"project,omitempty"`
+	Size             *int                `json:"size,omitempty"`
+	Type             *FileItemType       `json:"type,omitempty"`
+	Uuid             *openapi_types.UUID `json:"uuid,omitempty"`
 }
+
+// FileItemLinkType defines model for FileItem.LinkType.
+type FileItemLinkType string
 
 // FileItemType defines model for FileItem.Type.
 type FileItemType string
@@ -1508,6 +1864,8 @@ type FileUploadByUrl struct {
 	Caption *string `json:"caption,omitempty"`
 
 	// DownloadUrl URL Freelo fetches the file from (server-side download).
+	//
+	// Must be an absolute `http(s)` URL of a publicly reachable host. Redirects are not followed, and private, loopback, link-local or Freelo's own addresses are refused. A refused or failed download returns `400` and nothing is created. At most 20 files per request can be given by `download_url`.
 	DownloadUrl string  `json:"download_url"`
 	Filename    *string `json:"filename,omitempty"`
 }
@@ -1579,6 +1937,46 @@ type IssuedInvoiceDetail struct {
 
 // IssuedInvoiceDetailCurrency defines model for IssuedInvoiceDetail.Currency.
 type IssuedInvoiceDetailCurrency string
+
+// LinkCreateRequest defines model for LinkCreateRequest.
+type LinkCreateRequest struct {
+	// Color null or missing = default gray.
+	Color *LinkCreateRequestColor `json:"color,omitempty"`
+
+	// DirectoryUuid Target directory; null or missing = project root.
+	DirectoryUuid *openapi_types.UUID `json:"directory_uuid,omitempty"`
+
+	// Link Absolute http(s) URL with a host and no user credentials (`user@host` is rejected). `link_type` is derived from it. Surrounding whitespace is trimmed. Must not contain whitespace (including no-break and zero-width spaces), control characters or any of `"`, `<`, `>`, a backtick, `\`. IDN hosts and diacritics are allowed. Stored and returned as plain text.
+	Link string `json:"link"`
+
+	// Name Plain text, not HTML. Surrounding whitespace (including no-break spaces) is trimmed; control and bidirectional control characters (e.g. U+202E) are rejected.
+	Name      string  `json:"name"`
+	Note      *string `json:"note,omitempty"`
+	ProjectId int     `json:"project_id"`
+}
+
+// LinkCreateRequestColor null or missing = default gray.
+type LinkCreateRequestColor string
+
+// LinkEditRequest defines model for LinkEditRequest.
+type LinkEditRequest struct {
+	Color *LinkEditRequestColor `json:"color,omitempty"`
+
+	// DirectoryUuid Target directory; null moves the link to the project root.
+	DirectoryUuid *openapi_types.UUID `json:"directory_uuid,omitempty"`
+
+	// Link Absolute http(s) URL with a host. Changing it recalculates `link_type`. Same rules as on create. Sending `null` is a validation error (400); omit the field to keep the URL.
+	Link *string `json:"link,omitempty"`
+
+	// Name Plain text, not HTML. Surrounding whitespace (including no-break spaces) is trimmed; control and bidirectional control characters (e.g. U+202E) are rejected.
+	Name *string `json:"name,omitempty"`
+
+	// Note null removes the note.
+	Note *string `json:"note,omitempty"`
+}
+
+// LinkEditRequestColor defines model for LinkEditRequest.Color.
+type LinkEditRequestColor string
 
 // MultiProjectTask Mapping of the task across the projects it is assigned to. `null` when the task is a
 // child instance of a multi-project task — the block is only rendered on the parent.
@@ -1792,6 +2190,21 @@ type ProjectDetail struct {
 	} `json:"workers,omitempty"`
 }
 
+// ProjectFileEditRequest defines model for ProjectFileEditRequest.
+type ProjectFileEditRequest struct {
+	Caption *string                      `json:"caption,omitempty"`
+	Color   *ProjectFileEditRequestColor `json:"color,omitempty"`
+
+	// DirectoryUuid Target directory; null moves the file to the project root.
+	DirectoryUuid *openapi_types.UUID `json:"directory_uuid,omitempty"`
+
+	// Note null removes the note.
+	Note *string `json:"note,omitempty"`
+}
+
+// ProjectFileEditRequestColor defines model for ProjectFileEditRequest.Color.
+type ProjectFileEditRequestColor string
+
 // ProjectFull defines model for ProjectFull.
 type ProjectFull struct {
 	Budget *Currency `json:"budget,omitempty"`
@@ -1855,6 +2268,7 @@ type ProjectWithTasklists struct {
 // | Conditional field | Appears when `type` is |
 // | --- | --- |
 // | `is_smart` | `task` |
+// | `multi_project_task` | `task`; nested in `task` for `taskcheck`, `task_comment` |
 // | `task` | `task` (only if it's a smart subtask), `taskcheck`, `task_comment` |
 // | `smart_task` | `taskcheck`, `task_comment` (the smart-task ancestor, if any) |
 // | `note` | `note_comment` |
@@ -1887,7 +2301,10 @@ type SearchResult struct {
 		Name *string `json:"name,omitempty"`
 		Uuid *string `json:"uuid,omitempty"`
 	} `json:"link,omitempty"`
-	Name *string `json:"name,omitempty"`
+
+	// MultiProjectTask **Conditional** — present only for `type=task`. The projects the task is assigned to that the caller can see, same shape as on the task detail. A multi-project task is listed once.
+	MultiProjectTask *MultiProjectTask `json:"multi_project_task,omitempty"`
+	Name             *string           `json:"name,omitempty"`
 
 	// Note **Conditional** — present only for `type=note_comment`.
 	Note *struct {
@@ -1910,8 +2327,12 @@ type SearchResult struct {
 
 	// Task **Conditional** — parent task of the hit. Present for `type` of `taskcheck`, `task_comment`, and for `task` hits that are smart subtasks (in which case it carries the parent task).
 	Task *struct {
-		Id   *int    `json:"id,omitempty"`
-		Name *string `json:"name,omitempty"`
+		Id *int `json:"id,omitempty"`
+
+		// MultiProjectTask Mapping of the task across the projects it is assigned to. `null` when the task is a
+		// child instance of a multi-project task — the block is only rendered on the parent.
+		MultiProjectTask *MultiProjectTask `json:"multi_project_task,omitempty"`
+		Name             *string           `json:"name,omitempty"`
 	} `json:"task,omitempty"`
 	Tasklist *TasklistBasic `json:"tasklist,omitempty"`
 
@@ -1922,6 +2343,17 @@ type SearchResult struct {
 
 // SearchResultType Underlying Elasticsearch entity type for this hit (underscore form of `ElasticsearchEntityTypeEnum`). Broader than the `entity_type` request filter.
 type SearchResultType string
+
+// ShiftedTask defines model for ShiftedTask.
+type ShiftedTask struct {
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDate freelotime.Time `json:"due_date"`
+
+	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	DueDateEnd *freelotime.Time `json:"due_date_end"`
+	Id         int              `json:"id"`
+	Name       string           `json:"name"`
+}
 
 // State defines model for State.
 type State struct {
@@ -2027,7 +2459,11 @@ type SuccessResponse struct {
 // TaskCreate defines model for TaskCreate.
 type TaskCreate struct {
 	Comment *struct {
+		// Content First comment of the task (becomes its description). Supports inline file anchors `<a data-freelo-uuid="{file_uuid}">caption</a>`.
 		Content *string `json:"content,omitempty"`
+
+		// Files Files uploaded via `POST /file/upload` to attach to the comment.
+		Files *[]FileUpload `json:"files,omitempty"`
 	} `json:"comment,omitempty"`
 
 	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
@@ -2468,6 +2904,15 @@ type WorkReportFull struct {
 	Worker   *UserBasic     `json:"worker,omitempty"`
 }
 
+// DirectoryUuidParam defines model for DirectoryUuidParam.
+type DirectoryUuidParam = openapi_types.UUID
+
+// ForceDeleteParam defines model for ForceDeleteParam.
+type ForceDeleteParam = bool
+
+// LinkUuidParam defines model for LinkUuidParam.
+type LinkUuidParam = openapi_types.UUID
+
 // NoteIdParam defines model for NoteIdParam.
 type NoteIdParam = string
 
@@ -2476,6 +2921,9 @@ type PageAliasParam = int
 
 // PageParam defines model for PageParam.
 type PageParam = int
+
+// ProjectFileUuidParam defines model for ProjectFileUuidParam.
+type ProjectFileUuidParam = openapi_types.UUID
 
 // ProjectIdParam defines model for ProjectIdParam.
 type ProjectIdParam = int
@@ -2488,6 +2936,9 @@ type TaskcheckIdParam = int
 
 // TasklistIdParam defines model for TasklistIdParam.
 type TasklistIdParam = int
+
+// FileCannotBeAttached defines model for FileCannotBeAttached.
+type FileCannotBeAttached = ErrorResponse
 
 // basicAuthContextKey is the context key for basicAuth security scheme
 type basicAuthContextKey string
@@ -2521,6 +2972,12 @@ type GetAllCommentsParamsOrder string
 type GetAllDocsAndFilesParams struct {
 	ProjectsIds *[]int                        `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
 	Type        *GetAllDocsAndFilesParamsType `form:"type,omitempty" json:"type,omitempty"`
+
+	// DirectoryUuid Lists only the direct items of this directory; `root` lists the items in the project root. Requires exactly one `projects_ids[]`.
+	DirectoryUuid *string `form:"directory_uuid,omitempty" json:"directory_uuid,omitempty"`
+
+	// Search Case- and accent-insensitive substring of the item `name`; for a file its caption, or `original_filename` when the caption is empty. At most 255 characters.
+	Search *string `form:"search,omitempty" json:"search,omitempty"`
 
 	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
@@ -2790,6 +3247,12 @@ type RenameCustomFieldJSONBody struct {
 	Name string `json:"name"`
 }
 
+// DeleteDirectoryParams defines parameters for DeleteDirectory.
+type DeleteDirectoryParams struct {
+	// Force `true` deletes a directory even when it is not empty. This cannot be undone.
+	Force *ForceDeleteParam `form:"force,omitempty" json:"force,omitempty"`
+}
+
 // GetAllEventsParams defines parameters for GetAllEvents.
 type GetAllEventsParams struct {
 	ProjectsIds       *[]int                   `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
@@ -2845,12 +3308,32 @@ type GetIssuedInvoicesParams struct {
 
 // EditNoteJSONBody defines parameters for EditNote.
 type EditNoteJSONBody struct {
+	// Content New body. Omit it to change only the title. Supports inline file anchors.
 	Content *string `json:"content,omitempty"`
-	Name    string  `json:"name"`
+
+	// Files Complete list of the note's attachments; requires `content`. Omit to keep the current attachments.
+	Files *[]FileUpload `json:"files,omitempty"`
+	Name  string        `json:"name"`
 
 	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
 	NotifyAuthor *bool `json:"notify_author,omitempty"`
 }
+
+// CreateProjectFileMultipartBody defines parameters for CreateProjectFile.
+type CreateProjectFileMultipartBody struct {
+	// Caption Defaults to the uploaded file name.
+	Caption *string                              `json:"caption,omitempty"`
+	Color   *CreateProjectFileMultipartBodyColor `json:"color,omitempty"`
+
+	// DirectoryUuid Target directory; empty or missing = project root.
+	DirectoryUuid *openapi_types.UUID `json:"directory_uuid,omitempty"`
+	File          openapi_types.File  `json:"file"`
+	Note          *string             `json:"note,omitempty"`
+	ProjectId     int                 `json:"project_id"`
+}
+
+// CreateProjectFileMultipartBodyColor defines parameters for CreateProjectFile.
+type CreateProjectFileMultipartBodyColor string
 
 // AddProjectLabelToProjectJSONBody defines parameters for AddProjectLabelToProject.
 type AddProjectLabelToProjectJSONBody struct {
@@ -2915,8 +3398,12 @@ type UpdateProjectJSONBody struct {
 
 // CreateNoteJSONBody defines parameters for CreateNote.
 type CreateNoteJSONBody struct {
+	// Content Note body (HTML / plain text). Supports inline file anchors `<a data-freelo-uuid="{file_uuid}">caption</a>`.
 	Content *string `json:"content,omitempty"`
-	Name    string  `json:"name"`
+
+	// Files Files to attach to the note. Use one mechanism per file — do not also embed the same UUID in `content`.
+	Files *[]FileUpload `json:"files,omitempty"`
+	Name  string        `json:"name"`
 }
 
 // PinItemToProjectJSONBody defines parameters for PinItemToProject.
@@ -3146,13 +3633,16 @@ type EditTaskJSONBody struct {
 	// AddTrackingUsersIds Add tracking users by user ID (merged with existing).
 	AddTrackingUsersIds *[]int `json:"add_tracking_users_ids,omitempty"`
 
+	// CollisionMode How tasks linked by blocking relations react to the due date change. See behavior notes.
+	CollisionMode *EditTaskJSONBodyCollisionMode `json:"collision_mode,omitempty"`
+
 	// Description Task description as an object, identical to the POST /task/{task_id}/description request body. Files are downloaded from download_url, attached to the description, and the description file set is reconciled (files no longer present are archived).
 	Description *struct {
 		Content string        `json:"content"`
 		Files   *[]FileUpload `json:"files,omitempty"`
 	} `json:"description,omitempty"`
 
-	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description. Send `null` (with `due_date_end`) to clear the deadline.
 	DueDate *freelotime.Time `json:"due_date,omitempty"`
 
 	// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
@@ -3173,6 +3663,9 @@ type EditTaskJSONBody struct {
 	TrackingUsersIds *[]int `json:"tracking_users_ids,omitempty"`
 	Worker           *int   `json:"worker,omitempty"`
 }
+
+// EditTaskJSONBodyCollisionMode defines parameters for EditTask.
+type EditTaskJSONBodyCollisionMode string
 
 // EditTaskJSONBodyPriorityEnum defines parameters for EditTask.
 type EditTaskJSONBodyPriorityEnum string
@@ -3524,14 +4017,32 @@ type CreateCustomFieldJSONRequestBody CreateCustomFieldJSONBody
 // RenameCustomFieldJSONRequestBody defines body for RenameCustomField for application/json ContentType.
 type RenameCustomFieldJSONRequestBody RenameCustomFieldJSONBody
 
+// CreateDirectoryJSONRequestBody defines body for CreateDirectory for application/json ContentType.
+type CreateDirectoryJSONRequestBody = DirectoryCreateRequest
+
+// EditDirectoryJSONRequestBody defines body for EditDirectory for application/json ContentType.
+type EditDirectoryJSONRequestBody = DirectoryEditRequest
+
 // UploadFileMultipartRequestBody defines body for UploadFile for multipart/form-data ContentType.
 type UploadFileMultipartRequestBody UploadFileMultipartBody
 
 // MarkAsInvoicedJSONRequestBody defines body for MarkAsInvoiced for application/json ContentType.
 type MarkAsInvoicedJSONRequestBody MarkAsInvoicedJSONBody
 
+// CreateLinkJSONRequestBody defines body for CreateLink for application/json ContentType.
+type CreateLinkJSONRequestBody = LinkCreateRequest
+
+// EditLinkJSONRequestBody defines body for EditLink for application/json ContentType.
+type EditLinkJSONRequestBody = LinkEditRequest
+
 // EditNoteJSONRequestBody defines body for EditNote for application/json ContentType.
 type EditNoteJSONRequestBody EditNoteJSONBody
+
+// CreateProjectFileMultipartRequestBody defines body for CreateProjectFile for multipart/form-data ContentType.
+type CreateProjectFileMultipartRequestBody CreateProjectFileMultipartBody
+
+// EditProjectFileJSONRequestBody defines body for EditProjectFile for application/json ContentType.
+type EditProjectFileJSONRequestBody = ProjectFileEditRequest
 
 // AddProjectLabelToProjectJSONRequestBody defines body for AddProjectLabelToProject for application/json ContentType.
 type AddProjectLabelToProjectJSONRequestBody AddProjectLabelToProjectJSONBody
@@ -4047,6 +4558,22 @@ type ClientInterface interface {
 	// RestoreCustomField request
 	RestoreCustomField(ctx context.Context, uuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateDirectoryWithBody request with any body
+	CreateDirectoryWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateDirectory(ctx context.Context, body CreateDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteDirectory request
+	DeleteDirectory(ctx context.Context, directoryUuid DirectoryUuidParam, params *DeleteDirectoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetDirectory request
+	GetDirectory(ctx context.Context, directoryUuid DirectoryUuidParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EditDirectoryWithBody request with any body
+	EditDirectoryWithBody(ctx context.Context, directoryUuid DirectoryUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	EditDirectory(ctx context.Context, directoryUuid DirectoryUuidParam, body EditDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetAllEvents request
 	GetAllEvents(ctx context.Context, params *GetAllEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4079,6 +4606,19 @@ type ClientInterface interface {
 	// GetIssuedInvoices request
 	GetIssuedInvoices(ctx context.Context, params *GetIssuedInvoicesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateLinkWithBody request with any body
+	CreateLinkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateLink(ctx context.Context, body CreateLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteLink request
+	DeleteLink(ctx context.Context, linkUuid LinkUuidParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EditLinkWithBody request with any body
+	EditLinkWithBody(ctx context.Context, linkUuid LinkUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	EditLink(ctx context.Context, linkUuid LinkUuidParam, body EditLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteNote request
 	DeleteNote(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4098,6 +4638,17 @@ type ClientInterface interface {
 
 	// DeletePinnedItem request
 	DeletePinnedItem(ctx context.Context, pinnedItemId int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateProjectFileWithBody request with any body
+	CreateProjectFileWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteProjectFile request
+	DeleteProjectFile(ctx context.Context, fileUuid ProjectFileUuidParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EditProjectFileWithBody request with any body
+	EditProjectFileWithBody(ctx context.Context, fileUuid ProjectFileUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	EditProjectFile(ctx context.Context, fileUuid ProjectFileUuidParam, body EditProjectFileJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// AddProjectLabelToProjectWithBody request with any body
 	AddProjectLabelToProjectWithBody(ctx context.Context, projectId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4904,6 +5455,78 @@ func (c *Client) RestoreCustomField(ctx context.Context, uuid openapi_types.UUID
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateDirectoryWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDirectoryRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDirectory(ctx context.Context, body CreateDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDirectoryRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteDirectory(ctx context.Context, directoryUuid DirectoryUuidParam, params *DeleteDirectoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteDirectoryRequest(c.Server, directoryUuid, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetDirectory(ctx context.Context, directoryUuid DirectoryUuidParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDirectoryRequest(c.Server, directoryUuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditDirectoryWithBody(ctx context.Context, directoryUuid DirectoryUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditDirectoryRequestWithBody(c.Server, directoryUuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditDirectory(ctx context.Context, directoryUuid DirectoryUuidParam, body EditDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditDirectoryRequest(c.Server, directoryUuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetAllEvents(ctx context.Context, params *GetAllEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetAllEventsRequest(c.Server, params)
 	if err != nil {
@@ -5036,6 +5659,66 @@ func (c *Client) GetIssuedInvoices(ctx context.Context, params *GetIssuedInvoice
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateLinkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateLinkRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateLink(ctx context.Context, body CreateLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateLinkRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteLink(ctx context.Context, linkUuid LinkUuidParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteLinkRequest(c.Server, linkUuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditLinkWithBody(ctx context.Context, linkUuid LinkUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditLinkRequestWithBody(c.Server, linkUuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditLink(ctx context.Context, linkUuid LinkUuidParam, body EditLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditLinkRequest(c.Server, linkUuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteNote(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteNoteRequest(c.Server, noteId)
 	if err != nil {
@@ -5110,6 +5793,54 @@ func (c *Client) MarkNotificationAsUnread(ctx context.Context, notificationId in
 
 func (c *Client) DeletePinnedItem(ctx context.Context, pinnedItemId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeletePinnedItemRequest(c.Server, pinnedItemId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateProjectFileWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateProjectFileRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteProjectFile(ctx context.Context, fileUuid ProjectFileUuidParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteProjectFileRequest(c.Server, fileUuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditProjectFileWithBody(ctx context.Context, fileUuid ProjectFileUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditProjectFileRequestWithBody(c.Server, fileUuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EditProjectFile(ctx context.Context, fileUuid ProjectFileUuidParam, body EditProjectFileJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEditProjectFileRequest(c.Server, fileUuid, body)
 	if err != nil {
 		return nil, err
 	}
@@ -6846,6 +7577,30 @@ func NewGetAllDocsAndFilesRequest(server string, params *GetAllDocsAndFilesParam
 
 		}
 
+		if params.DirectoryUuid != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "directory_uuid", *params.DirectoryUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "search", *params.Search, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.P != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
@@ -8436,6 +9191,188 @@ func NewRestoreCustomFieldRequest(server string, uuid openapi_types.UUID) (*http
 	return req, nil
 }
 
+// NewCreateDirectoryRequest calls the generic CreateDirectory builder with application/json body
+func NewCreateDirectoryRequest(server string, body CreateDirectoryJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateDirectoryRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateDirectoryRequestWithBody generates requests for CreateDirectory with any type of body
+func NewCreateDirectoryRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/directories")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteDirectoryRequest generates requests for DeleteDirectory
+func NewDeleteDirectoryRequest(server string, directoryUuid DirectoryUuidParam, params *DeleteDirectoryParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "directory_uuid", directoryUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/directories/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Force != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "force", *params.Force, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetDirectoryRequest generates requests for GetDirectory
+func NewGetDirectoryRequest(server string, directoryUuid DirectoryUuidParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "directory_uuid", directoryUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/directories/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewEditDirectoryRequest calls the generic EditDirectory builder with application/json body
+func NewEditDirectoryRequest(server string, directoryUuid DirectoryUuidParam, body EditDirectoryJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewEditDirectoryRequestWithBody(server, directoryUuid, "application/json", bodyReader)
+}
+
+// NewEditDirectoryRequestWithBody generates requests for EditDirectory with any type of body
+func NewEditDirectoryRequestWithBody(server string, directoryUuid DirectoryUuidParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "directory_uuid", directoryUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/directories/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetAllEventsRequest generates requests for GetAllEvents
 func NewGetAllEventsRequest(server string, params *GetAllEventsParams) (*http.Request, error) {
 	var err error
@@ -9000,6 +9937,127 @@ func NewGetIssuedInvoicesRequest(server string, params *GetIssuedInvoicesParams)
 	return req, nil
 }
 
+// NewCreateLinkRequest calls the generic CreateLink builder with application/json body
+func NewCreateLinkRequest(server string, body CreateLinkJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateLinkRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateLinkRequestWithBody generates requests for CreateLink with any type of body
+func NewCreateLinkRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/links")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteLinkRequest generates requests for DeleteLink
+func NewDeleteLinkRequest(server string, linkUuid LinkUuidParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "link_uuid", linkUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/links/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewEditLinkRequest calls the generic EditLink builder with application/json body
+func NewEditLinkRequest(server string, linkUuid LinkUuidParam, body EditLinkJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewEditLinkRequestWithBody(server, linkUuid, "application/json", bodyReader)
+}
+
+// NewEditLinkRequestWithBody generates requests for EditLink with any type of body
+func NewEditLinkRequestWithBody(server string, linkUuid LinkUuidParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "link_uuid", linkUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/links/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewDeleteNoteRequest generates requests for DeleteNote
 func NewDeleteNoteRequest(server string, noteId NoteIdParam) (*http.Request, error) {
 	var err error
@@ -9213,6 +10271,116 @@ func NewDeletePinnedItemRequest(server string, pinnedItemId int) (*http.Request,
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewCreateProjectFileRequestWithBody generates requests for CreateProjectFile with any type of body
+func NewCreateProjectFileRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project-files")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteProjectFileRequest generates requests for DeleteProjectFile
+func NewDeleteProjectFileRequest(server string, fileUuid ProjectFileUuidParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "file_uuid", fileUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project-files/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewEditProjectFileRequest calls the generic EditProjectFile builder with application/json body
+func NewEditProjectFileRequest(server string, fileUuid ProjectFileUuidParam, body EditProjectFileJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewEditProjectFileRequestWithBody(server, fileUuid, "application/json", bodyReader)
+}
+
+// NewEditProjectFileRequestWithBody generates requests for EditProjectFile with any type of body
+func NewEditProjectFileRequestWithBody(server string, fileUuid ProjectFileUuidParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "file_uuid", fileUuid, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project-files/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -13474,6 +14642,22 @@ type ClientWithResponsesInterface interface {
 	// RestoreCustomFieldWithResponse request
 	RestoreCustomFieldWithResponse(ctx context.Context, uuid openapi_types.UUID, reqEditors ...RequestEditorFn) (*RestoreCustomFieldResponse, error)
 
+	// CreateDirectoryWithBodyWithResponse request with any body
+	CreateDirectoryWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDirectoryResponse, error)
+
+	CreateDirectoryWithResponse(ctx context.Context, body CreateDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDirectoryResponse, error)
+
+	// DeleteDirectoryWithResponse request
+	DeleteDirectoryWithResponse(ctx context.Context, directoryUuid DirectoryUuidParam, params *DeleteDirectoryParams, reqEditors ...RequestEditorFn) (*DeleteDirectoryResponse, error)
+
+	// GetDirectoryWithResponse request
+	GetDirectoryWithResponse(ctx context.Context, directoryUuid DirectoryUuidParam, reqEditors ...RequestEditorFn) (*GetDirectoryResponse, error)
+
+	// EditDirectoryWithBodyWithResponse request with any body
+	EditDirectoryWithBodyWithResponse(ctx context.Context, directoryUuid DirectoryUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditDirectoryResponse, error)
+
+	EditDirectoryWithResponse(ctx context.Context, directoryUuid DirectoryUuidParam, body EditDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*EditDirectoryResponse, error)
+
 	// GetAllEventsWithResponse request
 	GetAllEventsWithResponse(ctx context.Context, params *GetAllEventsParams, reqEditors ...RequestEditorFn) (*GetAllEventsResponse, error)
 
@@ -13506,6 +14690,19 @@ type ClientWithResponsesInterface interface {
 	// GetIssuedInvoicesWithResponse request
 	GetIssuedInvoicesWithResponse(ctx context.Context, params *GetIssuedInvoicesParams, reqEditors ...RequestEditorFn) (*GetIssuedInvoicesResponse, error)
 
+	// CreateLinkWithBodyWithResponse request with any body
+	CreateLinkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateLinkResponse, error)
+
+	CreateLinkWithResponse(ctx context.Context, body CreateLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateLinkResponse, error)
+
+	// DeleteLinkWithResponse request
+	DeleteLinkWithResponse(ctx context.Context, linkUuid LinkUuidParam, reqEditors ...RequestEditorFn) (*DeleteLinkResponse, error)
+
+	// EditLinkWithBodyWithResponse request with any body
+	EditLinkWithBodyWithResponse(ctx context.Context, linkUuid LinkUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditLinkResponse, error)
+
+	EditLinkWithResponse(ctx context.Context, linkUuid LinkUuidParam, body EditLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*EditLinkResponse, error)
+
 	// DeleteNoteWithResponse request
 	DeleteNoteWithResponse(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*DeleteNoteResponse, error)
 
@@ -13525,6 +14722,17 @@ type ClientWithResponsesInterface interface {
 
 	// DeletePinnedItemWithResponse request
 	DeletePinnedItemWithResponse(ctx context.Context, pinnedItemId int, reqEditors ...RequestEditorFn) (*DeletePinnedItemResponse, error)
+
+	// CreateProjectFileWithBodyWithResponse request with any body
+	CreateProjectFileWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectFileResponse, error)
+
+	// DeleteProjectFileWithResponse request
+	DeleteProjectFileWithResponse(ctx context.Context, fileUuid ProjectFileUuidParam, reqEditors ...RequestEditorFn) (*DeleteProjectFileResponse, error)
+
+	// EditProjectFileWithBodyWithResponse request with any body
+	EditProjectFileWithBodyWithResponse(ctx context.Context, fileUuid ProjectFileUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditProjectFileResponse, error)
+
+	EditProjectFileWithResponse(ctx context.Context, fileUuid ProjectFileUuidParam, body EditProjectFileJSONRequestBody, reqEditors ...RequestEditorFn) (*EditProjectFileResponse, error)
 
 	// AddProjectLabelToProjectWithBodyWithResponse request with any body
 	AddProjectLabelToProjectWithBodyWithResponse(ctx context.Context, projectId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddProjectLabelToProjectResponse, error)
@@ -13925,6 +15133,8 @@ type GetAllDocsAndFilesResponse struct {
 		PerPage *int `json:"per_page,omitempty"`
 		Total   *int `json:"total,omitempty"`
 	}
+	JSON400 *ErrorResponse
+	JSON404 *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -14174,6 +15384,7 @@ type EditCommentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Comment
+	JSON400      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -14784,6 +15995,145 @@ func (r RestoreCustomFieldResponse) ContentType() string {
 	return ""
 }
 
+type CreateDirectoryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DocsAndFilesItem
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+	JSON409      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateDirectoryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateDirectoryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateDirectoryResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteDirectoryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+	JSON409      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteDirectoryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteDirectoryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteDirectoryResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetDirectoryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DocsAndFilesItem
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetDirectoryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetDirectoryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetDirectoryResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type EditDirectoryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DocsAndFilesItem
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+	JSON409      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r EditDirectoryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EditDirectoryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r EditDirectoryResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type GetAllEventsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -14858,6 +16208,7 @@ type DeleteDocOrFileByUuidResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SuccessResponse
+	JSON403      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -14887,6 +16238,8 @@ func (r DeleteDocOrFileByUuidResponse) ContentType() string {
 type DownloadFileResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -15108,6 +16461,108 @@ func (r GetIssuedInvoicesResponse) ContentType() string {
 	return ""
 }
 
+type CreateLinkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DocsAndFilesItem
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateLinkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateLinkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateLinkResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteLinkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteLinkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteLinkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteLinkResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type EditLinkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DocsAndFilesItem
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r EditLinkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EditLinkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r EditLinkResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type DeleteNoteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -15172,6 +16627,7 @@ type EditNoteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Note
+	JSON400      *FileCannotBeAttached
 }
 
 // Status returns HTTPResponse.Status
@@ -15282,6 +16738,107 @@ func (r DeletePinnedItemResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r DeletePinnedItemResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateProjectFileResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DocsAndFilesItem
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateProjectFileResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateProjectFileResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateProjectFileResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteProjectFileResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteProjectFileResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteProjectFileResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteProjectFileResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type EditProjectFileResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DocsAndFilesItem
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r EditProjectFileResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EditProjectFileResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r EditProjectFileResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -15719,6 +17276,7 @@ type CreateNoteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Note
+	JSON400      *FileCannotBeAttached
 }
 
 // Status returns HTTPResponse.Status
@@ -15929,6 +17487,7 @@ type CreateTaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *TaskCreated
+	JSON400      *FileCannotBeAttached
 }
 
 // Status returns HTTPResponse.Status
@@ -16409,6 +17968,7 @@ type CreateTaskFromTemplateResponse struct {
 			Name *string `json:"name,omitempty"`
 		} `json:"tasklist,omitempty"`
 	}
+	JSON400 *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -16498,7 +18058,56 @@ func (r GetTaskResponse) ContentType() string {
 type EditTaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *TaskDetail
+	JSON200      *struct {
+		Author   *UserBasic          `json:"author,omitempty"`
+		Comments *[]CommentWithFiles `json:"comments,omitempty"`
+
+		// CopiedFromTask Origin task this task was copied from (template copy or multi-project copy); `null` otherwise.
+		CopiedFromTask *CopiedFromTask         `json:"copied_from_task,omitempty"`
+		Cost           *Currency               `json:"cost,omitempty"`
+		CountSubtasks  *int                    `json:"count_subtasks,omitempty"`
+		CustomFields   *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
+
+		// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+		DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+		// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+		DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+		// DateFinished Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+		DateFinished *freelotime.Time `json:"date_finished,omitempty"`
+
+		// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+		DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+		// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+		DueDateEnd *freelotime.Time `json:"due_date_end,omitempty"`
+		Id         *int             `json:"id,omitempty"`
+		Labels     *[]TaskLabel     `json:"labels,omitempty"`
+		Minutes    *int             `json:"minutes,omitempty"`
+
+		// MultiProjectTask Mapping of the task across the projects it is assigned to. `null` when the task is a
+		// child instance of a multi-project task — the block is only rendered on the parent.
+		MultiProjectTask *MultiProjectTask `json:"multi_project_task,omitempty"`
+		Name             *string           `json:"name,omitempty"`
+		ParentTaskId     *int              `json:"parent_task_id,omitempty"`
+		PriorityEnum     *string           `json:"priority_enum,omitempty"`
+		Project          *ProjectBasic     `json:"project,omitempty"`
+
+		// Relations Empty when the project owner's plan has no team features — the detail stays readable and
+		// the relations are simply omitted. `GET /task/{task_id}/relations` returns 403 in that case.
+		Relations *[]TaskRelation `json:"relations,omitempty"`
+
+		// ShiftedTasks Present only when `collision_mode` is `keep_gap` or `use_gap`. Tasks rescheduled by the change, with their new due dates. Empty when nothing moved.
+		ShiftedTasks       *[]ShiftedTask      `json:"shifted_tasks,omitempty"`
+		State              *State              `json:"state,omitempty"`
+		Tasklist           *TasklistBasic      `json:"tasklist,omitempty"`
+		TotalTimeEstimate  *TimeEstimate       `json:"total_time_estimate,omitempty"`
+		TrackingUsers      *[]UserBasic        `json:"tracking_users,omitempty"`
+		UsersTimeEstimates *[]UserTimeEstimate `json:"users_time_estimates,omitempty"`
+		Worker             *UserBasic          `json:"worker,omitempty"`
+	}
+	JSON400 *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -16559,6 +18168,7 @@ type CreateCommentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Comment
+	JSON400      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -16619,6 +18229,7 @@ type EditTaskDescriptionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Comment
+	JSON400      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -18457,6 +20068,58 @@ func (c *ClientWithResponses) RestoreCustomFieldWithResponse(ctx context.Context
 	return ParseRestoreCustomFieldResponse(rsp)
 }
 
+// CreateDirectoryWithBodyWithResponse request with arbitrary body returning *CreateDirectoryResponse
+func (c *ClientWithResponses) CreateDirectoryWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDirectoryResponse, error) {
+	rsp, err := c.CreateDirectoryWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDirectoryResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateDirectoryWithResponse(ctx context.Context, body CreateDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDirectoryResponse, error) {
+	rsp, err := c.CreateDirectory(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDirectoryResponse(rsp)
+}
+
+// DeleteDirectoryWithResponse request returning *DeleteDirectoryResponse
+func (c *ClientWithResponses) DeleteDirectoryWithResponse(ctx context.Context, directoryUuid DirectoryUuidParam, params *DeleteDirectoryParams, reqEditors ...RequestEditorFn) (*DeleteDirectoryResponse, error) {
+	rsp, err := c.DeleteDirectory(ctx, directoryUuid, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteDirectoryResponse(rsp)
+}
+
+// GetDirectoryWithResponse request returning *GetDirectoryResponse
+func (c *ClientWithResponses) GetDirectoryWithResponse(ctx context.Context, directoryUuid DirectoryUuidParam, reqEditors ...RequestEditorFn) (*GetDirectoryResponse, error) {
+	rsp, err := c.GetDirectory(ctx, directoryUuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetDirectoryResponse(rsp)
+}
+
+// EditDirectoryWithBodyWithResponse request with arbitrary body returning *EditDirectoryResponse
+func (c *ClientWithResponses) EditDirectoryWithBodyWithResponse(ctx context.Context, directoryUuid DirectoryUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditDirectoryResponse, error) {
+	rsp, err := c.EditDirectoryWithBody(ctx, directoryUuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditDirectoryResponse(rsp)
+}
+
+func (c *ClientWithResponses) EditDirectoryWithResponse(ctx context.Context, directoryUuid DirectoryUuidParam, body EditDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*EditDirectoryResponse, error) {
+	rsp, err := c.EditDirectory(ctx, directoryUuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditDirectoryResponse(rsp)
+}
+
 // GetAllEventsWithResponse request returning *GetAllEventsResponse
 func (c *ClientWithResponses) GetAllEventsWithResponse(ctx context.Context, params *GetAllEventsParams, reqEditors ...RequestEditorFn) (*GetAllEventsResponse, error) {
 	rsp, err := c.GetAllEvents(ctx, params, reqEditors...)
@@ -18555,6 +20218,49 @@ func (c *ClientWithResponses) GetIssuedInvoicesWithResponse(ctx context.Context,
 	return ParseGetIssuedInvoicesResponse(rsp)
 }
 
+// CreateLinkWithBodyWithResponse request with arbitrary body returning *CreateLinkResponse
+func (c *ClientWithResponses) CreateLinkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateLinkResponse, error) {
+	rsp, err := c.CreateLinkWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateLinkResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateLinkWithResponse(ctx context.Context, body CreateLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateLinkResponse, error) {
+	rsp, err := c.CreateLink(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateLinkResponse(rsp)
+}
+
+// DeleteLinkWithResponse request returning *DeleteLinkResponse
+func (c *ClientWithResponses) DeleteLinkWithResponse(ctx context.Context, linkUuid LinkUuidParam, reqEditors ...RequestEditorFn) (*DeleteLinkResponse, error) {
+	rsp, err := c.DeleteLink(ctx, linkUuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteLinkResponse(rsp)
+}
+
+// EditLinkWithBodyWithResponse request with arbitrary body returning *EditLinkResponse
+func (c *ClientWithResponses) EditLinkWithBodyWithResponse(ctx context.Context, linkUuid LinkUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditLinkResponse, error) {
+	rsp, err := c.EditLinkWithBody(ctx, linkUuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditLinkResponse(rsp)
+}
+
+func (c *ClientWithResponses) EditLinkWithResponse(ctx context.Context, linkUuid LinkUuidParam, body EditLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*EditLinkResponse, error) {
+	rsp, err := c.EditLink(ctx, linkUuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditLinkResponse(rsp)
+}
+
 // DeleteNoteWithResponse request returning *DeleteNoteResponse
 func (c *ClientWithResponses) DeleteNoteWithResponse(ctx context.Context, noteId NoteIdParam, reqEditors ...RequestEditorFn) (*DeleteNoteResponse, error) {
 	rsp, err := c.DeleteNote(ctx, noteId, reqEditors...)
@@ -18615,6 +20321,41 @@ func (c *ClientWithResponses) DeletePinnedItemWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseDeletePinnedItemResponse(rsp)
+}
+
+// CreateProjectFileWithBodyWithResponse request with arbitrary body returning *CreateProjectFileResponse
+func (c *ClientWithResponses) CreateProjectFileWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectFileResponse, error) {
+	rsp, err := c.CreateProjectFileWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateProjectFileResponse(rsp)
+}
+
+// DeleteProjectFileWithResponse request returning *DeleteProjectFileResponse
+func (c *ClientWithResponses) DeleteProjectFileWithResponse(ctx context.Context, fileUuid ProjectFileUuidParam, reqEditors ...RequestEditorFn) (*DeleteProjectFileResponse, error) {
+	rsp, err := c.DeleteProjectFile(ctx, fileUuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteProjectFileResponse(rsp)
+}
+
+// EditProjectFileWithBodyWithResponse request with arbitrary body returning *EditProjectFileResponse
+func (c *ClientWithResponses) EditProjectFileWithBodyWithResponse(ctx context.Context, fileUuid ProjectFileUuidParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EditProjectFileResponse, error) {
+	rsp, err := c.EditProjectFileWithBody(ctx, fileUuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditProjectFileResponse(rsp)
+}
+
+func (c *ClientWithResponses) EditProjectFileWithResponse(ctx context.Context, fileUuid ProjectFileUuidParam, body EditProjectFileJSONRequestBody, reqEditors ...RequestEditorFn) (*EditProjectFileResponse, error) {
+	rsp, err := c.EditProjectFile(ctx, fileUuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEditProjectFileResponse(rsp)
 }
 
 // AddProjectLabelToProjectWithBodyWithResponse request with arbitrary body returning *AddProjectLabelToProjectResponse
@@ -19808,6 +21549,20 @@ func ParseGetAllDocsAndFilesResponse(rsp *http.Response) (*GetAllDocsAndFilesRes
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	}
 
 	return response, nil
@@ -20019,6 +21774,13 @@ func ParseEditCommentResponse(rsp *http.Response) (*EditCommentResponse, error) 
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	}
 
@@ -20537,6 +22299,243 @@ func ParseRestoreCustomFieldResponse(rsp *http.Response) (*RestoreCustomFieldRes
 	return response, nil
 }
 
+// ParseCreateDirectoryResponse parses an HTTP response from a CreateDirectoryWithResponse call
+func ParseCreateDirectoryResponse(rsp *http.Response) (*CreateDirectoryResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateDirectoryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DocsAndFilesItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteDirectoryResponse parses an HTTP response from a DeleteDirectoryWithResponse call
+func ParseDeleteDirectoryResponse(rsp *http.Response) (*DeleteDirectoryResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteDirectoryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetDirectoryResponse parses an HTTP response from a GetDirectoryWithResponse call
+func ParseGetDirectoryResponse(rsp *http.Response) (*GetDirectoryResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetDirectoryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DocsAndFilesItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseEditDirectoryResponse parses an HTTP response from a EditDirectoryWithResponse call
+func ParseEditDirectoryResponse(rsp *http.Response) (*EditDirectoryResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EditDirectoryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DocsAndFilesItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetAllEventsResponse parses an HTTP response from a GetAllEventsWithResponse call
 func ParseGetAllEventsResponse(rsp *http.Response) (*GetAllEventsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -20620,6 +22619,13 @@ func ParseDeleteDocOrFileByUuidResponse(rsp *http.Response) (*DeleteDocOrFileByU
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
 	}
 
 	return response, nil
@@ -20636,6 +22642,23 @@ func ParseDownloadFileResponse(rsp *http.Response) (*DownloadFileResponse, error
 	response := &DownloadFileResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	}
 
 	return response, nil
@@ -20803,6 +22826,168 @@ func ParseGetIssuedInvoicesResponse(rsp *http.Response) (*GetIssuedInvoicesRespo
 	return response, nil
 }
 
+// ParseCreateLinkResponse parses an HTTP response from a CreateLinkWithResponse call
+func ParseCreateLinkResponse(rsp *http.Response) (*CreateLinkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateLinkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DocsAndFilesItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteLinkResponse parses an HTTP response from a DeleteLinkWithResponse call
+func ParseDeleteLinkResponse(rsp *http.Response) (*DeleteLinkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteLinkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseEditLinkResponse parses an HTTP response from a EditLinkWithResponse call
+func ParseEditLinkResponse(rsp *http.Response) (*EditLinkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EditLinkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DocsAndFilesItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteNoteResponse parses an HTTP response from a DeleteNoteWithResponse call
 func ParseDeleteNoteResponse(rsp *http.Response) (*DeleteNoteResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -20875,6 +23060,13 @@ func ParseEditNoteResponse(rsp *http.Response) (*EditNoteResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest FileCannotBeAttached
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	}
 
@@ -20953,6 +23145,161 @@ func ParseDeletePinnedItemResponse(rsp *http.Response) (*DeletePinnedItemRespons
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateProjectFileResponse parses an HTTP response from a CreateProjectFileWithResponse call
+func ParseCreateProjectFileResponse(rsp *http.Response) (*CreateProjectFileResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateProjectFileResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DocsAndFilesItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteProjectFileResponse parses an HTTP response from a DeleteProjectFileWithResponse call
+func ParseDeleteProjectFileResponse(rsp *http.Response) (*DeleteProjectFileResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteProjectFileResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseEditProjectFileResponse parses an HTTP response from a EditProjectFileWithResponse call
+func ParseEditProjectFileResponse(rsp *http.Response) (*EditProjectFileResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EditProjectFileResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DocsAndFilesItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 
@@ -21351,6 +23698,13 @@ func ParseCreateNoteResponse(rsp *http.Response) (*CreateNoteResponse, error) {
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest FileCannotBeAttached
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
 	}
 
 	return response, nil
@@ -21532,6 +23886,13 @@ func ParseCreateTaskResponse(rsp *http.Response) (*CreateTaskResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest FileCannotBeAttached
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	}
 
@@ -21944,6 +24305,13 @@ func ParseCreateTaskFromTemplateResponse(rsp *http.Response) (*CreateTaskFromTem
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
 	}
 
 	return response, nil
@@ -22016,11 +24384,66 @@ func ParseEditTaskResponse(rsp *http.Response) (*EditTaskResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest TaskDetail
+		var dest struct {
+			Author   *UserBasic          `json:"author,omitempty"`
+			Comments *[]CommentWithFiles `json:"comments,omitempty"`
+
+			// CopiedFromTask Origin task this task was copied from (template copy or multi-project copy); `null` otherwise.
+			CopiedFromTask *CopiedFromTask         `json:"copied_from_task,omitempty"`
+			Cost           *Currency               `json:"cost,omitempty"`
+			CountSubtasks  *int                    `json:"count_subtasks,omitempty"`
+			CustomFields   *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
+
+			// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+			DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+			// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+			DateEditedAt *freelotime.Time `json:"date_edited_at,omitempty"`
+
+			// DateFinished Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+			DateFinished *freelotime.Time `json:"date_finished,omitempty"`
+
+			// DueDate Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+			DueDate *freelotime.Time `json:"due_date,omitempty"`
+
+			// DueDateEnd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+			DueDateEnd *freelotime.Time `json:"due_date_end,omitempty"`
+			Id         *int             `json:"id,omitempty"`
+			Labels     *[]TaskLabel     `json:"labels,omitempty"`
+			Minutes    *int             `json:"minutes,omitempty"`
+
+			// MultiProjectTask Mapping of the task across the projects it is assigned to. `null` when the task is a
+			// child instance of a multi-project task — the block is only rendered on the parent.
+			MultiProjectTask *MultiProjectTask `json:"multi_project_task,omitempty"`
+			Name             *string           `json:"name,omitempty"`
+			ParentTaskId     *int              `json:"parent_task_id,omitempty"`
+			PriorityEnum     *string           `json:"priority_enum,omitempty"`
+			Project          *ProjectBasic     `json:"project,omitempty"`
+
+			// Relations Empty when the project owner's plan has no team features — the detail stays readable and
+			// the relations are simply omitted. `GET /task/{task_id}/relations` returns 403 in that case.
+			Relations *[]TaskRelation `json:"relations,omitempty"`
+
+			// ShiftedTasks Present only when `collision_mode` is `keep_gap` or `use_gap`. Tasks rescheduled by the change, with their new due dates. Empty when nothing moved.
+			ShiftedTasks       *[]ShiftedTask      `json:"shifted_tasks,omitempty"`
+			State              *State              `json:"state,omitempty"`
+			Tasklist           *TasklistBasic      `json:"tasklist,omitempty"`
+			TotalTimeEstimate  *TimeEstimate       `json:"total_time_estimate,omitempty"`
+			TrackingUsers      *[]UserBasic        `json:"tracking_users,omitempty"`
+			UsersTimeEstimates *[]UserTimeEstimate `json:"users_time_estimates,omitempty"`
+			Worker             *UserBasic          `json:"worker,omitempty"`
+		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	}
 
@@ -22074,6 +24497,13 @@ func ParseCreateCommentResponse(rsp *http.Response) (*CreateCommentResponse, err
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
 	}
 
 	return response, nil
@@ -22125,6 +24555,13 @@ func ParseEditTaskDescriptionResponse(rsp *http.Response) (*EditTaskDescriptionR
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	}
 
