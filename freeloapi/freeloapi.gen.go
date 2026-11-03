@@ -22,6 +22,36 @@ const (
 	BasicAuthScopes basicAuthContextKey = "basicAuth.Scopes"
 )
 
+// Defines values for ClientAlreadyExistsErrorError.
+const (
+	ClientAlreadyExists ClientAlreadyExistsErrorError = "client_already_exists"
+)
+
+// Valid indicates whether the value is a known member of the ClientAlreadyExistsErrorError enum.
+func (e ClientAlreadyExistsErrorError) Valid() bool {
+	switch e {
+	case ClientAlreadyExists:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ClientUsedInHiddenProjectsErrorError.
+const (
+	ClientUsedInHiddenProjects ClientUsedInHiddenProjectsErrorError = "client_used_in_hidden_projects"
+)
+
+// Valid indicates whether the value is a known member of the ClientUsedInHiddenProjectsErrorError enum.
+func (e ClientUsedInHiddenProjectsErrorError) Valid() bool {
+	switch e {
+	case ClientUsedInHiddenProjects:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CurrencyCurrency.
 const (
 	CurrencyCurrencyCZK CurrencyCurrency = "CZK"
@@ -1221,16 +1251,16 @@ func (e SearchJSONBodyLang) Valid() bool {
 
 // Defines values for SearchJSONBodySortOrder.
 const (
-	ASC  SearchJSONBodySortOrder = "ASC"
-	DESC SearchJSONBodySortOrder = "DESC"
+	SearchJSONBodySortOrderAsc  SearchJSONBodySortOrder = "asc"
+	SearchJSONBodySortOrderDesc SearchJSONBodySortOrder = "desc"
 )
 
 // Valid indicates whether the value is a known member of the SearchJSONBodySortOrder enum.
 func (e SearchJSONBodySortOrder) Valid() bool {
 	switch e {
-	case ASC:
+	case SearchJSONBodySortOrderAsc:
 		return true
-	case DESC:
+	case SearchJSONBodySortOrderDesc:
 		return true
 	default:
 		return false
@@ -1497,16 +1527,16 @@ func (e GetUserProjectsParamsOrderBy) Valid() bool {
 
 // Defines values for GetUserProjectsParamsOrder.
 const (
-	Asc  GetUserProjectsParamsOrder = "asc"
-	Desc GetUserProjectsParamsOrder = "desc"
+	GetUserProjectsParamsOrderAsc  GetUserProjectsParamsOrder = "asc"
+	GetUserProjectsParamsOrderDesc GetUserProjectsParamsOrder = "desc"
 )
 
 // Valid indicates whether the value is a known member of the GetUserProjectsParamsOrder enum.
 func (e GetUserProjectsParamsOrder) Valid() bool {
 	switch e {
-	case Asc:
+	case GetUserProjectsParamsOrderAsc:
 		return true
-	case Desc:
+	case GetUserProjectsParamsOrderDesc:
 		return true
 	default:
 		return false
@@ -1531,7 +1561,9 @@ func (e GetWorkReportsParamsWithOwnTaskless) Valid() bool {
 	}
 }
 
-// BusinessClient defines model for BusinessClient.
+// BusinessClient Missing values are `null` in the client endpoints, `GET /project/{project_id}`, `GET /all-projects` and `GET /template-projects`; `GET /projects` and `GET /archived-projects` return an empty string instead.
+//
+// In `GET /project/{project_id}`, `GET /all-projects` and `GET /template-projects` the full client is returned only to users who can access it (its owner, or a project manager in a not-deleted project of its owner). Other project members get only `id`, `name` and `company`.
 type BusinessClient struct {
 	Company      *string `json:"company,omitempty"`
 	CompanyId    *string `json:"company_id,omitempty"`
@@ -1543,6 +1575,63 @@ type BusinessClient struct {
 	Town         *string `json:"town,omitempty"`
 	Zip          *string `json:"zip,omitempty"`
 }
+
+// ClientAlreadyExistsError defines model for ClientAlreadyExistsError.
+type ClientAlreadyExistsError struct {
+	Error  *ClientAlreadyExistsErrorError `json:"error,omitempty"`
+	Errors *[]string                      `json:"errors,omitempty"`
+
+	// ExistingClientId The colliding client; `null` when two requests raced and only the database caught the duplicate
+	ExistingClientId *int `json:"existing_client_id,omitempty"`
+}
+
+// ClientAlreadyExistsErrorError defines model for ClientAlreadyExistsError.Error.
+type ClientAlreadyExistsErrorError string
+
+// ClientInput Values are trimmed (Unicode spaces included); an empty string means "not filled" and is stored as `null`. Spaces are removed from `company_id`. `email` is lowercased and transliterated to ASCII before validation. Unknown fields return 400.
+type ClientInput struct {
+	Company *string `json:"company,omitempty"`
+
+	// CompanyId Company registration number (IČO)
+	CompanyId *string `json:"company_id,omitempty"`
+
+	// CompanyTaxId VAT number (DIČ)
+	CompanyTaxId *string              `json:"company_tax_id,omitempty"`
+	Email        *openapi_types.Email `json:"email,omitempty"`
+	Name         *string              `json:"name,omitempty"`
+	Street       *string              `json:"street,omitempty"`
+	Town         *string              `json:"town,omitempty"`
+	Zip          *string              `json:"zip,omitempty"`
+}
+
+// ClientProjects defines model for ClientProjects.
+type ClientProjects struct {
+	// IsComplete `true` when `projects` lists every project of the client
+	IsComplete *bool `json:"is_complete,omitempty"`
+
+	// Projects Projects of the client the user can see
+	Projects *[]struct {
+		Id    *int    `json:"id,omitempty"`
+		Name  *string `json:"name,omitempty"`
+		State *State  `json:"state,omitempty"`
+	} `json:"projects,omitempty"`
+
+	// TotalCount All active, archived and template projects the client is assigned to, including those the user cannot see
+	TotalCount   *int `json:"total_count,omitempty"`
+	VisibleCount *int `json:"visible_count,omitempty"`
+}
+
+// ClientUsedInHiddenProjectsError defines model for ClientUsedInHiddenProjectsError.
+type ClientUsedInHiddenProjectsError struct {
+	Error  *ClientUsedInHiddenProjectsErrorError `json:"error,omitempty"`
+	Errors *[]string                             `json:"errors,omitempty"`
+
+	// HiddenProjectsCount Number of projects with this client the user cannot see
+	HiddenProjectsCount *int `json:"hidden_projects_count,omitempty"`
+}
+
+// ClientUsedInHiddenProjectsErrorError defines model for ClientUsedInHiddenProjectsError.Error.
+type ClientUsedInHiddenProjectsErrorError string
 
 // Comment defines model for Comment.
 type Comment struct {
@@ -2134,7 +2223,8 @@ type ProjectBudgetState struct {
 
 // ProjectDetail defines model for ProjectDetail.
 type ProjectDetail struct {
-	Budget *Currency `json:"budget,omitempty"`
+	Budget *Currency       `json:"budget,omitempty"`
+	Client *BusinessClient `json:"client,omitempty"`
 
 	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
@@ -2168,12 +2258,11 @@ type ProjectDetail struct {
 	} `json:"tasklists,omitempty"`
 	Workers *[]struct {
 		Fullname *string `json:"fullname,omitempty"`
-		HourRate *struct {
-			Amount   *int    `json:"amount,omitempty"`
-			Currency *string `json:"currency,omitempty"`
-			IsFixed  *bool   `json:"is_fixed,omitempty"`
-		} `json:"hour_rate,omitempty"`
-		Id *int `json:"id,omitempty"`
+
+		// HourRate Hourly rate of a user in a project, in the project currency. A user without a rate has `amount: 0` and
+		// `is_fixed: false`. `null` when the caller may not see this user's rate.
+		HourRate *ProjectWorkerHourRate `json:"hour_rate,omitempty"`
+		Id       *int                   `json:"id,omitempty"`
 	} `json:"workers,omitempty"`
 }
 
@@ -2195,6 +2284,9 @@ type ProjectFileEditRequestColor string
 // ProjectFull defines model for ProjectFull.
 type ProjectFull struct {
 	Budget *Currency `json:"budget,omitempty"`
+
+	// Client Returned by `GET /all-projects`; not part of `GET /user/{user_id}/all-projects`.
+	Client *BusinessClient `json:"client,omitempty"`
 
 	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
@@ -2235,6 +2327,9 @@ type ProjectMutationResult struct {
 
 // ProjectWithTasklists defines model for ProjectWithTasklists.
 type ProjectWithTasklists struct {
+	// Client Missing values are `null` in the client endpoints, `GET /project/{project_id}`, `GET /all-projects` and `GET /template-projects`; `GET /projects` and `GET /archived-projects` return an empty string instead.
+	//
+	// In `GET /project/{project_id}`, `GET /all-projects` and `GET /template-projects` the full client is returned only to users who can access it (its owner, or a project manager in a not-deleted project of its owner). Other project members get only `id`, `name` and `company`.
 	Client *BusinessClient `json:"client,omitempty"`
 
 	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
@@ -2248,6 +2343,17 @@ type ProjectWithTasklists struct {
 	Id        *int                `json:"id,omitempty"`
 	Name      *string             `json:"name,omitempty"`
 	Tasklists *[]TasklistBasic    `json:"tasklists,omitempty"`
+}
+
+// ProjectWorkerHourRate Hourly rate of a user in a project, in the project currency. A user without a rate has `amount: 0` and
+// `is_fixed: false`. `null` when the caller may not see this user's rate.
+type ProjectWorkerHourRate struct {
+	// Amount Minor currency units (`150000` = 1500.00)
+	Amount   int    `json:"amount"`
+	Currency string `json:"currency"`
+
+	// IsFixed When `true`, the user cannot change the rate themselves.
+	IsFixed bool `json:"is_fixed"`
 }
 
 // SearchResult Single search hit. Fields marked **conditional** below appear only for specific `type` values:
@@ -2895,6 +3001,9 @@ type WorkReportFull struct {
 	Worker   *UserBasic     `json:"worker,omitempty"`
 }
 
+// ClientIdParam defines model for ClientIdParam.
+type ClientIdParam = int
+
 // DirectoryUuidParam defines model for DirectoryUuidParam.
 type DirectoryUuidParam = openapi_types.UUID
 
@@ -3151,12 +3260,31 @@ type GetArchivedProjectsParams struct {
 	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
 }
 
+// DeleteClient403JSONResponseBody defines parameters for DeleteClient.
+type DeleteClient403JSONResponseBody struct {
+	union json.RawMessage
+}
+
+// UpdateClient403JSONResponseBody defines parameters for UpdateClient.
+type UpdateClient403JSONResponseBody struct {
+	union json.RawMessage
+}
+
+// GetClientsParams defines parameters for GetClients.
+type GetClientsParams struct {
+	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
+	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
+
+	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
+	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
+}
+
 // EditCommentJSONBody defines parameters for EditComment.
 type EditCommentJSONBody struct {
 	// Content Comment body (HTML / plain text). Supports inline file anchors (`<a data-freelo-uuid="{file_uuid}">…</a>`) and user mentions — see `POST /task/{id}/comments`.
 	Content string `json:"content"`
 
-	// Files Files to attach as plain attachments (not placed inline in the body). Replaces the full attachment set. Use one mechanism per file — do not also embed the same UUID in `content`.
+	// Files Files to attach as plain attachments (not placed inline in the body). The complete list of plain attachments; omit it to keep them. Inline files follow `content` either way. Use one mechanism per file — do not also embed the same UUID in `content`.
 	Files *[]FileUpload `json:"files,omitempty"`
 
 	// NotifyAuthor When true, the authenticated caller (the action author) is kept in the notification recipients even though they triggered the action. Useful for automations acting under your own token. Only takes effect if you are otherwise a subscriber/worker/tracking user of the target.
@@ -3302,7 +3430,7 @@ type EditNoteJSONBody struct {
 	// Content New body. Omit it to change only the title. Supports inline file anchors.
 	Content *string `json:"content,omitempty"`
 
-	// Files Complete list of the note's attachments; requires `content`. Omit to keep the current attachments.
+	// Files Complete list of the note's plain attachments; requires `content`. Omit to keep them. Inline files follow `content`.
 	Files *[]FileUpload `json:"files,omitempty"`
 	Name  string        `json:"name"`
 
@@ -3387,6 +3515,11 @@ type UpdateProjectJSONBody struct {
 	Name    *string             `json:"name,omitempty"`
 }
 
+// SetProjectClientJSONBody defines parameters for SetProjectClient.
+type SetProjectClientJSONBody struct {
+	ClientId int `json:"client_id"`
+}
+
 // CreateNoteJSONBody defines parameters for CreateNote.
 type CreateNoteJSONBody struct {
 	// Content Note body (HTML / plain text). Supports inline file anchors `<a data-freelo-uuid="{file_uuid}">caption</a>`.
@@ -3448,6 +3581,26 @@ type GetProjectWorkersParams struct {
 
 	// Page Page number (starting from 0). Alias of `p` — `p` takes precedence when both are provided.
 	Page *PageAliasParam `form:"page,omitempty" json:"page,omitempty"`
+}
+
+// SetProjectWorkerHourRateJSONBody defines parameters for SetProjectWorkerHourRate.
+type SetProjectWorkerHourRateJSONBody struct {
+	// HourRate Amount in minor currency units of the project currency (`150000` = 1500.00), or `null` to remove the rate.
+	HourRate *SetProjectWorkerHourRateJSONBody_HourRate `json:"hour_rate"`
+
+	// IsFixed When `true`, the user cannot change the rate themselves.
+	IsFixed *bool `json:"is_fixed,omitempty"`
+}
+
+// SetProjectWorkerHourRateJSONBodyHourRate0 defines parameters for SetProjectWorkerHourRate.
+type SetProjectWorkerHourRateJSONBodyHourRate0 = int
+
+// SetProjectWorkerHourRateJSONBodyHourRate1 defines parameters for SetProjectWorkerHourRate.
+type SetProjectWorkerHourRateJSONBodyHourRate1 = string
+
+// SetProjectWorkerHourRateJSONBody_HourRate defines parameters for SetProjectWorkerHourRate.
+type SetProjectWorkerHourRateJSONBody_HourRate struct {
+	union json.RawMessage
 }
 
 // GetProjectsParams defines parameters for GetProjects.
@@ -3519,7 +3672,7 @@ type SearchJSONBody struct {
 
 	// Sort Optional sort. Omit for relevance-score ordering.
 	Sort *struct {
-		// Order Direction — note the uppercase values (`OrderEnum::ASC` / `OrderEnum::DESC`).
+		// Order Direction, case-insensitive (`ASC` / `DESC` are accepted too).
 		Order   *SearchJSONBodySortOrder   `json:"order,omitempty"`
 		OrderBy *SearchJSONBodySortOrderBy `json:"order_by,omitempty"`
 	} `json:"sort,omitempty"`
@@ -3627,7 +3780,7 @@ type EditTaskJSONBody struct {
 	// CollisionMode How tasks linked by blocking relations react to the due date change. See behavior notes.
 	CollisionMode *EditTaskJSONBodyCollisionMode `json:"collision_mode,omitempty"`
 
-	// Description Task description as an object, identical to the POST /task/{task_id}/description request body. Files are downloaded from download_url, attached to the description, and the description file set is reconciled (files no longer present are archived).
+	// Description Task description as an object, identical to the POST /task/{task_id}/description request body. Files are downloaded from download_url, attached to the description, and the description file set is reconciled (files no longer present are archived). Inline files follow the content: an anchor kept keeps its file, an anchor removed archives it. Plain attachments are kept without `files` and replaced by the list with `files`.
 	Description *struct {
 		Content string        `json:"content"`
 		Files   *[]FileUpload `json:"files,omitempty"`
@@ -3975,6 +4128,12 @@ type EditWorkReportJSONBody struct {
 	TaskId *int `json:"task_id,omitempty"`
 }
 
+// UpdateClientJSONRequestBody defines body for UpdateClient for application/json ContentType.
+type UpdateClientJSONRequestBody = ClientInput
+
+// CreateClientJSONRequestBody defines body for CreateClient for application/json ContentType.
+type CreateClientJSONRequestBody = ClientInput
+
 // EditCommentJSONRequestBody defines body for EditComment for application/json ContentType.
 type EditCommentJSONRequestBody EditCommentJSONBody
 
@@ -4053,6 +4212,9 @@ type UpdateProjectJSONRequestBody UpdateProjectJSONBody
 // UpdateProjectBudgetJSONRequestBody defines body for UpdateProjectBudget for application/json ContentType.
 type UpdateProjectBudgetJSONRequestBody = ProjectBudgetSettingsInput
 
+// SetProjectClientJSONRequestBody defines body for SetProjectClient for application/json ContentType.
+type SetProjectClientJSONRequestBody SetProjectClientJSONBody
+
 // CreateNoteJSONRequestBody defines body for CreateNote for application/json ContentType.
 type CreateNoteJSONRequestBody CreateNoteJSONBody
 
@@ -4070,6 +4232,9 @@ type CreateTaskJSONRequestBody = TaskCreate
 
 // CreateTasklistJSONRequestBody defines body for CreateTasklist for application/json ContentType.
 type CreateTasklistJSONRequestBody CreateTasklistJSONBody
+
+// SetProjectWorkerHourRateJSONRequestBody defines body for SetProjectWorkerHourRate for application/json ContentType.
+type SetProjectWorkerHourRateJSONRequestBody SetProjectWorkerHourRateJSONBody
 
 // CreateProjectJSONRequestBody defines body for CreateProject for application/json ContentType.
 type CreateProjectJSONRequestBody CreateProjectJSONBody
@@ -4373,6 +4538,192 @@ func (t *TaskLabelRemoveInput) UnmarshalJSON(b []byte) error {
 	return err
 }
 
+// AsErrorResponse returns the union data inside the DeleteClient403JSONResponseBody as a ErrorResponse
+func (t DeleteClient403JSONResponseBody) AsErrorResponse() (ErrorResponse, error) {
+	var body ErrorResponse
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromErrorResponse overwrites any union data inside the DeleteClient403JSONResponseBody as the provided ErrorResponse
+func (t *DeleteClient403JSONResponseBody) FromErrorResponse(v ErrorResponse) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeErrorResponse performs a merge with any union data inside the DeleteClient403JSONResponseBody, using the provided ErrorResponse
+func (t *DeleteClient403JSONResponseBody) MergeErrorResponse(v ErrorResponse) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsClientUsedInHiddenProjectsError returns the union data inside the DeleteClient403JSONResponseBody as a ClientUsedInHiddenProjectsError
+func (t DeleteClient403JSONResponseBody) AsClientUsedInHiddenProjectsError() (ClientUsedInHiddenProjectsError, error) {
+	var body ClientUsedInHiddenProjectsError
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromClientUsedInHiddenProjectsError overwrites any union data inside the DeleteClient403JSONResponseBody as the provided ClientUsedInHiddenProjectsError
+func (t *DeleteClient403JSONResponseBody) FromClientUsedInHiddenProjectsError(v ClientUsedInHiddenProjectsError) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeClientUsedInHiddenProjectsError performs a merge with any union data inside the DeleteClient403JSONResponseBody, using the provided ClientUsedInHiddenProjectsError
+func (t *DeleteClient403JSONResponseBody) MergeClientUsedInHiddenProjectsError(v ClientUsedInHiddenProjectsError) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DeleteClient403JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DeleteClient403JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsErrorResponse returns the union data inside the UpdateClient403JSONResponseBody as a ErrorResponse
+func (t UpdateClient403JSONResponseBody) AsErrorResponse() (ErrorResponse, error) {
+	var body ErrorResponse
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromErrorResponse overwrites any union data inside the UpdateClient403JSONResponseBody as the provided ErrorResponse
+func (t *UpdateClient403JSONResponseBody) FromErrorResponse(v ErrorResponse) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeErrorResponse performs a merge with any union data inside the UpdateClient403JSONResponseBody, using the provided ErrorResponse
+func (t *UpdateClient403JSONResponseBody) MergeErrorResponse(v ErrorResponse) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsClientUsedInHiddenProjectsError returns the union data inside the UpdateClient403JSONResponseBody as a ClientUsedInHiddenProjectsError
+func (t UpdateClient403JSONResponseBody) AsClientUsedInHiddenProjectsError() (ClientUsedInHiddenProjectsError, error) {
+	var body ClientUsedInHiddenProjectsError
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromClientUsedInHiddenProjectsError overwrites any union data inside the UpdateClient403JSONResponseBody as the provided ClientUsedInHiddenProjectsError
+func (t *UpdateClient403JSONResponseBody) FromClientUsedInHiddenProjectsError(v ClientUsedInHiddenProjectsError) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeClientUsedInHiddenProjectsError performs a merge with any union data inside the UpdateClient403JSONResponseBody, using the provided ClientUsedInHiddenProjectsError
+func (t *UpdateClient403JSONResponseBody) MergeClientUsedInHiddenProjectsError(v ClientUsedInHiddenProjectsError) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t UpdateClient403JSONResponseBody) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *UpdateClient403JSONResponseBody) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsSetProjectWorkerHourRateJSONBodyHourRate0 returns the union data inside the SetProjectWorkerHourRateJSONBody_HourRate as a SetProjectWorkerHourRateJSONBodyHourRate0
+func (t SetProjectWorkerHourRateJSONBody_HourRate) AsSetProjectWorkerHourRateJSONBodyHourRate0() (SetProjectWorkerHourRateJSONBodyHourRate0, error) {
+	var body SetProjectWorkerHourRateJSONBodyHourRate0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSetProjectWorkerHourRateJSONBodyHourRate0 overwrites any union data inside the SetProjectWorkerHourRateJSONBody_HourRate as the provided SetProjectWorkerHourRateJSONBodyHourRate0
+func (t *SetProjectWorkerHourRateJSONBody_HourRate) FromSetProjectWorkerHourRateJSONBodyHourRate0(v SetProjectWorkerHourRateJSONBodyHourRate0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSetProjectWorkerHourRateJSONBodyHourRate0 performs a merge with any union data inside the SetProjectWorkerHourRateJSONBody_HourRate, using the provided SetProjectWorkerHourRateJSONBodyHourRate0
+func (t *SetProjectWorkerHourRateJSONBody_HourRate) MergeSetProjectWorkerHourRateJSONBodyHourRate0(v SetProjectWorkerHourRateJSONBodyHourRate0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsSetProjectWorkerHourRateJSONBodyHourRate1 returns the union data inside the SetProjectWorkerHourRateJSONBody_HourRate as a SetProjectWorkerHourRateJSONBodyHourRate1
+func (t SetProjectWorkerHourRateJSONBody_HourRate) AsSetProjectWorkerHourRateJSONBodyHourRate1() (SetProjectWorkerHourRateJSONBodyHourRate1, error) {
+	var body SetProjectWorkerHourRateJSONBodyHourRate1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSetProjectWorkerHourRateJSONBodyHourRate1 overwrites any union data inside the SetProjectWorkerHourRateJSONBody_HourRate as the provided SetProjectWorkerHourRateJSONBodyHourRate1
+func (t *SetProjectWorkerHourRateJSONBody_HourRate) FromSetProjectWorkerHourRateJSONBodyHourRate1(v SetProjectWorkerHourRateJSONBodyHourRate1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSetProjectWorkerHourRateJSONBodyHourRate1 performs a merge with any union data inside the SetProjectWorkerHourRateJSONBody_HourRate, using the provided SetProjectWorkerHourRateJSONBodyHourRate1
+func (t *SetProjectWorkerHourRateJSONBody_HourRate) MergeSetProjectWorkerHourRateJSONBodyHourRate1(v SetProjectWorkerHourRateJSONBodyHourRate1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t SetProjectWorkerHourRateJSONBody_HourRate) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *SetProjectWorkerHourRateJSONBody_HourRate) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
 
@@ -4466,6 +4817,28 @@ type ClientInterface interface {
 
 	// GetArchivedProjects request
 	GetArchivedProjects(ctx context.Context, params *GetArchivedProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteClient request
+	DeleteClient(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetClient request
+	GetClient(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateClientWithBody request with any body
+	UpdateClientWithBody(ctx context.Context, clientId ClientIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateClient(ctx context.Context, clientId ClientIdParam, body UpdateClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetClientProjects request
+	GetClientProjects(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetClients request
+	GetClients(ctx context.Context, params *GetClientsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateClientWithBody request with any body
+	CreateClientWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateClient(ctx context.Context, body CreateClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteComment request
 	DeleteComment(ctx context.Context, commentId int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4695,6 +5068,14 @@ type ClientInterface interface {
 	// ResetProjectBudget request
 	ResetProjectBudget(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RemoveProjectClient request
+	RemoveProjectClient(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetProjectClientWithBody request with any body
+	SetProjectClientWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SetProjectClient(ctx context.Context, projectId ProjectIdParam, body SetProjectClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateNoteWithBody request with any body
 	CreateNoteWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4736,6 +5117,11 @@ type ClientInterface interface {
 
 	// GetProjectWorkers request
 	GetProjectWorkers(ctx context.Context, projectId ProjectIdParam, params *GetProjectWorkersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetProjectWorkerHourRateWithBody request with any body
+	SetProjectWorkerHourRateWithBody(ctx context.Context, projectId ProjectIdParam, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SetProjectWorkerHourRate(ctx context.Context, projectId ProjectIdParam, userId int, body SetProjectWorkerHourRateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetProjects request
 	GetProjects(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5064,6 +5450,102 @@ func (c *Client) GetAllTasks(ctx context.Context, params *GetAllTasksParams, req
 
 func (c *Client) GetArchivedProjects(ctx context.Context, params *GetArchivedProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetArchivedProjectsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteClient(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteClientRequest(c.Server, clientId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetClient(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetClientRequest(c.Server, clientId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateClientWithBody(ctx context.Context, clientId ClientIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateClientRequestWithBody(c.Server, clientId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateClient(ctx context.Context, clientId ClientIdParam, body UpdateClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateClientRequest(c.Server, clientId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetClientProjects(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetClientProjectsRequest(c.Server, clientId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetClients(ctx context.Context, params *GetClientsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetClientsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateClientWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateClientRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateClient(ctx context.Context, body CreateClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateClientRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -6082,6 +6564,42 @@ func (c *Client) ResetProjectBudget(ctx context.Context, projectId ProjectIdPara
 	return c.Client.Do(req)
 }
 
+func (c *Client) RemoveProjectClient(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveProjectClientRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetProjectClientWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetProjectClientRequestWithBody(c.Server, projectId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetProjectClient(ctx context.Context, projectId ProjectIdParam, body SetProjectClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetProjectClientRequest(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) CreateNoteWithBody(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateNoteRequestWithBody(c.Server, projectId, contentType, body)
 	if err != nil {
@@ -6264,6 +6782,30 @@ func (c *Client) CreateTasklist(ctx context.Context, projectId ProjectIdParam, b
 
 func (c *Client) GetProjectWorkers(ctx context.Context, projectId ProjectIdParam, params *GetProjectWorkersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetProjectWorkersRequest(c.Server, projectId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetProjectWorkerHourRateWithBody(ctx context.Context, projectId ProjectIdParam, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetProjectWorkerHourRateRequestWithBody(c.Server, projectId, userId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetProjectWorkerHourRate(ctx context.Context, projectId ProjectIdParam, userId int, body SetProjectWorkerHourRateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetProjectWorkerHourRateRequest(c.Server, projectId, userId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -8376,6 +8918,261 @@ func NewGetArchivedProjectsRequest(server string, params *GetArchivedProjectsPar
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewDeleteClientRequest generates requests for DeleteClient
+func NewDeleteClientRequest(server string, clientId ClientIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "client_id", clientId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/client/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetClientRequest generates requests for GetClient
+func NewGetClientRequest(server string, clientId ClientIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "client_id", clientId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/client/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateClientRequest calls the generic UpdateClient builder with application/json body
+func NewUpdateClientRequest(server string, clientId ClientIdParam, body UpdateClientJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateClientRequestWithBody(server, clientId, "application/json", bodyReader)
+}
+
+// NewUpdateClientRequestWithBody generates requests for UpdateClient with any type of body
+func NewUpdateClientRequestWithBody(server string, clientId ClientIdParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "client_id", clientId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/client/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetClientProjectsRequest generates requests for GetClientProjects
+func NewGetClientProjectsRequest(server string, clientId ClientIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "client_id", clientId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/client/%s/projects", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetClientsRequest generates requests for GetClients
+func NewGetClientsRequest(server string, params *GetClientsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/clients")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.P != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "p", *params.P, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateClientRequest calls the generic CreateClient builder with application/json body
+func NewCreateClientRequest(server string, body CreateClientJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateClientRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateClientRequestWithBody generates requests for CreateClient with any type of body
+func NewCreateClientRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/clients")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -10923,6 +11720,87 @@ func NewResetProjectBudgetRequest(server string, projectId ProjectIdParam) (*htt
 	return req, nil
 }
 
+// NewRemoveProjectClientRequest generates requests for RemoveProjectClient
+func NewRemoveProjectClientRequest(server string, projectId ProjectIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project/%s/client", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetProjectClientRequest calls the generic SetProjectClient builder with application/json body
+func NewSetProjectClientRequest(server string, projectId ProjectIdParam, body SetProjectClientJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetProjectClientRequestWithBody(server, projectId, "application/json", bodyReader)
+}
+
+// NewSetProjectClientRequestWithBody generates requests for SetProjectClient with any type of body
+func NewSetProjectClientRequestWithBody(server string, projectId ProjectIdParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project/%s/client", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewCreateNoteRequest calls the generic CreateNote builder with application/json body
 func NewCreateNoteRequest(server string, projectId ProjectIdParam, body CreateNoteJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -11436,6 +12314,60 @@ func NewGetProjectWorkersRequest(server string, projectId ProjectIdParam, params
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewSetProjectWorkerHourRateRequest calls the generic SetProjectWorkerHourRate builder with application/json body
+func NewSetProjectWorkerHourRateRequest(server string, projectId ProjectIdParam, userId int, body SetProjectWorkerHourRateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetProjectWorkerHourRateRequestWithBody(server, projectId, userId, "application/json", bodyReader)
+}
+
+// NewSetProjectWorkerHourRateRequestWithBody generates requests for SetProjectWorkerHourRate with any type of body
+func NewSetProjectWorkerHourRateRequestWithBody(server string, projectId ProjectIdParam, userId int, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/project/%s/workers/%s/hour-rate", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -14551,6 +15483,28 @@ type ClientWithResponsesInterface interface {
 	// GetArchivedProjectsWithResponse request
 	GetArchivedProjectsWithResponse(ctx context.Context, params *GetArchivedProjectsParams, reqEditors ...RequestEditorFn) (*GetArchivedProjectsResponse, error)
 
+	// DeleteClientWithResponse request
+	DeleteClientWithResponse(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*DeleteClientResponse, error)
+
+	// GetClientWithResponse request
+	GetClientWithResponse(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*GetClientResponse, error)
+
+	// UpdateClientWithBodyWithResponse request with any body
+	UpdateClientWithBodyWithResponse(ctx context.Context, clientId ClientIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateClientResponse, error)
+
+	UpdateClientWithResponse(ctx context.Context, clientId ClientIdParam, body UpdateClientJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateClientResponse, error)
+
+	// GetClientProjectsWithResponse request
+	GetClientProjectsWithResponse(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*GetClientProjectsResponse, error)
+
+	// GetClientsWithResponse request
+	GetClientsWithResponse(ctx context.Context, params *GetClientsParams, reqEditors ...RequestEditorFn) (*GetClientsResponse, error)
+
+	// CreateClientWithBodyWithResponse request with any body
+	CreateClientWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateClientResponse, error)
+
+	CreateClientWithResponse(ctx context.Context, body CreateClientJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateClientResponse, error)
+
 	// DeleteCommentWithResponse request
 	DeleteCommentWithResponse(ctx context.Context, commentId int, reqEditors ...RequestEditorFn) (*DeleteCommentResponse, error)
 
@@ -14779,6 +15733,14 @@ type ClientWithResponsesInterface interface {
 	// ResetProjectBudgetWithResponse request
 	ResetProjectBudgetWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*ResetProjectBudgetResponse, error)
 
+	// RemoveProjectClientWithResponse request
+	RemoveProjectClientWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*RemoveProjectClientResponse, error)
+
+	// SetProjectClientWithBodyWithResponse request with any body
+	SetProjectClientWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetProjectClientResponse, error)
+
+	SetProjectClientWithResponse(ctx context.Context, projectId ProjectIdParam, body SetProjectClientJSONRequestBody, reqEditors ...RequestEditorFn) (*SetProjectClientResponse, error)
+
 	// CreateNoteWithBodyWithResponse request with any body
 	CreateNoteWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error)
 
@@ -14820,6 +15782,11 @@ type ClientWithResponsesInterface interface {
 
 	// GetProjectWorkersWithResponse request
 	GetProjectWorkersWithResponse(ctx context.Context, projectId ProjectIdParam, params *GetProjectWorkersParams, reqEditors ...RequestEditorFn) (*GetProjectWorkersResponse, error)
+
+	// SetProjectWorkerHourRateWithBodyWithResponse request with any body
+	SetProjectWorkerHourRateWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetProjectWorkerHourRateResponse, error)
+
+	SetProjectWorkerHourRateWithResponse(ctx context.Context, projectId ProjectIdParam, userId int, body SetProjectWorkerHourRateJSONRequestBody, reqEditors ...RequestEditorFn) (*SetProjectWorkerHourRateResponse, error)
 
 	// GetProjectsWithResponse request
 	GetProjectsWithResponse(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*GetProjectsResponse, error)
@@ -15336,6 +16303,207 @@ func (r GetArchivedProjectsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetArchivedProjectsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteClientResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+	JSON403      *DeleteClient403JSONResponseBody
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteClientResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteClientResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteClientResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetClientResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BusinessClient
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetClientResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetClientResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetClientResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UpdateClientResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BusinessClient
+	JSON400      *ErrorResponse
+	JSON403      *UpdateClient403JSONResponseBody
+	JSON404      *ErrorResponse
+	JSON409      *ClientAlreadyExistsError
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateClientResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateClientResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UpdateClientResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetClientProjectsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ClientProjects
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetClientProjectsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetClientProjectsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetClientProjectsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetClientsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Count *int `json:"count,omitempty"`
+		Data  *struct {
+			Clients *[]BusinessClient `json:"clients,omitempty"`
+		} `json:"data,omitempty"`
+		Page    *int `json:"page,omitempty"`
+		PerPage *int `json:"per_page,omitempty"`
+		Total   *int `json:"total,omitempty"`
+	}
+	JSON400 *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetClientsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetClientsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetClientsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CreateClientResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *BusinessClient
+	JSON400      *ErrorResponse
+	JSON409      *ClientAlreadyExistsError
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateClientResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateClientResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateClientResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -17263,6 +18431,73 @@ func (r ResetProjectBudgetResponse) ContentType() string {
 	return ""
 }
 
+type RemoveProjectClientResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r RemoveProjectClientResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RemoveProjectClientResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RemoveProjectClientResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type SetProjectClientResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SuccessResponse
+	JSON400      *ErrorResponse
+	JSON402      *ErrorResponse
+	JSON403      *ErrorResponse
+	JSON404      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r SetProjectClientResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetProjectClientResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SetProjectClientResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type CreateNoteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -17541,7 +18776,19 @@ type GetProjectWorkersResponse struct {
 	JSON200      *struct {
 		Count *int `json:"count,omitempty"`
 		Data  *struct {
-			Workers *[]UserWithEmail `json:"workers,omitempty"`
+			Workers *[]struct {
+				Email    openapi_types.Email `json:"email"`
+				Fullname string              `json:"fullname"`
+
+				// HourRate Hourly rate of a user in a project, in the project currency. A user without a rate has `amount: 0` and
+				// `is_fixed: false`. `null` when the caller may not see this user's rate.
+				HourRate *ProjectWorkerHourRate `json:"hour_rate"`
+				Id       int                    `json:"id"`
+
+				// MentionKey Normalized form of `fullname` (whitespace stripped, diacritics removed) used as the visible text after `@` inside a mention span. Build a mention with:
+				// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+				MentionKey string `json:"mention_key"`
+			} `json:"workers,omitempty"`
 		} `json:"data,omitempty"`
 		Page    *int `json:"page,omitempty"`
 		PerPage *int `json:"per_page,omitempty"`
@@ -17567,6 +18814,43 @@ func (r GetProjectWorkersResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetProjectWorkersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type SetProjectWorkerHourRateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// HourRate Hourly rate of a user in a project, in the project currency. A user without a rate has `amount: 0` and
+		// `is_fixed: false`. `null` when the caller may not see this user's rate.
+		HourRate *ProjectWorkerHourRate `json:"hour_rate,omitempty"`
+
+		// Id User ID
+		Id *int `json:"id,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r SetProjectWorkerHourRateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetProjectWorkerHourRateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SetProjectWorkerHourRateResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -18253,6 +19537,7 @@ type FinishTaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SuccessResponse
+	JSON403      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -19793,6 +21078,76 @@ func (c *ClientWithResponses) GetArchivedProjectsWithResponse(ctx context.Contex
 	return ParseGetArchivedProjectsResponse(rsp)
 }
 
+// DeleteClientWithResponse request returning *DeleteClientResponse
+func (c *ClientWithResponses) DeleteClientWithResponse(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*DeleteClientResponse, error) {
+	rsp, err := c.DeleteClient(ctx, clientId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteClientResponse(rsp)
+}
+
+// GetClientWithResponse request returning *GetClientResponse
+func (c *ClientWithResponses) GetClientWithResponse(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*GetClientResponse, error) {
+	rsp, err := c.GetClient(ctx, clientId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetClientResponse(rsp)
+}
+
+// UpdateClientWithBodyWithResponse request with arbitrary body returning *UpdateClientResponse
+func (c *ClientWithResponses) UpdateClientWithBodyWithResponse(ctx context.Context, clientId ClientIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateClientResponse, error) {
+	rsp, err := c.UpdateClientWithBody(ctx, clientId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateClientResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateClientWithResponse(ctx context.Context, clientId ClientIdParam, body UpdateClientJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateClientResponse, error) {
+	rsp, err := c.UpdateClient(ctx, clientId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateClientResponse(rsp)
+}
+
+// GetClientProjectsWithResponse request returning *GetClientProjectsResponse
+func (c *ClientWithResponses) GetClientProjectsWithResponse(ctx context.Context, clientId ClientIdParam, reqEditors ...RequestEditorFn) (*GetClientProjectsResponse, error) {
+	rsp, err := c.GetClientProjects(ctx, clientId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetClientProjectsResponse(rsp)
+}
+
+// GetClientsWithResponse request returning *GetClientsResponse
+func (c *ClientWithResponses) GetClientsWithResponse(ctx context.Context, params *GetClientsParams, reqEditors ...RequestEditorFn) (*GetClientsResponse, error) {
+	rsp, err := c.GetClients(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetClientsResponse(rsp)
+}
+
+// CreateClientWithBodyWithResponse request with arbitrary body returning *CreateClientResponse
+func (c *ClientWithResponses) CreateClientWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateClientResponse, error) {
+	rsp, err := c.CreateClientWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateClientResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateClientWithResponse(ctx context.Context, body CreateClientJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateClientResponse, error) {
+	rsp, err := c.CreateClient(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateClientResponse(rsp)
+}
+
 // DeleteCommentWithResponse request returning *DeleteCommentResponse
 func (c *ClientWithResponses) DeleteCommentWithResponse(ctx context.Context, commentId int, reqEditors ...RequestEditorFn) (*DeleteCommentResponse, error) {
 	rsp, err := c.DeleteComment(ctx, commentId, reqEditors...)
@@ -20525,6 +21880,32 @@ func (c *ClientWithResponses) ResetProjectBudgetWithResponse(ctx context.Context
 	return ParseResetProjectBudgetResponse(rsp)
 }
 
+// RemoveProjectClientWithResponse request returning *RemoveProjectClientResponse
+func (c *ClientWithResponses) RemoveProjectClientWithResponse(ctx context.Context, projectId ProjectIdParam, reqEditors ...RequestEditorFn) (*RemoveProjectClientResponse, error) {
+	rsp, err := c.RemoveProjectClient(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveProjectClientResponse(rsp)
+}
+
+// SetProjectClientWithBodyWithResponse request with arbitrary body returning *SetProjectClientResponse
+func (c *ClientWithResponses) SetProjectClientWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetProjectClientResponse, error) {
+	rsp, err := c.SetProjectClientWithBody(ctx, projectId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetProjectClientResponse(rsp)
+}
+
+func (c *ClientWithResponses) SetProjectClientWithResponse(ctx context.Context, projectId ProjectIdParam, body SetProjectClientJSONRequestBody, reqEditors ...RequestEditorFn) (*SetProjectClientResponse, error) {
+	rsp, err := c.SetProjectClient(ctx, projectId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetProjectClientResponse(rsp)
+}
+
 // CreateNoteWithBodyWithResponse request with arbitrary body returning *CreateNoteResponse
 func (c *ClientWithResponses) CreateNoteWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error) {
 	rsp, err := c.CreateNoteWithBody(ctx, projectId, contentType, body, reqEditors...)
@@ -20661,6 +22042,23 @@ func (c *ClientWithResponses) GetProjectWorkersWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseGetProjectWorkersResponse(rsp)
+}
+
+// SetProjectWorkerHourRateWithBodyWithResponse request with arbitrary body returning *SetProjectWorkerHourRateResponse
+func (c *ClientWithResponses) SetProjectWorkerHourRateWithBodyWithResponse(ctx context.Context, projectId ProjectIdParam, userId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetProjectWorkerHourRateResponse, error) {
+	rsp, err := c.SetProjectWorkerHourRateWithBody(ctx, projectId, userId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetProjectWorkerHourRateResponse(rsp)
+}
+
+func (c *ClientWithResponses) SetProjectWorkerHourRateWithResponse(ctx context.Context, projectId ProjectIdParam, userId int, body SetProjectWorkerHourRateJSONRequestBody, reqEditors ...RequestEditorFn) (*SetProjectWorkerHourRateResponse, error) {
+	rsp, err := c.SetProjectWorkerHourRate(ctx, projectId, userId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetProjectWorkerHourRateResponse(rsp)
 }
 
 // GetProjectsWithResponse request returning *GetProjectsResponse
@@ -21725,6 +23123,261 @@ func ParseGetArchivedProjectsResponse(rsp *http.Response) (*GetArchivedProjectsR
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteClientResponse parses an HTTP response from a DeleteClientWithResponse call
+func ParseDeleteClientResponse(rsp *http.Response) (*DeleteClientResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteClientResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DeleteClient403JSONResponseBody
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetClientResponse parses an HTTP response from a GetClientWithResponse call
+func ParseGetClientResponse(rsp *http.Response) (*GetClientResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetClientResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BusinessClient
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateClientResponse parses an HTTP response from a UpdateClientWithResponse call
+func ParseUpdateClientResponse(rsp *http.Response) (*UpdateClientResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateClientResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BusinessClient
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest UpdateClient403JSONResponseBody
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ClientAlreadyExistsError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetClientProjectsResponse parses an HTTP response from a GetClientProjectsWithResponse call
+func ParseGetClientProjectsResponse(rsp *http.Response) (*GetClientProjectsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetClientProjectsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ClientProjects
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetClientsResponse parses an HTTP response from a GetClientsWithResponse call
+func ParseGetClientsResponse(rsp *http.Response) (*GetClientsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetClientsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Count *int `json:"count,omitempty"`
+			Data  *struct {
+				Clients *[]BusinessClient `json:"clients,omitempty"`
+			} `json:"data,omitempty"`
+			Page    *int `json:"page,omitempty"`
+			PerPage *int `json:"per_page,omitempty"`
+			Total   *int `json:"total,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateClientResponse parses an HTTP response from a CreateClientWithResponse call
+func ParseCreateClientResponse(rsp *http.Response) (*CreateClientResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateClientResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest BusinessClient
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ClientAlreadyExistsError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
 
 	}
 
@@ -23670,6 +25323,107 @@ func ParseResetProjectBudgetResponse(rsp *http.Response) (*ResetProjectBudgetRes
 	return response, nil
 }
 
+// ParseRemoveProjectClientResponse parses an HTTP response from a RemoveProjectClientWithResponse call
+func ParseRemoveProjectClientResponse(rsp *http.Response) (*RemoveProjectClientResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RemoveProjectClientResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetProjectClientResponse parses an HTTP response from a SetProjectClientWithResponse call
+func ParseSetProjectClientResponse(rsp *http.Response) (*SetProjectClientResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetProjectClientResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseCreateNoteResponse parses an HTTP response from a CreateNoteWithResponse call
 func ParseCreateNoteResponse(rsp *http.Response) (*CreateNoteResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -23936,11 +25690,56 @@ func ParseGetProjectWorkersResponse(rsp *http.Response) (*GetProjectWorkersRespo
 		var dest struct {
 			Count *int `json:"count,omitempty"`
 			Data  *struct {
-				Workers *[]UserWithEmail `json:"workers,omitempty"`
+				Workers *[]struct {
+					Email    openapi_types.Email `json:"email"`
+					Fullname string              `json:"fullname"`
+
+					// HourRate Hourly rate of a user in a project, in the project currency. A user without a rate has `amount: 0` and
+					// `is_fixed: false`. `null` when the caller may not see this user's rate.
+					HourRate *ProjectWorkerHourRate `json:"hour_rate"`
+					Id       int                    `json:"id"`
+
+					// MentionKey Normalized form of `fullname` (whitespace stripped, diacritics removed) used as the visible text after `@` inside a mention span. Build a mention with:
+					// `<span data-freelo-mention="1" data-freelo-user-id="{id}">@{mention_key}</span>`
+					MentionKey string `json:"mention_key"`
+				} `json:"workers,omitempty"`
 			} `json:"data,omitempty"`
 			Page    *int `json:"page,omitempty"`
 			PerPage *int `json:"per_page,omitempty"`
 			Total   *int `json:"total,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetProjectWorkerHourRateResponse parses an HTTP response from a SetProjectWorkerHourRateWithResponse call
+func ParseSetProjectWorkerHourRateResponse(rsp *http.Response) (*SetProjectWorkerHourRateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetProjectWorkerHourRateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// HourRate Hourly rate of a user in a project, in the project currency. A user without a rate has `amount: 0` and
+			// `is_fixed: false`. `null` when the caller may not see this user's rate.
+			HourRate *ProjectWorkerHourRate `json:"hour_rate,omitempty"`
+
+			// Id User ID
+			Id *int `json:"id,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -24583,6 +26382,13 @@ func ParseFinishTaskResponse(rsp *http.Response) (*FinishTaskResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
 
 	}
 
