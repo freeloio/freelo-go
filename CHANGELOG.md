@@ -5,6 +5,14 @@ All notable changes to the Freelo Go SDK are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3](https://github.com/freeloio/freelo-go/compare/v0.3.2...v0.3.3) (2026-11-03)
+
+
+### Bug Fixes
+
+* pace requests at 350ms to match the API's per-user rate limit ([#26](https://github.com/freeloio/freelo-go/issues/26)) ([8eb0c9b](https://github.com/freeloio/freelo-go/commit/8eb0c9bc1f511f2736fd45f8b03cc985a9b7fec1))
+* rename only the Client schema to BusinessClient ([#27](https://github.com/freeloio/freelo-go/issues/27)) ([c0cfea4](https://github.com/freeloio/freelo-go/commit/c0cfea472e353f8d7016b5c016a7677e3a94ca80))
+
 ## [0.3.2](https://github.com/freeloio/freelo-go/compare/v0.3.1...v0.3.2) (2026-10-22)
 
 
