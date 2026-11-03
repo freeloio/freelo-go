@@ -20,7 +20,7 @@ gen:
 	@echo "→ fetch spec from $(SPEC_URL) (conditional GET)"
 	@go run ./scripts/fetchspec -url $(SPEC_URL) -out $(SPEC) -meta $(META) $(FETCH_FLAGS)
 	@echo "→ apply Client → BusinessClient rename (avoids HTTP Client name collision)"
-	@sed -i.bak 's|^    Client:|    BusinessClient:|; s|#/components/schemas/Client|#/components/schemas/BusinessClient|g' $(SPEC)
+	@sed -i.bak 's|^    Client:|    BusinessClient:|; s|#/components/schemas/Client\([^A-Za-z0-9_]\)|#/components/schemas/BusinessClient\1|g; s|#/components/schemas/Client$$|#/components/schemas/BusinessClient|' $(SPEC)
 	@rm -f $(SPEC).bak
 	@echo "→ rename notification filters to the names the API reads (only_unread → is_only_unread, notification_types[] → notifications_types[])"
 	@sed -i.bak 's|^        - name: only_unread$$|        - name: is_only_unread|; s|^        - name: notification_types\[\]$$|        - name: notifications_types[]|' $(SPEC)
