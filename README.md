@@ -11,7 +11,7 @@ Official Go SDK for [Freelo.io](https://app.freelo.io) — typed HTTP client gen
 - **Stdlib-only HTTP** — `net/http` under the hood, no external transport dependencies.
 - **Drop-in `*WithBody` escape hatch** for endpoints whose live behavior diverges from the spec.
 - **Timezone-correct timestamps** — Freelo emits no-zone wall-clock times in `Europe/Prague`; the SDK parses them back to UTC automatically.
-- **Production-grade transport** — 25 req/min rate limiting, exponential-backoff retry on 429/5xx, `Retry-After` honored.
+- **Production-grade transport** — client-side request pacing, exponential-backoff retry on 429/5xx, `Retry-After` honored.
 - **Pluggable authentication** — `BasicAuth` ships today; `Provider` interface ready for future OAuth.
 - **Per-request credential lookup** for multi-tenant servers (`CredentialsFunc`).
 
@@ -115,7 +115,7 @@ All knobs are functional options on `freelo.New`:
 | `WithUserAgent(ua)` | — | **Required.** Freelo rejects requests without one. |
 | `WithBaseURL(url)` | `https://api.freelo.io/v1` | Must be HTTPS. Trailing slash trimmed. |
 | `WithHTTPClient(hc)` | `&http.Client{Timeout: 30s}` | Inject custom transport, proxy, mTLS, etc. |
-| `WithRateLimit(d)` | `2.4s` | 25 req/min server limit. `0` disables (manage externally). |
+| `WithRateLimit(d)` | `350ms` | Minimum spacing between requests (~2.9 req/s, under the server's default 3 req/s per user). `0` disables (manage externally). |
 | `WithRetry(attempts, base, max)` | `3, 500ms, 8s` | Full-jitter exponential backoff. |
 | `WithRequestEditor(fn)` | — | Append custom headers / logging. Runs after auth + UA. |
 
@@ -172,7 +172,11 @@ go run ./examples/01_quickstart
 
 ## Rate limiting
 
-Freelo's published server limit is **25 req/min**. The SDK paces outgoing requests with a `2.4s` minimum interval per `*Client`. **A `*Client` is a singleton per process** — creating multiple clients in the same process means multiple rate limiters racing each other against the same server limit.
+The Freelo API rate-limits **per user**: every app and API token of the same Freelo user shares one token bucket. The server's default configuration allows a burst of 60 requests refilled at 3 req/s (~180 req/min sustained), but these numbers are configurable and may change — treat them as defaults, not a guarantee. Responses carry informative `RateLimit-Policy` and `RateLimit` headers.
+
+The authoritative signal is `429 Too Many Requests` with `Retry-After: <seconds>`. The SDK waits at least that long before retrying, and falls back to exponential backoff with jitter on repeated 429/5xx.
+
+On top of that, the SDK paces outgoing requests with a `350ms` minimum interval per `*Client` (just under the default sustained rate). **A `*Client` is a singleton per process** — creating multiple clients in the same process (or using the same user's credentials from other apps) means several callers drawing from the same per-user budget.
 
 If you need shared limiting across many clients, set `WithRateLimit(0)` on each and gate them externally (`golang.org/x/sync/semaphore`, etc.).
 

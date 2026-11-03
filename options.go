@@ -110,7 +110,10 @@ func WithHTTPClient(hc *http.Client) Option {
 // caller manages it themselves, e.g. via a shared semaphore across
 // multiple Clients in the same process).
 //
-// Default is 2.4s, calibrated to Freelo's published 25 req/min server limit.
+// Default is DefaultRateInterval (350ms), just under the API's default
+// sustained rate of 3 req/s per user. The server limit is configurable and
+// shared by all apps/tokens of the same Freelo user, so treat it as a
+// default, not a guarantee; a 429 Retry-After is always honored.
 func WithRateLimit(interval time.Duration) Option {
 	return func(c *config) error {
 		if interval < 0 {
