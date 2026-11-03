@@ -1641,21 +1641,6 @@ type CustomFieldEnumOption struct {
 	EnumValue       *string             `json:"enum_value,omitempty"`
 }
 
-// CustomFieldEnumValue defines model for CustomFieldEnumValue.
-type CustomFieldEnumValue struct {
-	AuthorId        *int                `json:"author_id,omitempty"`
-	CustomFieldUuid *openapi_types.UUID `json:"custom_field_uuid,omitempty"`
-
-	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateAdd *freelotime.Time `json:"date_add,omitempty"`
-
-	// DateEditedAt Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateEditedAt *freelotime.Time    `json:"date_edited_at,omitempty"`
-	TaskId       *int                `json:"task_id,omitempty"`
-	Uuid         *openapi_types.UUID `json:"uuid,omitempty"`
-	Value        *string             `json:"value,omitempty"`
-}
-
 // CustomFieldMutationResult Shape returned by the custom-field create / rename / restore endpoints. It differs from
 // the read shape: the type UUID is exposed as `type`, not as `custom_fields_types_uuid`.
 type CustomFieldMutationResult struct {
@@ -1689,6 +1674,8 @@ type CustomFieldValue struct {
 
 // CustomFieldWithValue defines model for CustomFieldWithValue.
 type CustomFieldWithValue struct {
+	// CustomFieldEnumUuid UUID of the selected enum option; present only in task detail.
+	CustomFieldEnumUuid   *openapi_types.UUID `json:"custom_field_enum_uuid,omitempty"`
 	CustomFieldsTypesUuid *openapi_types.UUID `json:"custom_fields_types_uuid,omitempty"`
 
 	// FieldDateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
@@ -2515,10 +2502,12 @@ type TaskDetail struct {
 	Comments *[]CommentWithFiles `json:"comments,omitempty"`
 
 	// CopiedFromTask Origin task this task was copied from (template copy or multi-project copy); `null` otherwise.
-	CopiedFromTask *CopiedFromTask         `json:"copied_from_task,omitempty"`
-	Cost           *Currency               `json:"cost,omitempty"`
-	CountSubtasks  *int                    `json:"count_subtasks,omitempty"`
-	CustomFields   *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
+	CopiedFromTask *CopiedFromTask `json:"copied_from_task,omitempty"`
+	Cost           *Currency       `json:"cost,omitempty"`
+	CountSubtasks  *int            `json:"count_subtasks,omitempty"`
+
+	// CustomFields Empty when the project owner can't use Business features (custom fields are a Business feature). The project owner's plan decides, not the caller's.
+	CustomFields *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
 
 	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
@@ -2589,10 +2578,12 @@ type TaskFinished struct {
 
 // TaskFull defines model for TaskFull.
 type TaskFull struct {
-	Author        *UserBasic              `json:"author,omitempty"`
-	CountComments *int                    `json:"count_comments,omitempty"`
-	CountSubtasks *int                    `json:"count_subtasks,omitempty"`
-	CustomFields  *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
+	Author        *UserBasic `json:"author,omitempty"`
+	CountComments *int       `json:"count_comments,omitempty"`
+	CountSubtasks *int       `json:"count_subtasks,omitempty"`
+
+	// CustomFields Empty when the project owner can't use Business features (custom fields are a Business feature). The project owner's plan decides, not the caller's.
+	CustomFields *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
 
 	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
@@ -3196,7 +3187,7 @@ type AddCustomFieldEnumValueJSONBody struct {
 
 // AddOrEditEnumValueJSONBody defines parameters for AddOrEditEnumValue.
 type AddOrEditEnumValueJSONBody struct {
-	CustomFieldUuid openapi_types.UUID `json:"customFieldUuid"`
+	CustomFieldUuid openapi_types.UUID `json:"custom_field_uuid"`
 	TaskId          int                `json:"task_id"`
 
 	// Value UUID of enum option
@@ -15609,7 +15600,7 @@ type AddOrEditEnumValueResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CustomFieldEnum *CustomFieldEnumValue `json:"customFieldEnum,omitempty"`
+		CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
 	}
 }
 
@@ -18063,10 +18054,12 @@ type EditTaskResponse struct {
 		Comments *[]CommentWithFiles `json:"comments,omitempty"`
 
 		// CopiedFromTask Origin task this task was copied from (template copy or multi-project copy); `null` otherwise.
-		CopiedFromTask *CopiedFromTask         `json:"copied_from_task,omitempty"`
-		Cost           *Currency               `json:"cost,omitempty"`
-		CountSubtasks  *int                    `json:"count_subtasks,omitempty"`
-		CustomFields   *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
+		CopiedFromTask *CopiedFromTask `json:"copied_from_task,omitempty"`
+		Cost           *Currency       `json:"cost,omitempty"`
+		CountSubtasks  *int            `json:"count_subtasks,omitempty"`
+
+		// CustomFields Empty when the project owner can't use Business features (custom fields are a Business feature). The project owner's plan decides, not the caller's.
+		CustomFields *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
 
 		// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 		DateAdd *freelotime.Time `json:"date_add,omitempty"`
@@ -21973,7 +21966,7 @@ func ParseAddOrEditEnumValueResponse(rsp *http.Response) (*AddOrEditEnumValueRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CustomFieldEnum *CustomFieldEnumValue `json:"customFieldEnum,omitempty"`
+			CustomFieldValue *CustomFieldValue `json:"custom_field_value,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -24389,10 +24382,12 @@ func ParseEditTaskResponse(rsp *http.Response) (*EditTaskResponse, error) {
 			Comments *[]CommentWithFiles `json:"comments,omitempty"`
 
 			// CopiedFromTask Origin task this task was copied from (template copy or multi-project copy); `null` otherwise.
-			CopiedFromTask *CopiedFromTask         `json:"copied_from_task,omitempty"`
-			Cost           *Currency               `json:"cost,omitempty"`
-			CountSubtasks  *int                    `json:"count_subtasks,omitempty"`
-			CustomFields   *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
+			CopiedFromTask *CopiedFromTask `json:"copied_from_task,omitempty"`
+			Cost           *Currency       `json:"cost,omitempty"`
+			CountSubtasks  *int            `json:"count_subtasks,omitempty"`
+
+			// CustomFields Empty when the project owner can't use Business features (custom fields are a Business feature). The project owner's plan decides, not the caller's.
+			CustomFields *[]CustomFieldWithValue `json:"custom_fields,omitempty"`
 
 			// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
 			DateAdd *freelotime.Time `json:"date_add,omitempty"`
