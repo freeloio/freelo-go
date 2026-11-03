@@ -16,9 +16,15 @@ import (
 
 // Default values applied when corresponding Option is not supplied.
 const (
-	// Freelo publishes a 25 req/min rate limit. Spacing requests by ~2.4s
-	// keeps us safely under it; tunable via WithRateLimit (0 disables).
-	DefaultRateInterval = 60 * time.Second / 25
+	// DefaultRateInterval is the minimum spacing between requests of one
+	// Client. The API limits requests per Freelo user (shared by every app
+	// and token of that user) with a token bucket; the server's default
+	// refill is 3 req/s after a burst of 60, but those numbers are
+	// configurable server-side and not a guarantee. 350ms (~2.9 req/s)
+	// stays just under the default sustained rate. The authoritative signal
+	// is a 429 with Retry-After, which the transport honors. Tunable via
+	// WithRateLimit (0 disables).
+	DefaultRateInterval = 350 * time.Millisecond
 
 	// DefaultMaxAttempts caps total tries per request (initial + retries).
 	DefaultMaxAttempts = 3
