@@ -238,6 +238,27 @@ func (e IssuedInvoiceCurrency) Valid() bool {
 	}
 }
 
+// Defines values for IssuedInvoiceBaseCurrency.
+const (
+	IssuedInvoiceBaseCurrencyCZK IssuedInvoiceBaseCurrency = "CZK"
+	IssuedInvoiceBaseCurrencyEUR IssuedInvoiceBaseCurrency = "EUR"
+	IssuedInvoiceBaseCurrencyUSD IssuedInvoiceBaseCurrency = "USD"
+)
+
+// Valid indicates whether the value is a known member of the IssuedInvoiceBaseCurrency enum.
+func (e IssuedInvoiceBaseCurrency) Valid() bool {
+	switch e {
+	case IssuedInvoiceBaseCurrencyCZK:
+		return true
+	case IssuedInvoiceBaseCurrencyEUR:
+		return true
+	case IssuedInvoiceBaseCurrencyUSD:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for IssuedInvoiceDetailCurrency.
 const (
 	IssuedInvoiceDetailCurrencyCZK IssuedInvoiceDetailCurrency = "CZK"
@@ -1144,21 +1165,153 @@ func (e GetProjectsParamsOrder) Valid() bool {
 	}
 }
 
+// Defines values for CreateProjectJSONBodyColor.
+const (
+	Hash10aa40 CreateProjectJSONBodyColor = "#10aa40"
+	Hash15acc0 CreateProjectJSONBodyColor = "#15acc0"
+	Hash367fee CreateProjectJSONBodyColor = "#367fee"
+	Hash77787a CreateProjectJSONBodyColor = "#77787a"
+	Hash9235e4 CreateProjectJSONBodyColor = "#9235e4"
+	HashCa3e99 CreateProjectJSONBodyColor = "#ca3e99"
+	HashE3b51e CreateProjectJSONBodyColor = "#e3b51e"
+	HashE9483a CreateProjectJSONBodyColor = "#e9483a"
+	HashF2830b CreateProjectJSONBodyColor = "#f2830b"
+)
+
+// Valid indicates whether the value is a known member of the CreateProjectJSONBodyColor enum.
+func (e CreateProjectJSONBodyColor) Valid() bool {
+	switch e {
+	case Hash10aa40:
+		return true
+	case Hash15acc0:
+		return true
+	case Hash367fee:
+		return true
+	case Hash77787a:
+		return true
+	case Hash9235e4:
+		return true
+	case HashCa3e99:
+		return true
+	case HashE3b51e:
+		return true
+	case HashE9483a:
+		return true
+	case HashF2830b:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateProjectJSONBodyCurrencyIso.
 const (
-	CZK CreateProjectJSONBodyCurrencyIso = "CZK"
-	EUR CreateProjectJSONBodyCurrencyIso = "EUR"
-	USD CreateProjectJSONBodyCurrencyIso = "USD"
+	CreateProjectJSONBodyCurrencyIsoCZK CreateProjectJSONBodyCurrencyIso = "CZK"
+	CreateProjectJSONBodyCurrencyIsoEUR CreateProjectJSONBodyCurrencyIso = "EUR"
+	CreateProjectJSONBodyCurrencyIsoUSD CreateProjectJSONBodyCurrencyIso = "USD"
 )
 
 // Valid indicates whether the value is a known member of the CreateProjectJSONBodyCurrencyIso enum.
 func (e CreateProjectJSONBodyCurrencyIso) Valid() bool {
 	switch e {
-	case CZK:
+	case CreateProjectJSONBodyCurrencyIsoCZK:
 		return true
-	case EUR:
+	case CreateProjectJSONBodyCurrencyIsoEUR:
 		return true
-	case USD:
+	case CreateProjectJSONBodyCurrencyIsoUSD:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateProjectJSONBodyIcon.
+const (
+	Atom         CreateProjectJSONBodyIcon = "atom"
+	Avocado      CreateProjectJSONBodyIcon = "avocado"
+	Balloon      CreateProjectJSONBodyIcon = "balloon"
+	Book         CreateProjectJSONBodyIcon = "book"
+	Butterfly    CreateProjectJSONBodyIcon = "butterfly"
+	Cactus       CreateProjectJSONBodyIcon = "cactus"
+	Clover       CreateProjectJSONBodyIcon = "clover"
+	Club         CreateProjectJSONBodyIcon = "club"
+	Diamond      CreateProjectJSONBodyIcon = "diamond"
+	FireSimple   CreateProjectJSONBodyIcon = "fire-simple"
+	FirstAid     CreateProjectJSONBodyIcon = "first-aid"
+	FolderSimple CreateProjectJSONBodyIcon = "folder-simple"
+	Gavel        CreateProjectJSONBodyIcon = "gavel"
+	Ghost        CreateProjectJSONBodyIcon = "ghost"
+	Heart        CreateProjectJSONBodyIcon = "heart"
+	Hexagon      CreateProjectJSONBodyIcon = "hexagon"
+	Lightbulb    CreateProjectJSONBodyIcon = "lightbulb"
+	Lightning    CreateProjectJSONBodyIcon = "lightning"
+	MapPin       CreateProjectJSONBodyIcon = "map-pin"
+	Moon         CreateProjectJSONBodyIcon = "moon"
+	Nut          CreateProjectJSONBodyIcon = "nut"
+	RocketLaunch CreateProjectJSONBodyIcon = "rocket-launch"
+	Sailboat     CreateProjectJSONBodyIcon = "sailboat"
+	Shield       CreateProjectJSONBodyIcon = "shield"
+	Spade        CreateProjectJSONBodyIcon = "spade"
+	StarFour     CreateProjectJSONBodyIcon = "star-four"
+	YinYang      CreateProjectJSONBodyIcon = "yin-yang"
+)
+
+// Valid indicates whether the value is a known member of the CreateProjectJSONBodyIcon enum.
+func (e CreateProjectJSONBodyIcon) Valid() bool {
+	switch e {
+	case Atom:
+		return true
+	case Avocado:
+		return true
+	case Balloon:
+		return true
+	case Book:
+		return true
+	case Butterfly:
+		return true
+	case Cactus:
+		return true
+	case Clover:
+		return true
+	case Club:
+		return true
+	case Diamond:
+		return true
+	case FireSimple:
+		return true
+	case FirstAid:
+		return true
+	case FolderSimple:
+		return true
+	case Gavel:
+		return true
+	case Ghost:
+		return true
+	case Heart:
+		return true
+	case Hexagon:
+		return true
+	case Lightbulb:
+		return true
+	case Lightning:
+		return true
+	case MapPin:
+		return true
+	case Moon:
+		return true
+	case Nut:
+		return true
+	case RocketLaunch:
+		return true
+	case Sailboat:
+		return true
+	case Shield:
+		return true
+	case Spade:
+		return true
+	case StarFour:
+		return true
+	case YinYang:
 		return true
 	default:
 		return false
@@ -1736,10 +1889,12 @@ type CustomFieldMutationResult struct {
 	AuthorId *int `json:"author_id,omitempty"`
 
 	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateAdd   *freelotime.Time `json:"date_add,omitempty"`
-	Name      *string          `json:"name,omitempty"`
-	Priority  *int             `json:"priority,omitempty"`
-	ProjectId *int             `json:"project_id,omitempty"`
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+	Name    *string          `json:"name,omitempty"`
+
+	// Priority Position of the custom field in the project. `null` in the create response, the position is assigned on save.
+	Priority  *int `json:"priority,omitempty"`
+	ProjectId *int `json:"project_id,omitempty"`
 
 	// Type UUID of the custom-field type (see `GET /custom-field/get-types`).
 	Type *openapi_types.UUID `json:"type,omitempty"`
@@ -1959,18 +2114,29 @@ type FileUploadByUuid struct {
 type IssuedInvoice struct {
 	Currency *IssuedInvoiceCurrency `json:"currency,omitempty"`
 
-	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
-	DateAdd  *freelotime.Time `json:"date_add,omitempty"`
-	Id       *int             `json:"id,omitempty"`
-	InvItems *[]struct {
-		Id      *int      `json:"id,omitempty"`
-		Minutes *int      `json:"minutes,omitempty"`
-		Name    *string   `json:"name,omitempty"`
-		Price   *Currency `json:"price,omitempty"`
-	} `json:"inv_items,omitempty"`
-	Minutes *int      `json:"minutes,omitempty"`
-	Note    *string   `json:"note,omitempty"`
-	Price   *Currency `json:"price,omitempty"`
+	// DateAdd When the invoice draft was created (not changed when it is issued). ISO 8601 with a UTC offset, see "Timestamp Format".
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+
+	// ExternInvoice Attached external invoices, usually one; `subject` is built from the first. Kept for backward compatibility.
+	ExternInvoice *[]struct {
+		CompanyName *string `json:"company_name,omitempty"`
+		DownloadUrl *string `json:"download_url,omitempty"`
+
+		// ExternAppName Name of the integration that created the record; `null` when it was first created via the API. Not reset when the link is overwritten via the API.
+		ExternAppName *string `json:"extern_app_name,omitempty"`
+		Id            *int    `json:"id,omitempty"`
+	} `json:"extern_invoice,omitempty"`
+	Id       *int                 `json:"id,omitempty"`
+	InvItems *[]IssuedInvoiceItem `json:"inv_items,omitempty"`
+
+	// Minutes Sum of `inv_items[].minutes`.
+	Minutes *int    `json:"minutes,omitempty"`
+	Note    *string `json:"note,omitempty"`
+
+	// Price Sum of `inv_items[].price`.
+	Price *Currency `json:"price,omitempty"`
+
+	// Subject External invoice attached via `POST /issued-invoice/{invoice_id}/mark-as-invoiced` or the Fakturoid/iDoklad integration in the app; `null` when none is attached.
 	Subject *struct {
 		CompanyName *string `json:"company_name,omitempty"`
 		InvoiceUrl  *string `json:"invoice_url,omitempty"`
@@ -1980,31 +2146,73 @@ type IssuedInvoice struct {
 // IssuedInvoiceCurrency defines model for IssuedInvoice.Currency.
 type IssuedInvoiceCurrency string
 
+// IssuedInvoiceBase defines model for IssuedInvoiceBase.
+type IssuedInvoiceBase struct {
+	Currency *IssuedInvoiceBaseCurrency `json:"currency,omitempty"`
+
+	// DateAdd When the invoice draft was created (not changed when it is issued). ISO 8601 with a UTC offset, see "Timestamp Format".
+	DateAdd *freelotime.Time `json:"date_add,omitempty"`
+	Id      *int             `json:"id,omitempty"`
+
+	// Minutes Sum of `inv_items[].minutes`.
+	Minutes *int    `json:"minutes,omitempty"`
+	Note    *string `json:"note,omitempty"`
+
+	// Price Sum of `inv_items[].price`.
+	Price *Currency `json:"price,omitempty"`
+
+	// Subject External invoice attached via `POST /issued-invoice/{invoice_id}/mark-as-invoiced` or the Fakturoid/iDoklad integration in the app; `null` when none is attached.
+	Subject *struct {
+		CompanyName *string `json:"company_name,omitempty"`
+		InvoiceUrl  *string `json:"invoice_url,omitempty"`
+	} `json:"subject,omitempty"`
+}
+
+// IssuedInvoiceBaseCurrency defines model for IssuedInvoiceBase.Currency.
+type IssuedInvoiceBaseCurrency string
+
 // IssuedInvoiceDetail defines model for IssuedInvoiceDetail.
 type IssuedInvoiceDetail struct {
 	Currency *IssuedInvoiceDetailCurrency `json:"currency,omitempty"`
 
-	// DateAdd Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	// DateAdd When the invoice draft was created (not changed when it is issued). ISO 8601 with a UTC offset, see "Timestamp Format".
 	DateAdd  *freelotime.Time `json:"date_add,omitempty"`
 	Id       *int             `json:"id,omitempty"`
 	InvItems *[]struct {
-		Id      *int      `json:"id,omitempty"`
-		Minutes *int      `json:"minutes,omitempty"`
-		Name    *string   `json:"name,omitempty"`
-		Price   *Currency `json:"price,omitempty"`
+		Id *int `json:"id,omitempty"`
+
+		// Minutes Entered by the user; does not have to equal the sum of the item's work report rows.
+		Minutes *int `json:"minutes,omitempty"`
+
+		// Name Entered by the user.
+		Name *string `json:"name,omitempty"`
+
+		// Price Entered by the user; does not have to equal the sum of the item's work report rows.
+		Price *Currency `json:"price,omitempty"`
+
+		// Reports Work report rows assigned to the item (snapshot taken when the invoice was created); invoiced once the invoice is issued.
 		Reports *[]struct {
+			// Id ID of the invoice row, equals `id` in `/issued-invoice/{invoice_id}/reports-json`.
 			Id           *int      `json:"id,omitempty"`
 			Minutes      *int      `json:"minutes,omitempty"`
 			Name         *string   `json:"name,omitempty"`
 			Price        *Currency `json:"price,omitempty"`
 			ProjectName  *string   `json:"project_name,omitempty"`
 			TasklistName *string   `json:"tasklist_name,omitempty"`
-			WorkReportId *int      `json:"work_report_id,omitempty"`
+
+			// WorkReportId ID of the original work report, or `null` when it has been deleted.
+			WorkReportId *int `json:"work_report_id,omitempty"`
 		} `json:"reports,omitempty"`
 	} `json:"inv_items,omitempty"`
-	Minutes *int      `json:"minutes,omitempty"`
-	Note    *string   `json:"note,omitempty"`
-	Price   *Currency `json:"price,omitempty"`
+
+	// Minutes Sum of `inv_items[].minutes`.
+	Minutes *int    `json:"minutes,omitempty"`
+	Note    *string `json:"note,omitempty"`
+
+	// Price Sum of `inv_items[].price`.
+	Price *Currency `json:"price,omitempty"`
+
+	// Subject External invoice attached via `POST /issued-invoice/{invoice_id}/mark-as-invoiced` or the Fakturoid/iDoklad integration in the app; `null` when none is attached.
 	Subject *struct {
 		CompanyName *string `json:"company_name,omitempty"`
 		InvoiceUrl  *string `json:"invoice_url,omitempty"`
@@ -2013,6 +2221,20 @@ type IssuedInvoiceDetail struct {
 
 // IssuedInvoiceDetailCurrency defines model for IssuedInvoiceDetail.Currency.
 type IssuedInvoiceDetailCurrency string
+
+// IssuedInvoiceItem defines model for IssuedInvoiceItem.
+type IssuedInvoiceItem struct {
+	Id *int `json:"id,omitempty"`
+
+	// Minutes Entered by the user; does not have to equal the sum of the item's work report rows.
+	Minutes *int `json:"minutes,omitempty"`
+
+	// Name Entered by the user.
+	Name *string `json:"name,omitempty"`
+
+	// Price Entered by the user; does not have to equal the sum of the item's work report rows.
+	Price *Currency `json:"price,omitempty"`
+}
 
 // LinkCreateRequest defines model for LinkCreateRequest.
 type LinkCreateRequest struct {
@@ -2549,6 +2771,12 @@ type SuccessResponse struct {
 	Result *string `json:"result,omitempty"`
 }
 
+// TaskBasic defines model for TaskBasic.
+type TaskBasic struct {
+	Id   *int    `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+}
+
 // TaskCreate defines model for TaskCreate.
 type TaskCreate struct {
 	Comment *struct {
@@ -2643,10 +2871,12 @@ type TaskDetail struct {
 
 	// Relations Empty when the project owner's plan has no team features — the detail stays readable and
 	// the relations are simply omitted. `GET /task/{task_id}/relations` returns 403 in that case.
-	Relations          *[]TaskRelation     `json:"relations,omitempty"`
-	State              *State              `json:"state,omitempty"`
-	Tasklist           *TasklistBasic      `json:"tasklist,omitempty"`
-	TotalTimeEstimate  *TimeEstimate       `json:"total_time_estimate,omitempty"`
+	Relations         *[]TaskRelation `json:"relations,omitempty"`
+	State             *State          `json:"state,omitempty"`
+	Tasklist          *TasklistBasic  `json:"tasklist,omitempty"`
+	TotalTimeEstimate *TimeEstimate   `json:"total_time_estimate,omitempty"`
+
+	// TrackingUsers For a multi-project task only followers from projects you have access to are listed.
 	TrackingUsers      *[]UserBasic        `json:"tracking_users,omitempty"`
 	UsersTimeEstimates *[]UserTimeEstimate `json:"users_time_estimates,omitempty"`
 	Worker             *UserBasic          `json:"worker,omitempty"`
@@ -2925,6 +3155,7 @@ type UserWithEmail struct {
 
 // WorkReport defines model for WorkReport.
 type WorkReport struct {
+	// Author User who created (logged) the work report.
 	Author *UserBasic `json:"author,omitempty"`
 	Cost   *Currency  `json:"cost,omitempty"`
 
@@ -2940,34 +3171,49 @@ type WorkReport struct {
 		Id   *int    `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
 	} `json:"task,omitempty"`
+
+	// Worker User whose time the report represents. Matches `worker_id` sent to `POST /task/{task_id}/work-reports`.
 	Worker *UserBasic `json:"worker,omitempty"`
 }
 
-// WorkReportExtended defines model for WorkReportExtended.
+// WorkReportExtended Work report row of an invoice (`/issued-invoice/{invoice_id}/reports-json`) — a snapshot of the work report
+// taken when the invoice was created, not the work report itself. Only rows listed in the detail's
+// `inv_items[].reports[]` are billed by the invoice; the others are not invoiced.
 type WorkReportExtended struct {
-	Author *UserBasic `json:"author,omitempty"`
-	Cost   *Currency  `json:"cost,omitempty"`
+	// Author User who created the invoice — not the user who logged the report.
+	Author *struct {
+		Fullname *string `json:"fullname,omitempty"`
+		Id       *int    `json:"id,omitempty"`
+	} `json:"author,omitempty"`
+	Cost *Currency `json:"cost,omitempty"`
 
-	// DateAdd Insertion timestamp of the work report (when the row was created in the DB). Naive ISO8601 in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+	// DateAdd When the invoice draft was created (same as the invoice's `date_add`), not when the work report was logged. ISO 8601 with a UTC offset, see "Timestamp Format".
 	DateAdd *freelotime.Time `json:"date_add,omitempty"`
 
-	// DateReported Start timestamp of the work session. Naive ISO8601 in Europe/Prague timezone (no offset). End time is derived as `date_reported + minutes`. See "Timestamp Format" in API description.
-	DateReported *freelotime.Time `json:"date_reported,omitempty"`
-	Id           *int             `json:"id,omitempty"`
-	Minutes      *int             `json:"minutes,omitempty"`
-	Note         *string          `json:"note,omitempty"`
-	Project      *ProjectBasic    `json:"project,omitempty"`
-	Task         *struct {
-		Id   *int    `json:"id,omitempty"`
-		Name *string `json:"name,omitempty"`
-	} `json:"task,omitempty"`
-	Tasklist     *TasklistBasic `json:"tasklist,omitempty"`
-	WorkReportId *int           `json:"work_report_id,omitempty"`
-	Worker       *UserBasic     `json:"worker,omitempty"`
+	// DateReported Day of the work report.
+	DateReported *openapi_types.Date `json:"date_reported,omitempty"`
+
+	// Id ID of the invoice row. Equals `inv_items[].reports[].id` in `GET /issued-invoice/{invoice_id}` when the row is assigned to an item.
+	Id       *int           `json:"id,omitempty"`
+	Minutes  *int           `json:"minutes,omitempty"`
+	Note     *string        `json:"note,omitempty"`
+	Project  *ProjectBasic  `json:"project,omitempty"`
+	Task     *TaskBasic     `json:"task,omitempty"`
+	Tasklist *TasklistBasic `json:"tasklist,omitempty"`
+
+	// WorkReportId ID of the original work report, or `null` when it has been deleted.
+	WorkReportId *int `json:"work_report_id,omitempty"`
+
+	// Worker User whose time the report represents.
+	Worker *struct {
+		Fullname *string `json:"fullname,omitempty"`
+		Id       *int    `json:"id,omitempty"`
+	} `json:"worker,omitempty"`
 }
 
 // WorkReportFull defines model for WorkReportFull.
 type WorkReportFull struct {
+	// Author In this endpoint, the user whose time the report represents. Swapped compared to the other work report endpoints, kept for backward compatibility.
 	Author *UserBasic `json:"author,omitempty"`
 	Cost   *Currency  `json:"cost,omitempty"`
 
@@ -2998,7 +3244,9 @@ type WorkReportFull struct {
 		UsersTimeEstimates *[]UserTimeEstimate `json:"users_time_estimates,omitempty"`
 	} `json:"task,omitempty"`
 	Tasklist *TasklistBasic `json:"tasklist,omitempty"`
-	Worker   *UserBasic     `json:"worker,omitempty"`
+
+	// Worker In this endpoint, the user who created (logged) the report.
+	Worker *UserBasic `json:"worker,omitempty"`
 }
 
 // ClientIdParam defines model for ClientIdParam.
@@ -3220,6 +3468,9 @@ type GetAllTasksParams struct {
 	// WorkerId Filter by worker ID
 	WorkerId *int `form:"worker_id,omitempty" json:"worker_id,omitempty"`
 
+	// WorkersIds Filter by worker IDs — returns tasks assigned to any of the given workers. Combined with `worker_id` if both are sent.
+	WorkersIds *[]int `form:"workers_ids[],omitempty" json:"workers_ids[],omitempty"`
+
 	// MyPriorities Only tasks in the authenticated user's priorities ("my priorities"). Pass `1` to enable, `0` to disable — string values like `true`/`false` are not accepted and silently fall back to the default.
 	MyPriorities *GetAllTasksParamsMyPriorities `form:"my_priorities,omitempty" json:"my_priorities,omitempty"`
 
@@ -3414,9 +3665,12 @@ type MarkAsInvoicedJSONBody struct {
 
 // GetIssuedInvoicesParams defines parameters for GetIssuedInvoices.
 type GetIssuedInvoicesParams struct {
+	// DateRangeDateFrom Invoices with `date_add` on or after this day.
 	DateRangeDateFrom *openapi_types.Date `form:"date_range[date_from],omitempty" json:"date_range[date_from],omitempty"`
-	DateRangeDateTo   *openapi_types.Date `form:"date_range[date_to],omitempty" json:"date_range[date_to],omitempty"`
-	ProjectsIds       *[]int              `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
+
+	// DateRangeDateTo Invoices with `date_add` up to 00:00 of this day (invoices from later that day are excluded).
+	DateRangeDateTo *openapi_types.Date `form:"date_range[date_to],omitempty" json:"date_range[date_to],omitempty"`
+	ProjectsIds     *[]int              `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
 
 	// P Page number (starting from 0). Alias of `page` — `p` takes precedence when both are provided.
 	P *PageParam `form:"p,omitempty" json:"p,omitempty"`
@@ -3620,20 +3874,32 @@ type GetProjectsParamsOrder string
 
 // CreateProjectJSONBody defines parameters for CreateProject.
 type CreateProjectJSONBody struct {
+	// Color Project color (hex, case-insensitive). A value outside the palette fails with `400`. The legacy `#ffffff` is still accepted and stored as the default gray.
+	Color *CreateProjectJSONBodyColor `json:"color,omitempty"`
+
 	// CurrencyIso Currency used for budgets and invoicing in this project. Cannot be changed afterwards.
 	CurrencyIso CreateProjectJSONBodyCurrencyIso `json:"currency_iso"`
 
 	// DueDate Project deadline as a calendar date (`YYYY-MM-DD`). The project deadline has no time-of-day component.
 	DueDate *openapi_types.Date `json:"due_date,omitempty"`
-	Name    string              `json:"name"`
+
+	// Icon Project icon name. A value outside the list fails with `400`.
+	Icon *CreateProjectJSONBodyIcon `json:"icon,omitempty"`
+	Name string                     `json:"name"`
 
 	// ProjectOwnerId ID of user assigned as owner. Must be an owner-eligible user in the caller's account.
 	// If omitted, the authenticated caller becomes the owner.
 	ProjectOwnerId *int `json:"project_owner_id,omitempty"`
 }
 
+// CreateProjectJSONBodyColor defines parameters for CreateProject.
+type CreateProjectJSONBodyColor string
+
 // CreateProjectJSONBodyCurrencyIso defines parameters for CreateProject.
 type CreateProjectJSONBodyCurrencyIso string
+
+// CreateProjectJSONBodyIcon defines parameters for CreateProject.
+type CreateProjectJSONBodyIcon string
 
 // SearchJSONBody defines parameters for Search.
 type SearchJSONBody struct {
@@ -3915,6 +4181,18 @@ type SetTotalTimeEstimateJSONBody struct {
 	Minutes int `json:"minutes"`
 }
 
+// AddTaskTrackingUsersJSONBody defines parameters for AddTaskTrackingUsers.
+type AddTaskTrackingUsersJSONBody struct {
+	// UsersIds IDs of users to start following the task.
+	UsersIds []int `json:"users_ids"`
+}
+
+// RemoveTaskTrackingUsersJSONBody defines parameters for RemoveTaskTrackingUsers.
+type RemoveTaskTrackingUsersJSONBody struct {
+	// UsersIds IDs of users to stop following the task.
+	UsersIds []int `json:"users_ids"`
+}
+
 // SetUserTimeEstimateJSONBody defines parameters for SetUserTimeEstimate.
 type SetUserTimeEstimateJSONBody struct {
 	Minutes int `json:"minutes"`
@@ -3931,7 +4209,9 @@ type CreateWorkReportJSONBody struct {
 	DateReported *string `json:"date_reported,omitempty"`
 	Minutes      int     `json:"minutes"`
 	Note         *string `json:"note,omitempty"`
-	WorkerId     *int    `json:"worker_id,omitempty"`
+
+	// WorkerId User whose time is logged. Defaults to the caller. Returned as `worker`.
+	WorkerId *int `json:"worker_id,omitempty"`
 }
 
 // EditTaskcheckJSONBody defines parameters for EditTaskcheck.
@@ -4060,10 +4340,10 @@ type GetUserProjectsParamsOrder string
 // EnableOutOfOfficeJSONBody defines parameters for EnableOutOfOffice.
 type EnableOutOfOfficeJSONBody struct {
 	OutOfOffice struct {
-		// DateFrom Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+		// DateFrom ISO8601 timestamp, with an offset / `Z` or naive (read as Europe/Prague).
 		DateFrom freelotime.Time `json:"date_from"`
 
-		// DateTo Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+		// DateTo ISO8601 timestamp, with an offset / `Z` or naive (read as Europe/Prague).
 		DateTo freelotime.Time `json:"date_to"`
 	} `json:"out_of_office"`
 }
@@ -4087,8 +4367,10 @@ type InviteUsersToProjectsJSONBody struct {
 // GetWorkReportsParams defines parameters for GetWorkReports.
 type GetWorkReportsParams struct {
 	ProjectsIds *[]int `form:"projects_ids[],omitempty" json:"projects_ids[],omitempty"`
-	UsersIds    *[]int `form:"users_ids[],omitempty" json:"users_ids[],omitempty"`
-	TasksIds    *[]int `form:"tasks_ids[],omitempty" json:"tasks_ids[],omitempty"`
+
+	// UsersIds Filters by the user whose time the report represents — the `author` field in this response.
+	UsersIds *[]int `form:"users_ids[],omitempty" json:"users_ids[],omitempty"`
+	TasksIds *[]int `form:"tasks_ids[],omitempty" json:"tasks_ids[],omitempty"`
 
 	// TasksLabels UUIDs for task labels
 	TasksLabels               *[]openapi_types.UUID `form:"tasks_labels[],omitempty" json:"tasks_labels[],omitempty"`
@@ -4289,6 +4571,12 @@ type CreateSubtaskJSONRequestBody = SubtaskCreate
 
 // SetTotalTimeEstimateJSONRequestBody defines body for SetTotalTimeEstimate for application/json ContentType.
 type SetTotalTimeEstimateJSONRequestBody SetTotalTimeEstimateJSONBody
+
+// AddTaskTrackingUsersJSONRequestBody defines body for AddTaskTrackingUsers for application/json ContentType.
+type AddTaskTrackingUsersJSONRequestBody AddTaskTrackingUsersJSONBody
+
+// RemoveTaskTrackingUsersJSONRequestBody defines body for RemoveTaskTrackingUsers for application/json ContentType.
+type RemoveTaskTrackingUsersJSONRequestBody RemoveTaskTrackingUsersJSONBody
 
 // SetUserTimeEstimateJSONRequestBody defines body for SetUserTimeEstimate for application/json ContentType.
 type SetUserTimeEstimateJSONRequestBody SetUserTimeEstimateJSONBody
@@ -5257,6 +5545,19 @@ type ClientInterface interface {
 	SetTotalTimeEstimateWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	SetTotalTimeEstimate(ctx context.Context, taskId TaskIdParam, body SetTotalTimeEstimateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTaskTrackingUsers request
+	GetTaskTrackingUsers(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AddTaskTrackingUsersWithBody request with any body
+	AddTaskTrackingUsersWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AddTaskTrackingUsers(ctx context.Context, taskId TaskIdParam, body AddTaskTrackingUsersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RemoveTaskTrackingUsersWithBody request with any body
+	RemoveTaskTrackingUsersWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RemoveTaskTrackingUsers(ctx context.Context, taskId TaskIdParam, body RemoveTaskTrackingUsersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteUserTimeEstimate request
 	DeleteUserTimeEstimate(ctx context.Context, taskId TaskIdParam, userId int, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -7428,6 +7729,66 @@ func (c *Client) SetTotalTimeEstimate(ctx context.Context, taskId TaskIdParam, b
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetTaskTrackingUsers(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTaskTrackingUsersRequest(c.Server, taskId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddTaskTrackingUsersWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddTaskTrackingUsersRequestWithBody(c.Server, taskId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddTaskTrackingUsers(ctx context.Context, taskId TaskIdParam, body AddTaskTrackingUsersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddTaskTrackingUsersRequest(c.Server, taskId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RemoveTaskTrackingUsersWithBody(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveTaskTrackingUsersRequestWithBody(c.Server, taskId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RemoveTaskTrackingUsers(ctx context.Context, taskId TaskIdParam, body RemoveTaskTrackingUsersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRemoveTaskTrackingUsersRequest(c.Server, taskId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteUserTimeEstimate(ctx context.Context, taskId TaskIdParam, userId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteUserTimeEstimateRequest(c.Server, taskId, userId)
 	if err != nil {
@@ -8785,6 +9146,18 @@ func NewGetAllTasksRequest(server string, params *GetAllTasksParams) (*http.Requ
 		if params.WorkerId != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "worker_id", *params.WorkerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.WorkersIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "workers_ids[]", *params.WorkersIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -13837,6 +14210,134 @@ func NewSetTotalTimeEstimateRequestWithBody(server string, taskId TaskIdParam, c
 	return req, nil
 }
 
+// NewGetTaskTrackingUsersRequest generates requests for GetTaskTrackingUsers
+func NewGetTaskTrackingUsersRequest(server string, taskId TaskIdParam) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "task_id", taskId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/task/%s/tracking-users", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAddTaskTrackingUsersRequest calls the generic AddTaskTrackingUsers builder with application/json body
+func NewAddTaskTrackingUsersRequest(server string, taskId TaskIdParam, body AddTaskTrackingUsersJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAddTaskTrackingUsersRequestWithBody(server, taskId, "application/json", bodyReader)
+}
+
+// NewAddTaskTrackingUsersRequestWithBody generates requests for AddTaskTrackingUsers with any type of body
+func NewAddTaskTrackingUsersRequestWithBody(server string, taskId TaskIdParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "task_id", taskId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/task/%s/tracking-users/add", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRemoveTaskTrackingUsersRequest calls the generic RemoveTaskTrackingUsers builder with application/json body
+func NewRemoveTaskTrackingUsersRequest(server string, taskId TaskIdParam, body RemoveTaskTrackingUsersJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRemoveTaskTrackingUsersRequestWithBody(server, taskId, "application/json", bodyReader)
+}
+
+// NewRemoveTaskTrackingUsersRequestWithBody generates requests for RemoveTaskTrackingUsers with any type of body
+func NewRemoveTaskTrackingUsersRequestWithBody(server string, taskId TaskIdParam, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "task_id", taskId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/task/%s/tracking-users/remove", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewDeleteUserTimeEstimateRequest generates requests for DeleteUserTimeEstimate
 func NewDeleteUserTimeEstimateRequest(server string, taskId TaskIdParam, userId int) (*http.Request, error) {
 	var err error
@@ -15922,6 +16423,19 @@ type ClientWithResponsesInterface interface {
 	SetTotalTimeEstimateWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetTotalTimeEstimateResponse, error)
 
 	SetTotalTimeEstimateWithResponse(ctx context.Context, taskId TaskIdParam, body SetTotalTimeEstimateJSONRequestBody, reqEditors ...RequestEditorFn) (*SetTotalTimeEstimateResponse, error)
+
+	// GetTaskTrackingUsersWithResponse request
+	GetTaskTrackingUsersWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*GetTaskTrackingUsersResponse, error)
+
+	// AddTaskTrackingUsersWithBodyWithResponse request with any body
+	AddTaskTrackingUsersWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddTaskTrackingUsersResponse, error)
+
+	AddTaskTrackingUsersWithResponse(ctx context.Context, taskId TaskIdParam, body AddTaskTrackingUsersJSONRequestBody, reqEditors ...RequestEditorFn) (*AddTaskTrackingUsersResponse, error)
+
+	// RemoveTaskTrackingUsersWithBodyWithResponse request with any body
+	RemoveTaskTrackingUsersWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveTaskTrackingUsersResponse, error)
+
+	RemoveTaskTrackingUsersWithResponse(ctx context.Context, taskId TaskIdParam, body RemoveTaskTrackingUsersJSONRequestBody, reqEditors ...RequestEditorFn) (*RemoveTaskTrackingUsersResponse, error)
 
 	// DeleteUserTimeEstimateWithResponse request
 	DeleteUserTimeEstimateWithResponse(ctx context.Context, taskId TaskIdParam, userId int, reqEditors ...RequestEditorFn) (*DeleteUserTimeEstimateResponse, error)
@@ -19376,10 +19890,12 @@ type EditTaskResponse struct {
 		Relations *[]TaskRelation `json:"relations,omitempty"`
 
 		// ShiftedTasks Present only when `collision_mode` is `keep_gap` or `use_gap`. Tasks rescheduled by the change, with their new due dates. Empty when nothing moved.
-		ShiftedTasks       *[]ShiftedTask      `json:"shifted_tasks,omitempty"`
-		State              *State              `json:"state,omitempty"`
-		Tasklist           *TasklistBasic      `json:"tasklist,omitempty"`
-		TotalTimeEstimate  *TimeEstimate       `json:"total_time_estimate,omitempty"`
+		ShiftedTasks      *[]ShiftedTask `json:"shifted_tasks,omitempty"`
+		State             *State         `json:"state,omitempty"`
+		Tasklist          *TasklistBasic `json:"tasklist,omitempty"`
+		TotalTimeEstimate *TimeEstimate  `json:"total_time_estimate,omitempty"`
+
+		// TrackingUsers For a multi-project task only followers from projects you have access to are listed.
 		TrackingUsers      *[]UserBasic        `json:"tracking_users,omitempty"`
 		UsersTimeEstimates *[]UserTimeEstimate `json:"users_time_estimates,omitempty"`
 		Worker             *UserBasic          `json:"worker,omitempty"`
@@ -19568,6 +20084,7 @@ type MoveTaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SuccessResponse
+	JSON400      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -19860,6 +20377,7 @@ type CreateSubtaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SubtaskCreated
+	JSON409      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -19940,6 +20458,102 @@ func (r SetTotalTimeEstimateResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r SetTotalTimeEstimateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetTaskTrackingUsersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		TrackingUsers []UserBasic `json:"tracking_users"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTaskTrackingUsersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTaskTrackingUsersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetTaskTrackingUsersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AddTaskTrackingUsersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		TrackingUsers []UserBasic `json:"tracking_users"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r AddTaskTrackingUsersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AddTaskTrackingUsersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AddTaskTrackingUsersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type RemoveTaskTrackingUsersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		TrackingUsers []UserBasic `json:"tracking_users"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r RemoveTaskTrackingUsersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RemoveTaskTrackingUsersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RemoveTaskTrackingUsersResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -20662,6 +21276,8 @@ type DisableOutOfOfficeResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SuccessResponse
+	JSON400      *ErrorResponse
+	JSON404      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -20693,13 +21309,15 @@ type GetOutOfOfficeResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *struct {
 		OutOfOffice *struct {
-			// DateFrom Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+			// DateFrom ISO8601 timestamp in UTC (`Z` suffix).
 			DateFrom *freelotime.Time `json:"date_from,omitempty"`
 
-			// DateTo Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+			// DateTo ISO8601 timestamp in UTC (`Z` suffix).
 			DateTo *freelotime.Time `json:"date_to,omitempty"`
 		} `json:"out_of_office,omitempty"`
 	}
+	JSON400 *ErrorResponse
+	JSON404 *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -20730,6 +21348,8 @@ type EnableOutOfOfficeResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *SuccessResponse
+	JSON400      *ErrorResponse
+	JSON404      *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -20929,6 +21549,7 @@ type GetWorkReportsResponse struct {
 		PerPage *int `json:"per_page,omitempty"`
 		Total   *int `json:"total,omitempty"`
 	}
+	JSON403 *ErrorResponse
 }
 
 // Status returns HTTPResponse.Status
@@ -22500,6 +23121,49 @@ func (c *ClientWithResponses) SetTotalTimeEstimateWithResponse(ctx context.Conte
 		return nil, err
 	}
 	return ParseSetTotalTimeEstimateResponse(rsp)
+}
+
+// GetTaskTrackingUsersWithResponse request returning *GetTaskTrackingUsersResponse
+func (c *ClientWithResponses) GetTaskTrackingUsersWithResponse(ctx context.Context, taskId TaskIdParam, reqEditors ...RequestEditorFn) (*GetTaskTrackingUsersResponse, error) {
+	rsp, err := c.GetTaskTrackingUsers(ctx, taskId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTaskTrackingUsersResponse(rsp)
+}
+
+// AddTaskTrackingUsersWithBodyWithResponse request with arbitrary body returning *AddTaskTrackingUsersResponse
+func (c *ClientWithResponses) AddTaskTrackingUsersWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddTaskTrackingUsersResponse, error) {
+	rsp, err := c.AddTaskTrackingUsersWithBody(ctx, taskId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddTaskTrackingUsersResponse(rsp)
+}
+
+func (c *ClientWithResponses) AddTaskTrackingUsersWithResponse(ctx context.Context, taskId TaskIdParam, body AddTaskTrackingUsersJSONRequestBody, reqEditors ...RequestEditorFn) (*AddTaskTrackingUsersResponse, error) {
+	rsp, err := c.AddTaskTrackingUsers(ctx, taskId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddTaskTrackingUsersResponse(rsp)
+}
+
+// RemoveTaskTrackingUsersWithBodyWithResponse request with arbitrary body returning *RemoveTaskTrackingUsersResponse
+func (c *ClientWithResponses) RemoveTaskTrackingUsersWithBodyWithResponse(ctx context.Context, taskId TaskIdParam, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RemoveTaskTrackingUsersResponse, error) {
+	rsp, err := c.RemoveTaskTrackingUsersWithBody(ctx, taskId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveTaskTrackingUsersResponse(rsp)
+}
+
+func (c *ClientWithResponses) RemoveTaskTrackingUsersWithResponse(ctx context.Context, taskId TaskIdParam, body RemoveTaskTrackingUsersJSONRequestBody, reqEditors ...RequestEditorFn) (*RemoveTaskTrackingUsersResponse, error) {
+	rsp, err := c.RemoveTaskTrackingUsers(ctx, taskId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRemoveTaskTrackingUsersResponse(rsp)
 }
 
 // DeleteUserTimeEstimateWithResponse request returning *DeleteUserTimeEstimateResponse
@@ -26219,10 +26883,12 @@ func ParseEditTaskResponse(rsp *http.Response) (*EditTaskResponse, error) {
 			Relations *[]TaskRelation `json:"relations,omitempty"`
 
 			// ShiftedTasks Present only when `collision_mode` is `keep_gap` or `use_gap`. Tasks rescheduled by the change, with their new due dates. Empty when nothing moved.
-			ShiftedTasks       *[]ShiftedTask      `json:"shifted_tasks,omitempty"`
-			State              *State              `json:"state,omitempty"`
-			Tasklist           *TasklistBasic      `json:"tasklist,omitempty"`
-			TotalTimeEstimate  *TimeEstimate       `json:"total_time_estimate,omitempty"`
+			ShiftedTasks      *[]ShiftedTask `json:"shifted_tasks,omitempty"`
+			State             *State         `json:"state,omitempty"`
+			Tasklist          *TasklistBasic `json:"tasklist,omitempty"`
+			TotalTimeEstimate *TimeEstimate  `json:"total_time_estimate,omitempty"`
+
+			// TrackingUsers For a multi-project task only followers from projects you have access to are listed.
 			TrackingUsers      *[]UserBasic        `json:"tracking_users,omitempty"`
 			UsersTimeEstimates *[]UserTimeEstimate `json:"users_time_estimates,omitempty"`
 			Worker             *UserBasic          `json:"worker,omitempty"`
@@ -26415,6 +27081,13 @@ func ParseMoveTaskResponse(rsp *http.Response) (*MoveTaskResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	}
 
@@ -26672,6 +27345,13 @@ func ParseCreateSubtaskResponse(rsp *http.Response) (*CreateSubtaskResponse, err
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
 	}
 
 	return response, nil
@@ -26719,6 +27399,90 @@ func ParseSetTotalTimeEstimateResponse(rsp *http.Response) (*SetTotalTimeEstimat
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest SuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTaskTrackingUsersResponse parses an HTTP response from a GetTaskTrackingUsersWithResponse call
+func ParseGetTaskTrackingUsersResponse(rsp *http.Response) (*GetTaskTrackingUsersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTaskTrackingUsersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			TrackingUsers []UserBasic `json:"tracking_users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAddTaskTrackingUsersResponse parses an HTTP response from a AddTaskTrackingUsersWithResponse call
+func ParseAddTaskTrackingUsersResponse(rsp *http.Response) (*AddTaskTrackingUsersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AddTaskTrackingUsersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			TrackingUsers []UserBasic `json:"tracking_users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRemoveTaskTrackingUsersResponse parses an HTTP response from a RemoveTaskTrackingUsersWithResponse call
+func ParseRemoveTaskTrackingUsersResponse(rsp *http.Response) (*RemoveTaskTrackingUsersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RemoveTaskTrackingUsersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			TrackingUsers []UserBasic `json:"tracking_users"`
+		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -27396,6 +28160,20 @@ func ParseDisableOutOfOfficeResponse(rsp *http.Response) (*DisableOutOfOfficeRes
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	}
 
 	return response, nil
@@ -27418,10 +28196,10 @@ func ParseGetOutOfOfficeResponse(rsp *http.Response) (*GetOutOfOfficeResponse, e
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			OutOfOffice *struct {
-				// DateFrom Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+				// DateFrom ISO8601 timestamp in UTC (`Z` suffix).
 				DateFrom *freelotime.Time `json:"date_from,omitempty"`
 
-				// DateTo Naive ISO8601 timestamp in Europe/Prague timezone (no offset). See "Timestamp Format" in API description.
+				// DateTo ISO8601 timestamp in UTC (`Z` suffix).
 				DateTo *freelotime.Time `json:"date_to,omitempty"`
 			} `json:"out_of_office,omitempty"`
 		}
@@ -27429,6 +28207,20 @@ func ParseGetOutOfOfficeResponse(rsp *http.Response) (*GetOutOfOfficeResponse, e
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 
@@ -27455,6 +28247,20 @@ func ParseEnableOutOfOfficeResponse(rsp *http.Response) (*EnableOutOfOfficeRespo
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 
@@ -27640,6 +28446,13 @@ func ParseGetWorkReportsResponse(rsp *http.Response) (*GetWorkReportsResponse, e
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
 
 	}
 
